@@ -1,8 +1,3 @@
-#~~~~~~~~~~todo~~~~~~~~~~~#
-#1) Add in the option to encrypt plaintext.
-#~~~~~~~~~~~~~~~~~~~~~~~~~#
-
-
 #cryptool
 import os
 import argparse
@@ -19,11 +14,8 @@ parser.add_argument('-b64', '--base64', help='decode base64', action='store_true
 parser.add_argument('-morse', '--morse', help='decode morse code', action='store_true')
 parser.add_argument('-sbyteXOR', '--singlebyteXOR', help='decode single byte XOR', action='store_true')
 parser.add_argument('-sub', '--substitution', help='decode substitution cipher', action='store_true')
-#parser.add_argument('-l2n', help='decode letters to numbers cipher', action='store_true')
-#parser.add_argument('-mr', '--mirror', help='decode mirror cipher', action='store_true')
-#parser.add_argument('-md5', help='google search result for plaintext of MD5 hash', action='store_true')
+#Potential to add: letter to number, mirror, md5, sha1...
 args = parser.parse_args()
-
 
 
 found_cryptanalyzer = True
@@ -107,8 +99,11 @@ def main():
 		modules = {}
 		plaintext = []
 		for cipher_str in inp_ciphers_list:
-			cracking_order = cryptanalyzer.cryptanalysis(cipher_str)	#orders ciphers by most likely
-			#print(cracking_order)
+			if found_cryptanalyzer == True:
+				cracking_order = cryptanalyzer.cryptanalysis(cipher_str)	#orders ciphers by most likely
+				#print(cracking_order)
+			else:
+				cracking_order = ["ceasar"] ##### Temp #####
 			
 			#Trys all ciphers. If decrypts, will break.
 			failed_to_crack = True
