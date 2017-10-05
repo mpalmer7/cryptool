@@ -14,8 +14,19 @@ parser.add_argument('-b64', '--base64', help='decode base64', action='store_true
 parser.add_argument('-morse', '--morse', help='decode morse code', action='store_true')
 parser.add_argument('-sbyteXOR', '--singlebyteXOR', help='decode single byte XOR', action='store_true')
 parser.add_argument('-sub', '--substitution', help='decode substitution cipher', action='store_true')
+parser.add_argument('-atb', '--atbash', help='decode atbash cipher', action='store_true')
 #Potential to add: letter to number, mirror, md5, sha1...
 args = parser.parse_args()
+
+'''
+When adding a new cipher:
+1) add to argparse
+2) add to cryptool main under arg flags
+3) add values to cryptanalyzer
+4) add to list under cryptanalyzer
+'''
+
+
 
 
 found_cryptanalyzer = True
@@ -92,6 +103,8 @@ def main():
 		given_cipher("singlebyteXOR", inp_ciphers_list)
 	elif args.substitution:
 		given_cipher("substitution", inp_ciphers_list)
+	elif args.atbash:
+		given_cipher("atbash", inp_ciphers_list)
 		
 		
 	#Guess what cipher to use

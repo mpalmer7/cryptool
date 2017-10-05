@@ -91,9 +91,10 @@ def cryptanalysis(ctext):	#only takes a string
 	morse = cipher("morse", None, {"other":5}, {"2":17, "3":14, "other":0}, {"SYMBOLS":10, "other":3}, {"other":5})
 	singlebyteXOR = cipher("singlebyteXOR", None, {"other":5}, {"2":2, "3":2, "4":2, "5":2, "other":5}, {"SYMBOLS":3, "SPACE":4,"other":5}, {"other":5})
 	substitution = cipher("substitution", None, {"other":4}, {"2":2, "3":2, "4":3, "other":5}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":4}, {"other":4})
+	atbash = cipher("substitution", None, {"other":5}, {"2":2, "3":2, "4":3, "other":5}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":4}, {"other":4})
 	#ASCII = cipher("ASCII", None, {}, {}, {}, {})
 	
-	cipher_list = [caesar, binary, b64, morse, singlebyteXOR, substitution]
+	cipher_list = [caesar, binary, b64, morse, singlebyteXOR, substitution, atbash]
 	#machine learning? if it gets the correct code add +1 to the value, otherwise -1 (or something along those lines
 	weights = {}
 	
