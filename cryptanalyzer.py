@@ -85,16 +85,15 @@ def cryptanalysis(ctext):	#only takes a string
 	#print(inp_grouping)
 	
 	#                 name, path, length, char_types, set_types, grouping)
-	caesar = cipher("caesar", None, {"other":5}, {"2":2, "3":2, "4":3, "other":5}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":4}, {"other":5})
-	binary = cipher("binary", None, {"other":5}, {"2":20, "3":15, "other":0}, {"NUMERICALS":10, "SPACE":5, "other":2}, {"8":10,"other":4})
+	binary = cipher("binary", None, {"other":5}, {"2":20, "3":15, "4":7, "5":5, "other":0}, {"NUMERICALS":10, "SPACE":5, "other":2}, {"8":10,"other":4})
 	b64 = cipher("b64", None, {"other":5}, {"2":2, "3":2, "4":3, "other":5}, {"SYMBOLS":6, "other":5}, {"other":5})
 	morse = cipher("morse", None, {"other":5}, {"2":17, "3":14, "other":0}, {"SYMBOLS":10, "other":3}, {"other":5})
 	singlebyteXOR = cipher("singlebyteXOR", None, {"other":5}, {"2":2, "3":2, "4":2, "5":2, "other":5}, {"SYMBOLS":3, "SPACE":4,"other":5}, {"other":5})
-	substitution = cipher("substitution", None, {"other":4}, {"2":2, "3":2, "4":3, "other":5}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":4}, {"other":4})
-	atbash = cipher("substitution", None, {"other":5}, {"2":2, "3":2, "4":3, "other":5}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":4}, {"other":4})
+	#subtypeciphers includes ceasar, atbash, simple substitution
+	subtypeciphers = cipher("subtypeciphers", None, {"other":5}, {"2":2, "3":2, "4":3, "other":5}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":4}, {"other":5})
 	#ASCII = cipher("ASCII", None, {}, {}, {}, {})
 	
-	cipher_list = [caesar, binary, b64, morse, singlebyteXOR, substitution, atbash]
+	cipher_list = [binary, b64, morse, singlebyteXOR, subtypeciphers]
 	#machine learning? if it gets the correct code add +1 to the value, otherwise -1 (or something along those lines
 	weights = {}
 	
@@ -140,9 +139,15 @@ def cryptanalysis(ctext):	#only takes a string
 			#print(ctext[-5:-1])
 			if "=" in ctext[-5:-1]:
 				score = (score + 15) / 2
+			if (len(ctext) % 4) == 0: #base 64 is divisible by 4
+				score = (score + 8) / 2
 		
-		
-		weights[cp.name] = score
+		if cp.name != "subtypeciphers":
+			weights[cp.name] = score
+		else:
+			weights["caesar"] = score
+			weights["atbash"] = score - 1
+			weights["simplesub"] = score - 2
 	
 	
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#

@@ -13,7 +13,7 @@ parser.add_argument('-binary', '--binary', help='decode binary to text', action=
 parser.add_argument('-b64', '--base64', help='decode base64', action='store_true')
 parser.add_argument('-morse', '--morse', help='decode morse code', action='store_true')
 parser.add_argument('-sbyteXOR', '--singlebyteXOR', help='decode single byte XOR', action='store_true')
-parser.add_argument('-sub', '--substitution', help='decode substitution cipher', action='store_true')
+parser.add_argument('-ssub', '--simplesub', help='decode substitution cipher', action='store_true')
 parser.add_argument('-atb', '--atbash', help='decode atbash cipher', action='store_true')
 #Potential to add: letter to number, mirror, md5, sha1...
 args = parser.parse_args()
@@ -101,8 +101,8 @@ def main():
 		given_cipher("morse", inp_ciphers_list)
 	elif args.singlebyteXOR:
 		given_cipher("singlebyteXOR", inp_ciphers_list)
-	elif args.substitution:
-		given_cipher("substitution", inp_ciphers_list)
+	elif args.simplesub:
+		given_cipher("simplesub", inp_ciphers_list)
 	elif args.atbash:
 		given_cipher("atbash", inp_ciphers_list)
 		
@@ -116,7 +116,7 @@ def main():
 				cracking_order = cryptanalyzer.cryptanalysis(cipher_str)	#orders ciphers by most likely
 				#print(cracking_order)
 			else:
-				cracking_order = ["ceasar"] ##### Temp #####
+				cracking_order = ["ceasar"] ##### Temp ##### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			
 			#Trys all ciphers. If decrypts, will break.
 			failed_to_crack = True

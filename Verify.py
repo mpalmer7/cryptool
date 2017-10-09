@@ -56,9 +56,9 @@ def verify_english(potential_plaintext):
 				max = lp[key]
 			elif int(lp[key]) == max:	#If two words have equally the most "hits" then return them both.
 				most_likely.append(key)
+				
 		
 		return most_likely
-				
 				
 				
 	#If no combinations were found.  This will happen if we used the wrong cipher to decrypt, or the decryption failed.
