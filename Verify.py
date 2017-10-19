@@ -1,19 +1,18 @@
 #VerifyPlaintext
 
 #input (potential plaintext): list
-#output a) "ERROR in VerifyPlaintext: Could not locate dictionary file."
-#		b) list (most_likely)
-#		c) list (empty set)
+#output:
+#		a) list (most_likely)
+#		b) empty list
 
 def verify_english(potential_plaintext, cipher=''):
-	#Potential Plaintext = list
-	#It will often be of len(1) because most of the ciphers will just give the output.
-	#For some ciphers, like caesar, the output is brute forced and then the results have to be
-	#narrowed down.
+	#It will often be of len(1) because most of the ciphers will just 
+	#give the output.  For some ciphers, like caesar, the output is 
+	#brute forced and then the results are to be narrowed down.
 	
-	#Import a the official scrabble list of words, with all words under 4 letters stripped out.
-	#Two letter words are two finicky and can come up as hits even when it isn't the correct plaintext.
-	#Also provided a file with only words under 3 letters stripped ("sownew3.txt"), may be more effective, but "ABB" is a word so maybe not.
+	#Import a list of scrabble words, with all words under 4 letters stripped out.
+	#Also provided file with only 2/1 letter words stripped ("sownew3.txt"),
+	#but I have recieved more false positives from this.
 	try:
 		f = open("sownew4.txt", "r")
 		sowpods = f.readlines()
@@ -21,7 +20,6 @@ def verify_english(potential_plaintext, cipher=''):
 			a = (sowpods[d].strip("\n")).lower()
 			sowpods[d] = a
 		f.close
-	#Didn't find the list...
 	except FileNotFoundError:
 		print("ERROR in VerifyPlaintext: Could not locate dictionary file... returning empty set.")
 		return []

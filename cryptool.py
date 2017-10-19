@@ -73,20 +73,17 @@ def main():
 	key = None
 	
 	#Take input in the format of a STRING or FILE.
-	#Convert input to a list.
+	#Convert input to a list of strings.
 	if args.string:
 		inp_ciphers_list.append(args.input)
 	elif args.file:
 		with open(args.input, 'r') as file:
-			
 			icl = file.readlines()###################Edit this pending input
 			for c in icl:
 				inp_ciphers_list.append(c[:-1])
 	else:
 		print("please specify -s or -f")
 		exit()
-	
-	
 	
 	#If given cipher
 	IMPORT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ciphers')
@@ -104,20 +101,19 @@ def main():
 		given_cipher("simplesub", inp_ciphers_list)
 	elif args.atbash:
 		given_cipher("atbash", inp_ciphers_list)
-		
-		
-	#Guess what cipher to use
+	
+	#guess what cipher to use
 	else:
 		modules = {}
 		plaintext = []
 		for cipher_str in inp_ciphers_list:
 			if found_cryptanalyzer == True:
-				cracking_order = cryptanalyzer.cryptanalysis(cipher_str)	#orders ciphers by most likely
+				cracking_order = cryptanalyzer.cryptanalysis(cipher_str)	#Guesses ciphers from most to least likely
 				#print(cracking_order)
 			else:
 				cracking_order = ["ceasar"] ##### Temp ##### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			
-			#Trys all ciphers. If decrypts, will break.
+			#Trys to decrypt using every cipher; if sucessful will break
 			failed_to_crack = True
 			for ci in cracking_order:
 				#print("Trying", ci)
@@ -125,22 +121,19 @@ def main():
 				opt = modules[ci].decrypt(cipher_str, None)	#decrypt using that cipher
 				
 				check_decoded = Verify.verify_english(opt, ci)	#verify that the plaintext is in english
-
-				#verify_english returns an empty list when it does not find any english words in the opt.
+				#returns empty list if it could not verify
 				if check_decoded != []:
-					plaintext.append([ci, check_decoded, cipher_str])	#print_plaintext takes a list of [the cipher, the plaintext, and the original ciphertext]
+					plaintext.append([ci, check_decoded, cipher_str])	#[the cipher, the plaintext, and the original ciphertext]
 					failed_to_crack = False
-					break	#exits the nested for loop. Will now try next cipher_str in inp_ciphers_list.
+					break #decryption sucessful
 				else:
-					pass #check the next possible cipher 
+					pass  #decryption failed, try next cipher
 			
 			
-			if failed_to_crack:	############ maybe do something else here?
+			if failed_to_crack:	############ do something else here?
 				plaintext.append(["FAILED", "", cipher_str])
 		
-		#And the final output
-		print_plaintext(plaintext)
-				
+		print_plaintext(plaintext) #print the final output	
 	exit()			
 				
 				

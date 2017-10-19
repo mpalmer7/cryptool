@@ -27,13 +27,13 @@ def encrypt(plaintext):
 	#2) Rotate numbers by key.
 	for l in range(len(plaintext)):
 		if phrase[l] > 26: #uppercase
-				phrase[l] += key
-				if phrase[l] > 52:
-					phrase[l] -= 26
-			else:
-				phrase[l] += key #lowercase
-				if phrase[l] > 26:
-					phrase[l] -= 26
+			phrase[l] += key
+			if phrase[l] > 52:
+				phrase[l] -= 26
+		else:
+			phrase[l] += key #lowercase
+			if phrase[l] > 26:
+				phrase[l] -= 26
 	#3) Numbers back to letters.
 	for l in range(len(plaintext)):
 		plaintext[l] = num_to_let[plaintext[l]]
@@ -86,7 +86,7 @@ def Ceasar():
 		inp = input("Encrypt (E) or Decrypt (D): ")
 		if inp.lower() == "e":
 			invoker = True
-			print(encrypt(input("Enter text to decrypt: ").lower())
+			print(encrypt(input("Enter text to decrypt: ").lower()))
 		elif inp.lower() == "d":
 			invoker = True
 			print(decrypt(input("Enter text to decrypt: ").lower()))
