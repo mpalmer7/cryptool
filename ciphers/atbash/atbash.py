@@ -13,6 +13,9 @@ def decrypt(ct, nullthing=None):
 		else:
 			pt += letter
 	#print(pt)##
-	return [pt]
+	if pt == '':
+		return []
+	else:
+		return [pt]
 	
 	

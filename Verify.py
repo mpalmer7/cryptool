@@ -5,7 +5,7 @@
 #		b) list (most_likely)
 #		c) list (empty set)
 
-def verify_english(potential_plaintext):
+def verify_english(potential_plaintext, cipher=''):
 	#Potential Plaintext = list
 	#It will often be of len(1) because most of the ciphers will just give the output.
 	#For some ciphers, like caesar, the output is brute forced and then the results have to be
@@ -31,6 +31,7 @@ def verify_english(potential_plaintext):
 	#actually works pretty fast
 	likely_plaintext = []
 	for word in sowpods:
+		#print(cipher)
 		for phrase in potential_plaintext: #potential_plaintext is a LIST of all of the results the decryption for the cipher returned
 			if word in phrase:	############This does not account for the word appearing multiple times in the decrypted-text#########################
 				likely_plaintext.append(phrase)
@@ -63,4 +64,7 @@ def verify_english(potential_plaintext):
 				
 	#If no combinations were found.  This will happen if we used the wrong cipher to decrypt, or the decryption failed.
 	else:
-		return []
+		if cipher == "ceasar":
+			return[potential_plaintext]
+		else:
+			return []

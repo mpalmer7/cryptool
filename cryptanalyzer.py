@@ -23,66 +23,55 @@ def get_set_types(ctext):
 	s_numerical = ("1234567890", "NUMERICALS")
 	s_symbol = ("!@#$%^&*()_+" + "`~{[}]_-+=|\\\"':;?/>.<,", "SYMBOLS")
 	s_space = (" ", "SPACE")
-	
 	sets = [s_alphabet_lower, s_alphabet_upper, s_numerical, s_symbol, s_space]
-	characters_in_ctext = list(ctext)
 	#~~~~~~~~~~~~~~~~~~~~~~~~~#
+	characters_in_ctext = list(ctext)
 	groupbyset = {"L_ALPHA":0, "U_ALPHA":0, "NUMERICALS":0, "SYMBOLS":0,"SPACE":0}
 	for s in sets:
 		for c in characters_in_ctext:
 			if c in s[0]:
 				groupbyset[s[1]] += 1
-		
 	total = 0
 	for gro in groupbyset.keys():
 		total += int(groupbyset[gro])
-		
 	for gro in groupbyset.keys():
 		try:
 			gro_weight = (groupbyset[gro] / total)
 			groupbyset[gro] = gro_weight
 		except ZeroDivisionError:
 			groupbyset[gro] = 0
-	#print(groupbyset)
-
 	return groupbyset
 	
-def cryptanalysis(ctext):	#only takes a string
-	#get length
-	inp_len = str(len(ctext))
-	#print("inp_len =", inp_len)	#################
-	
-	#get number of character types
-	inp_ctypes = str(len(set(ctext)))
-	#print("ct_types =", inp_ctypes)	#################
-	
-	#get character-set types
-	inp_settypes = get_set_types(ctext)
-	
-	
-	
-	
-	#get character grouping
-	temp = ctext.split(" ")
-	temp_n = []
-	for s in temp:
-		temp_n.append(len(s))
-	#~~~~~~~~~~~~~~~~~~~~~~~~~#
-	inp_grouping = {}
-	for s in temp_n:
-		if s in inp_grouping.keys():
-			inp_grouping[s] += 1
+def get_character_grouping(words):
+	word_sizes = []
+	for word in words:
+		word_sizes.append(len(word))
+	ig = {}
+	for n in word_sizes:
+		if n in ig.keys():
+			ig[n] += 1
 		else:
-			inp_grouping[s] = 1
-	#print(inp_grouping)
+			ig[n] = 1
+			
 	gro_total = 0
-	for gro in inp_grouping.keys():
-		gro_total += int(inp_grouping[gro])
+	for gro in ig.keys():
+		gro_total += int(ig[gro])
 	
-	for gro in inp_grouping.keys():
-		gro_weight = (inp_grouping[gro] / gro_total)
-		inp_grouping[gro] = gro_weight
-	#print(inp_grouping)
+	for gro in ig.keys():
+		gro_weight = (ig[gro] / gro_total)
+		ig[gro] = gro_weight
+	return ig
+	
+def cryptanalysis(ctext):	#string
+	inp_len = str(len(ctext))
+	#print("inp_len =", inp_len)
+	inp_ctypes = str(len(set(ctext)))
+	#print("inp_ctypes =", inp_ctypes)
+	inp_settypes = get_set_types(ctext)
+	#print("inp_settypes =", inp_settypes)
+	inp_grouping = get_character_grouping(ctext.split(" "))
+	#print("inp_grouping =", inp_grouping)
+	
 	
 	#                 name, path, length, char_types, set_types, grouping)
 	binary = cipher("binary", None, {"other":5}, {"2":20, "3":15, "4":7, "5":5, "other":0}, {"NUMERICALS":10, "SPACE":5, "other":2}, {"8":10,"other":4})

@@ -1,5 +1,6 @@
 #substitution
 import operator
+import string, re
 '''
 Substitution cipher
 Like caesar except no rotation
@@ -22,7 +23,16 @@ def update_potential_letters(pl, rm_char, other_than):	#pl is potential_letters,
 		if ch not in other_than:
 			pl[ch].remove(rm_char)
 	return pl
+	
+	
+	
+def check_2_letter_words(pl):
+	#2 letter words
+	#ox, ax, ex, by, my, up, um, of, if, me, ow, am, we, uh, be, oh, go, eh, ah, he, hi, yo, us, on, in, an, do, no, as, at, it, is, or, so
+	return pl			
 
+	
+	
 def decrypt(ctext, nullthing=None): 
 	alphabet = "abcdefghijklmnopqrstuvwxyz"
 	numericals = "0123456789"
@@ -59,7 +69,7 @@ def decrypt(ctext, nullthing=None):
 	
 		#sorted frequency in ctext
 		sfic = sorted(inp_letter_frequency.items(), key=operator.itemgetter(1))[::-1]
-		#print(sfic)
+		print(sfic)
 		
 		
 		
@@ -136,30 +146,46 @@ def decrypt(ctext, nullthing=None):
 			pass #no one letter words detected
 		
 		
-		print(i_or_a)
+			
+		ctext_by_word = []
+		for phrase in inp_split_by_space:
+			regex = re.compile('[^a-zA-Z]')
+			#First parameter is the replacement, second parameter is your input string
+			ctext_by_word.append(regex.sub('', phrase)+"")
 				
-				
+		#print(ctext_by_word)
+		
+		two_letter_words = {}
+		for word in ctext_by_word:
+			if len(word) == 2:
+				if word in two_letter_words.keys():
+					two_letter_words[word] += 1
+				else:
+					two_letter_words[word] = 1
+		print(two_letter_words)
+		#check_2_letter_words
+		
 		
 				
-				
-				
-				
-				
-				
-				
-				
+		#3 end in i
+		#dui, koi, lei, psi, ski
+		
+		#3 end in a
+		#pea, ana, boa, spa, via, aha, ava, bra, sea, tea, era, yea
 				
 				
 				
 				
 		opt_str = ''.join(opt_lst)
-		print(potential_letters)
-		print(letters_it_has_to_be)
+		#print(potential_letters)
+		#print(letters_it_has_to_be)
 		print(opt_str)
 	
 	
 	
 	
+		return []
+	else:
 		return []
 	'''
 

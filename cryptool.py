@@ -1,7 +1,7 @@
-#cryptool
 import os
 import argparse
 import Verify
+import shutil #used in print_plaintext
 
 #command line arguments
 parser = argparse.ArgumentParser()
@@ -15,9 +15,9 @@ parser.add_argument('-morse', '--morse', help='decode morse code', action='store
 parser.add_argument('-sbyteXOR', '--singlebyteXOR', help='decode single byte XOR', action='store_true')
 parser.add_argument('-ssub', '--simplesub', help='decode substitution cipher', action='store_true')
 parser.add_argument('-atb', '--atbash', help='decode atbash cipher', action='store_true')
-#Potential to add: letter to number, mirror, md5, sha1...
 args = parser.parse_args()
 
+#Potential to add: letter to number, mirror (and its permutations), md5, sha1...
 '''
 When adding a new cipher:
 1) add to argparse
@@ -26,9 +26,6 @@ When adding a new cipher:
 4) add to list under cryptanalyzer
 '''
 
-
-
-
 found_cryptanalyzer = True
 try:
 	import cryptanalyzer
@@ -36,19 +33,18 @@ except ModuleNotFoundError:
 	print("Cryptanalyzer package not found.")
 	found_cryptanalyzer = False
 
-
 def print_plaintext(plaintext_list):
+	columns, lines = shutil.get_terminal_size((80, 20))
 	print("-- ~ ~ ~ ~ ~ ~ ~ ~ --")
 	for item in plaintext_list:
-		#print(item)
-		if args.file:
-			print("\n"+item[2], end='')
+		print("#"*columns+"Cipher Text:\n\t"+item[2]+"\nCipher:\n\t"+item[0]+"\nPlaintext:")
+		if len(item[1])==0:
+			print("\tDECRYPTION FAILED")
 		else:
-			print("\n"+item[2])
-		
-		print("Cipher: "+item[0])
-		for i in item[1]:
-			print("Plaintext: "+i)
+			for i in item[1]:
+				print("\t"+i)
+	print("#"*columns)
+	return None
 			
 def given_cipher(cipher, ctext):
 	modules = {}
@@ -82,7 +78,10 @@ def main():
 		inp_ciphers_list.append(args.input)
 	elif args.file:
 		with open(args.input, 'r') as file:
-			inp_ciphers_list = file.readlines()###################Edit this pending input
+			
+			icl = file.readlines()###################Edit this pending input
+			for c in icl:
+				inp_ciphers_list.append(c[:-1])
 	else:
 		print("please specify -s or -f")
 		exit()
@@ -125,7 +124,7 @@ def main():
 				modules[ci] = __import__('ciphers.' + ci +'.' + ci, fromlist=['*'])	#get the cipher's file
 				opt = modules[ci].decrypt(cipher_str, None)	#decrypt using that cipher
 				
-				check_decoded = Verify.verify_english(opt)	#verify that the plaintext is in english
+				check_decoded = Verify.verify_english(opt, ci)	#verify that the plaintext is in english
 
 				#verify_english returns an empty list when it does not find any english words in the opt.
 				if check_decoded != []:

@@ -1,16 +1,17 @@
 #Ceasar Key Decryption
 
-aall_comboshabet = "abcdefghijklmnopqrstuvwxyz"
-aall_comboshanum = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8,
+let_to_num = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8,
 			'i': 9, 'j': 10, 'k': 11, 'l': 12, 'm': 13, 'n': 14, 'o': 15, 'p': 16,
 			'q': 17, 'r': 18, 's': 19, 't': 20, 'u': 21, 'v': 22, 'w': 23, 'x': 24,
-			'y': 25, 'z': 26, 'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8,
-			'I': 9, 'J': 10, 'K': 11, 'L': 12, 'M': 13, 'N': 14, 'O': 15, 'P': 16,
-			'Q': 17, 'R': 18, 'S': 19, 'T': 20, 'U': 21, 'V': 22, 'W': 23, 'X': 24,
-			'Y': 25, 'Z': 26}
-numaall_combosha = {1: 'a', 2: 'b', 3: 'c', 4: 'd', 5: 'e', 6: 'f', 7: 'g', 8: 'h', 9: 'i', 10: 'j', 11: 'k', 12: 'l',
+			'y': 25, 'z': 26, 'A': 27, 'B': 28, 'C': 29, 'D': 30, 'E': 31, 'F': 32, 'G': 33, 'H': 34,
+			'I': 35, 'J': 36, 'K': 37, 'L': 38, 'M': 39, 'N': 40, 'O': 41, 'P': 42,
+			'Q': 43, 'R': 44, 'S': 45, 'T': 46, 'U': 47, 'V': 48, 'W': 49, 'X': 50,
+			'Y': 51, 'Z': 52}
+num_to_let = {1: 'a', 2: 'b', 3: 'c', 4: 'd', 5: 'e', 6: 'f', 7: 'g', 8: 'h', 9: 'i', 10: 'j', 11: 'k', 12: 'l',
 			13: 'm', 14: 'n', 15: 'o', 16: 'p', 17: 'q', 18: 'r', 19: 's', 20: 't', 21: 'u', 22: 'v',
-			23: 'w', 24: 'x', 25: 'y', 26: 'z'}
+			23: 'w', 24: 'x', 25: 'y', 26: 'z', 27: 'A', 28: 'B', 29: 'C', 30: 'D', 31: 'E', 32: 'F', 33: 'G', 34: 'H', 35: 'I', 36: 'J', 37: 'K', 38: 'L',
+			39: 'M', 40: 'N', 41: 'O', 42: 'P', 43: 'Q', 44: 'R', 45: 'S', 46: 'T', 47: 'U', 48: 'V',
+			49: 'W', 50: 'X', 51: 'Y', 52: 'Z'}
 			
 def list_to_string(ls):
 	str = ''
@@ -18,97 +19,76 @@ def list_to_string(ls):
 		str += char
 	return str
 			
-			
 def encrypt(plaintext):
-		
 	key = int(input("Enter integer to rotate by: "))
+	#1) Convert letters to numbers.
 	for l in range(len(plaintext)):
-		plaintext[l] = aall_comboshanum[plaintext[l]]
-		
-	#print(plaintext)			#now numbers
-	
+		plaintext[l] = let_to_num[plaintext[l]]
+	#2) Rotate numbers by key.
 	for l in range(len(plaintext)):
-		plaintext[l] += key
-		if plaintext[l] > 26:
-			plaintext[l] -= 26
+		if phrase[l] > 26: #uppercase
+				phrase[l] += key
+				if phrase[l] > 52:
+					phrase[l] -= 26
+			else:
+				phrase[l] += key #lowercase
+				if phrase[l] > 26:
+					phrase[l] -= 26
+	#3) Numbers back to letters.
+	for l in range(len(plaintext)):
+		plaintext[l] = num_to_let[plaintext[l]]
+	return list_to_string(plaintext)
 
-	for l in range(len(plaintext)):
-		plaintext[l] = numaall_combosha[plaintext[l]]
-	
-	# merge into single string
-	print(list_to_string(plaintext))
-	
-	return None ####################################
-
-#yeah I forgot how this works and I'm too tired rn to figure it out but it works.
 def check_keys(phrase, key):
+	#1) Letters to numbers.
 	for l in range(len(phrase)):
 		try:
-			phrase[l] = aall_comboshanum[phrase[l]]
+			phrase[l] = let_to_num[phrase[l]]
 		except KeyError:
 			pass
-		
+	#2) Rotate letters by key.	
 	for l in range(len(phrase)):
 		try:
-			phrase[l] -= key
-			if phrase[l] < 1:
-				phrase[l] += 26
+			if phrase[l] > 26: #uppercase
+				phrase[l] -= key
+				if phrase[l] < 26:
+					phrase[l] += 26
+			else:
+				phrase[l] -= key #lowercase
+				if phrase[l] < 1:
+					phrase[l] += 26
 		except KeyError:
 			pass
 		except TypeError:
 			pass
-	
+	#3) Numbers back to letters.
 	for l in range(len(phrase)):
 		try:
-			phrase[l] = numaall_combosha[phrase[l]]
+			phrase[l] = num_to_let[phrase[l]]
 		except KeyError:
 			pass
-		
 	return list_to_string(phrase)
 	
-	
-#Decryption Function
-def decrypt(inp, key):		################
-	#Take Input
+def decrypt(inp, key=None):
 	ctext = list(inp)
-	#Check if user has the key.
 	if key != None:
-		for l in range(len(ctext)):
-			ctext[l] = aall_comboshanum[ctext[l]]
-		#rotates text by key
-		for l in range(len(ctext)):
-			ctext[l] -= key
-			if ctext[l] < 1:
-				#rotation is done by subtraction, if goes before "a" this will move it to the end of the aall_comboshabet to move backwards
-				ctext[l] += 26
-		#convert numeric values back to letters
-		for l in range(len(ctext)):
-			ctext[l] = numaall_combosha[ctext[l]]
-		#print and exit	
-		#print(list_to_string(ctext))
-		return None ################################################
-		
-	#if user doesn't give a key, solve for all possible combinations
-	else:
-		key = 1
+		return([check_keys(ctext, key)])
+	else:#Key not given, try all keys
 		all_combos = []
-		#append all 26 combinations to an array
-		while key <= 26:
-			copy_ctext = ctext[:]
-			all_combos.append(check_keys(copy_ctext, key))
-			key += 1
-			
+		for key in range(1,27):
+			all_combos.append(check_keys(ctext, key))
+			key += 1		
 		return all_combos
 	
 def Ceasar():
-	print("Welcome to Mitch's ceasar cipher!")
-	while (1 == 1):
+	invoker = False
+	while (invoker == False):
 		inp = input("Encrypt (E) or Decrypt (D): ")
 		if inp.lower() == "e":
-			encrypt(input("Enter text to decrypt: ").lower())
+			invoker = True
+			print(encrypt(input("Enter text to decrypt: ").lower())
 		elif inp.lower() == "d":
-			decrypt(input("Enter text to decrypt: ").lower())
+			invoker = True
+			print(decrypt(input("Enter text to decrypt: ").lower()))
 		else:
 			print("I did not recognize your input. Try agian.\n")
-		
-#Ceasar()
