@@ -1,5 +1,5 @@
 #atbash
-def decryplaintext(ciphertext, nullthing=None):
+def decrypt(ciphertext, nullthing=None):
 	plaintext = ''
 	udict = {'A': 'Z', 'B': 'Y', 'C': 'X', 'D': 'W', 'E': 'V', 'F': 'U', 'G': 'T',
 			'H': 'S', 'I': 'R', 'J': 'Q', 'K': 'P', 'L': 'O', 'M': 'N', 'N': 'M',

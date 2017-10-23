@@ -12,12 +12,3 @@ For example
 
 If you know what cipher you are decrypting, that can also be specified with a flag.
 Otherwise, it will try to guess what kind of cipher it is (needs a lot of work).	
-
-## ToDo
--clean up code
--implement an option to encrypt plaintext
--fix false positives verifying that caesar cipher decrypted correctly
--update cryptanalyzer
--add in more ciphers
--get simple substitution cipher working
-

@@ -6,37 +6,85 @@
 #		b) empty list
 
 def verify_english(potential_plaintext, cipher=''):
-	#It will often be of len(1) because most of the ciphers will just 
-	#give the output.  For some ciphers, like caesar, the output is 
-	#brute forced and then the results are to be narrowed down.
-	
-	#Import a list of scrabble words, with all words under 4 letters stripped out.
-	#Also provided file with only 2/1 letter words stripped ("sownew3.txt"),
-	#but I have recieved more false positives from this.
 	try:
-		f = open("sownew4.txt", "r")
+		f = open("sownew.txt", "r")
 		sowpods = f.readlines()
 		for d in range(len(sowpods)):
-			a = (sowpods[d].strip("\n")).lower()
-			sowpods[d] = a
+			temp = (sowpods[d].strip("\n")).lower()
+			sowpods[d] = temp
 		f.close
 	except FileNotFoundError:
 		print("ERROR in VerifyPlaintext: Could not locate dictionary file... returning empty set.")
 		return []
-	
-	#For every key combination, check every word in the english dictionary and see if it exists inside that phrase and if it does, count it by appending that key to a list
-	#The plaintext that has the most "hits" of words in the dictionary list will hopefully be the plaintext.
-	#actually works pretty fast
+		
 	likely_plaintext = []
-	for word in sowpods:
-		#print(cipher)
-		for phrase in potential_plaintext: #potential_plaintext is a LIST of all of the results the decryption for the cipher returned
-			if word in phrase:	############This does not account for the word appearing multiple times in the decrypted-text#########################
-				likely_plaintext.append(phrase)
-	#print(likely_plaintext)
-	
-	
-	#If the decryption worked...
+	for p_p in potential_plaintext:
+		#split p_p into words and remove all not alphabetical characters
+		working_text = p_p.split(' ')
+		for n in range(len(working_text)):
+			working_text[n] = ''.join([i for i in working_text[n] if i.isalpha()])
+		#print(working_text)
+		#if words are not seperated by spaces
+		if len(working_text) == 1:
+			try:
+				f = open("sownew4.txt", "r")
+				sowpods = f.readlines()
+				for d in range(len(sowpods)):
+					temp = (sowpods[d].strip("\n")).lower()
+					sowpods[d] = temp
+				f.close
+			except FileNotFoundError:
+				print("ERROR in VerifyPlaintext: Could not locate dictionary file... returning empty set.")
+				return []
+		
+			for word in sowpods:
+				if word in working_text[0]:
+					likely_plaintext.append(p_p)
+					
+					
+					
+		else: #we have seperate words
+			try:
+				f = open("sownew.txt", "r")
+				sowpods = f.readlines()
+				for d in range(len(sowpods)):
+					temp = (sowpods[d].strip("\n")).lower()
+					sowpods[d] = temp
+				f.close
+			except FileNotFoundError:
+				print("ERROR in VerifyPlaintext: Could not locate dictionary file... returning empty set.")
+				return []
+				
+			for test_word in sowpods:
+				for p_p_word in working_text:
+					if test_word == p_p_word.lower():
+						likely_plaintext.append(p_p)
+						
+			need_check_big = False
+			for w in working_text:
+				if len(w) > 6:
+					need_check_big = True
+			if need_check_big:
+				#print("checking big words")
+				try:
+					f = open("7+letterwords.txt", "r")
+					blw = f.readlines() #big letter words
+					for d in range(len(blw)):
+						temp = (blw[d].strip("\n")).lower()
+						blw[d] = temp
+					f.close	
+					
+					for test_word in blw:
+						for p_p_word in working_text:
+							if test_word == p_p_word.lower():
+								likely_plaintext.append(p_p)
+				except FileNotFoundError:
+					print("ERROR in VerifyPlaintext: Could not locate big words file, ignoring it...")
+					pass
+						
+						
+						
+	#decryption worked					
 	if len(likely_plaintext) > 0:
 		lp = {}
 		#sort each phrase into the dictionary, if the phrase is already in dictionary increase count
@@ -45,7 +93,6 @@ def verify_english(potential_plaintext, cipher=''):
 				lp[word] += 1
 			else:
 				lp[word] = 1
-		
 		#now sort the decrypted text by count, i.e. which decrypted-text had the most words in the list of English words in it.
 		max = 0
 		most_likely = []
@@ -55,14 +102,23 @@ def verify_english(potential_plaintext, cipher=''):
 				max = lp[key]
 			elif int(lp[key]) == max:	#If two words have equally the most "hits" then return them both.
 				most_likely.append(key)
-				
+		print(potential_plaintext[0],'\t',len(potential_plaintext[0]))
 		
-		return most_likely
-				
-				
-	#If no combinations were found.  This will happen if we used the wrong cipher to decrypt, or the decryption failed.
-	else:
-		if cipher == "ceasar":
-			return[potential_plaintext]
+		
+		#############################
+		temp = potential_plaintext[0].split(' ')
+		if (max > 2) and (len(temp)>2): #accounting for mistakes...
+			return most_likely
 		else:
 			return []
+			
+			
+			
+			
+	#no english words detected
+	else:
+		return []
+					
+				
+				
+	return []

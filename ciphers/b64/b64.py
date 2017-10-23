@@ -9,5 +9,4 @@ def decrypt(ciphertext, b=None):
 			plaintext = plaintext[2:-1] #fix formatting
 		return [plaintext]
 	except binascii.Error:
-		#print("ERROR in base64: Incorrect formatting of input.")
 		return []

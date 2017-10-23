@@ -54,7 +54,7 @@ def given_cipher(cipher, ctext):
 	for ct in ctext:
 		opt = modules[cipher].decrypt(ct, None)
 		plaintext.append([cipher, opt, ct])
-		if Verify.verify_english(opt) != []:
+		if Verify.verify_english(opt, cipher) != []:
 			english_plaintext.append([cipher, opt, ct])
 	
 	if english_plaintext != []:
@@ -107,20 +107,20 @@ def main():
 		modules = {}
 		plaintext = []
 		for cipher_str in inp_ciphers_list:
+			#print(cipher_str)######
 			if found_cryptanalyzer == True:
 				cracking_order = cryptanalyzer.cryptanalysis(cipher_str)	#Guesses ciphers from most to least likely
-				#print(cracking_order)
 			else:
 				cracking_order = ["ceasar"] ##### Temp ##### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			
 			#Trys to decrypt using every cipher; if sucessful will break
 			failed_to_crack = True
 			for ci in cracking_order:
-				#print("Trying", ci)
+				#print("Trying", ci)#######
 				modules[ci] = __import__('ciphers.' + ci +'.' + ci, fromlist=['*'])	#get the cipher's file
 				opt = modules[ci].decrypt(cipher_str, None)	#decrypt using that cipher
 				
-				check_decoded = Verify.verify_english(opt, ci)	#verify that the plaintext is in english
+				check_decoded = Verify.verify_english(opt)	#verify that the plaintext is in english
 				#returns empty list if it could not verify
 				if check_decoded != []:
 					plaintext.append([ci, check_decoded, cipher_str])	#[the cipher, the plaintext, and the original ciphertext]
