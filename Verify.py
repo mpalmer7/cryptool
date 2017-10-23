@@ -42,7 +42,6 @@ def verify_english(potential_plaintext, cipher=''):
 					likely_plaintext.append(p_p)
 					
 					
-					
 		else: #we have seperate words
 			try:
 				f = open("sownew.txt", "r")
@@ -80,9 +79,7 @@ def verify_english(potential_plaintext, cipher=''):
 								likely_plaintext.append(p_p)
 				except FileNotFoundError:
 					print("ERROR in VerifyPlaintext: Could not locate big words file, ignoring it...")
-					pass
-						
-						
+					pass			
 						
 	#decryption worked					
 	if len(likely_plaintext) > 0:
@@ -102,16 +99,20 @@ def verify_english(potential_plaintext, cipher=''):
 				max = lp[key]
 			elif int(lp[key]) == max:	#If two words have equally the most "hits" then return them both.
 				most_likely.append(key)
-		print(potential_plaintext[0],'\t',len(potential_plaintext[0]))
+		#print(potential_plaintext[0],'\t',len(potential_plaintext[0]))
 		
 		
 		#############################
-		temp = potential_plaintext[0].split(' ')
-		if (max > 2) and (len(temp)>2): #accounting for mistakes...
-			return most_likely
+		if len(working_text) != 1:
+			temp = potential_plaintext[0].split(' ')
+			if (max > 2) and (len(temp)>2): #accounting for mistakes...
+				return most_likely
+			elif len(temp) <= 2:
+				return most_likely
+			else:
+				return []
 		else:
-			return []
-			
+			return most_likely
 			
 			
 			
