@@ -77,10 +77,11 @@ def cryptanalysis(ctext):	#string
 	morse = cipher("morse", None, {"other":5}, {"2":17, "3":14, "other":0}, {"SYMBOLS":10, "other":3}, {"other":5})
 	singlebyteXOR = cipher("singlebyteXOR", None, {"other":5}, {"2":2, "3":2, "4":2, "5":2, "other":5}, {"SYMBOLS":3, "SPACE":4,"other":5}, {"other":5})
 	#subtypeciphers includes ceasar, atbash, simple substitution
-	subtypeciphers = cipher("subtypeciphers", None, {"other":5}, {"2":2, "3":2, "4":3, "other":6}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":4}, {"other":5})
+	subtypeciphers = cipher("subtypeciphers", None, {"other":5}, {"2":2, "3":2, "4":3, "other":6}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":3}, {"other":5})
+	hashsearch = cipher("hashsearch", None, {"other":5}, {"other":5}, {"other":5}, {"other":5})
 	#ASCII = cipher("ASCII", None, {}, {}, {}, {})
 	
-	cipher_list = [binary, b64, morse, singlebyteXOR, subtypeciphers]
+	cipher_list = [binary, b64, morse, singlebyteXOR, subtypeciphers, hashsearch]
 	#machine learning? if it gets the correct code add +1 to the value, otherwise -1 (or something along those lines...)
 	weights = {}
 	
@@ -112,7 +113,6 @@ def cryptanalysis(ctext):	#string
 			else:
 				total += cp.grouping["other"] * inp_grouping[gro]
 		score = (score + total) / 2
-
 		
 		#rest of indicators
 		if cp.name == "b64":
@@ -123,6 +123,17 @@ def cryptanalysis(ctext):	#string
 				score = (score + 8) / 2
 			else:
 				score = (score + 0) / 2
+			#base 64 is a single block of text as an input
+			if len(ctext.split(" ")) == 1:
+				score = (score + 10) / 2
+			else:
+				score = (score + 2) / 2
+		if cp.name == "hashsearch":
+			if len(ctext.split(" ")) == 1:
+				score = (score + 10) / 2
+			else:
+				score = (score + 2) / 2
+
 		
 		#subtypeciphers includes caesar, atbash, simplesub
 		if cp.name != "subtypeciphers":

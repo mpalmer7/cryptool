@@ -15,6 +15,7 @@ parser.add_argument('-morse', '--morse', help='decode morse code', action='store
 parser.add_argument('-sbyteXOR', '--singlebyteXOR', help='decode single byte XOR', action='store_true')
 parser.add_argument('-ssub', '--simplesub', help='decode substitution cipher', action='store_true')
 parser.add_argument('-atb', '--atbash', help='decode atbash cipher', action='store_true')
+parser.add_argument('-rhs', '--hashsearch', help='search Bing for a hash', action='store_true')
 args = parser.parse_args()
 
 #Potential to add: letter to number, mirror (and its permutations), md5, sha1...
@@ -101,13 +102,14 @@ def main():
 		given_cipher("simplesub", inp_ciphers_list)
 	elif args.atbash:
 		given_cipher("atbash", inp_ciphers_list)
+	elif args.hashsearch:
+		given_cipher("hashsearch", inp_ciphers_list)
 	
 	#guess what cipher to use
 	else:
 		modules = {}
 		plaintext = []
 		for cipher_str in inp_ciphers_list:
-			#print(cipher_str)######
 			if found_cryptanalyzer == True:
 				cracking_order = cryptanalyzer.cryptanalysis(cipher_str)	#Guesses ciphers from most to least likely
 			else:
@@ -116,11 +118,12 @@ def main():
 			#Trys to decrypt using every cipher; if sucessful will break
 			failed_to_crack = True
 			for ci in cracking_order:
-				#print("Trying", ci)#######
+				print("Trying", ci)#######
 				modules[ci] = __import__('ciphers.' + ci +'.' + ci, fromlist=['*'])	#get the cipher's file
 				opt = modules[ci].decrypt(cipher_str, None)	#decrypt using that cipher
 				
-				check_decoded = Verify.verify_english(opt)	#verify that the plaintext is in english
+				check_decoded = Verify.verify_english(opt, ci)	#verify that the plaintext is in english
+				
 				#returns empty list if it could not verify
 				if check_decoded != []:
 					plaintext.append([ci, check_decoded, cipher_str])	#[the cipher, the plaintext, and the original ciphertext]

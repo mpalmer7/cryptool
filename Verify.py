@@ -16,10 +16,11 @@ def verify_english(potential_plaintext, cipher=''):
 	except FileNotFoundError:
 		print("ERROR in VerifyPlaintext: Could not locate dictionary file... returning empty set.")
 		return []
+
 		
 	likely_plaintext = []
 	for p_p in potential_plaintext:
-		#split p_p into words and remove all not alphabetical characters
+		#split p_p into words and remove all non-alphabetic characters
 		working_text = p_p.split(' ')
 		for n in range(len(working_text)):
 			working_text[n] = ''.join([i for i in working_text[n] if i.isalpha()])
@@ -80,7 +81,11 @@ def verify_english(potential_plaintext, cipher=''):
 				except FileNotFoundError:
 					print("ERROR in VerifyPlaintext: Could not locate big words file, ignoring it...")
 					pass			
-						
+	
+	#hashsearch is inaccurate, just return all possible hits.
+	if cipher == "hashsearch":
+		return set(likely_plaintext)
+	
 	#decryption worked					
 	if len(likely_plaintext) > 0:
 		lp = {}
@@ -97,15 +102,12 @@ def verify_english(potential_plaintext, cipher=''):
 			if int(lp[key]) > max:
 				most_likely = [key]
 				max = lp[key]
-			elif int(lp[key]) == max:	#If two words have equally the most "hits" then return them both.
+			elif int(lp[key]) == max:	#two words are evaluated as equally most likely, returns both
 				most_likely.append(key)
-		#print(potential_plaintext[0],'\t',len(potential_plaintext[0]))
-		
-		
-		#############################
+		#attempts to avoid false positives, NEEDS WORK
 		if len(working_text) != 1:
 			temp = potential_plaintext[0].split(' ')
-			if (max > 2) and (len(temp)>2): #accounting for mistakes...
+			if (max > 2) and (len(temp)>2):
 				return most_likely
 			elif len(temp) <= 2:
 				return most_likely
@@ -113,13 +115,6 @@ def verify_english(potential_plaintext, cipher=''):
 				return []
 		else:
 			return most_likely
-			
-			
-			
 	#no english words detected
 	else:
 		return []
-					
-				
-				
-	return []
