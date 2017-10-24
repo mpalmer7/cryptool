@@ -118,7 +118,7 @@ def main():
 			#Trys to decrypt using every cipher; if sucessful will break
 			failed_to_crack = True
 			for ci in cracking_order:
-				print("Trying", ci)#######
+				#print("Trying", ci)#######
 				modules[ci] = __import__('ciphers.' + ci +'.' + ci, fromlist=['*'])	#get the cipher's file
 				opt = modules[ci].decrypt(cipher_str, None)	#decrypt using that cipher
 				
