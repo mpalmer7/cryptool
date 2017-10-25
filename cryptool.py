@@ -113,7 +113,7 @@ def main():
 			if found_cryptanalyzer == True:
 				cracking_order = cryptanalyzer.cryptanalysis(cipher_str)	#Guesses ciphers from most to least likely
 			else:
-				cracking_order = ["ceasar"] ##### Temp ##### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+				cracking_order = ["binary", "b64", "morse", "singlebyteXOR", "subtypeciphers", "hashsearch"] ##### Temp #####
 			
 			#Trys to decrypt using every cipher; if sucessful will break
 			failed_to_crack = True

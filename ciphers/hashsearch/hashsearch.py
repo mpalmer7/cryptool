@@ -2,6 +2,7 @@
 import urllib.request
 import requests
 from bs4 import BeautifulSoup
+import re
 
 #query = "bdc87b9c894da5168059e00ebffb9077" #password1234
 #query = "fc5e038d38a57032085441e7fe7010b0" #helloworld
@@ -22,8 +23,15 @@ def decrypt(query, ci):
 	dict = {}
 	for n in new:
 		for phrase in n:
-			if phrase[0] in ",;:.":
-				phrase = phrase[1:]
+			if query in phrase:
+				print(phrase)
+				phrase = re.sub(query, '', phrase)
+				print(phrase)
+			try:
+				if phrase[0] in ",;:.":
+					phrase = phrase[1:]
+			except IndexError:
+				pass
 			try:
 				if phrase[-1] in ",;:.":
 					phrase = phrase[:-1]
@@ -34,7 +42,8 @@ def decrypt(query, ci):
 			else:
 				dict[phrase] = 1
 	drm = []
-	blacklist = ["guess", "value", "pastebin", "crack", "through", "creating", "function", "development", "service", "hash", "hashes", "python", "encryption", "accept", "decrypt", "reverse"]
+	blacklist = ["guess", "value", "pastebin", "crack", "through", "creating", "function", "development", "service", "hash", 
+				 "hashes", "python", "encryption", "accept", "decrypt", "reverse", "repair", "product"]
 	for key in dict.keys():
 		if len(key) < 6:
 			drm.append(key)

@@ -1,2 +1,4 @@
 __pycache__/
 ciphers/__pycache__/
+*.pyc
+*.pyo
