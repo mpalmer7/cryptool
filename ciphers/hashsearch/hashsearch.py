@@ -24,9 +24,7 @@ def decrypt(query, ci):
 	for n in new:
 		for phrase in n:
 			if query in phrase:
-				print(phrase)
 				phrase = re.sub(query, '', phrase)
-				print(phrase)
 			try:
 				if phrase[0] in ",;:.":
 					phrase = phrase[1:]

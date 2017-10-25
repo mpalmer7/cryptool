@@ -2,23 +2,12 @@ import os
 import argparse
 import Verify
 import shutil #used in print_plaintext
-
-#command line arguments
-parser = argparse.ArgumentParser()
-parser.add_argument('input', help='input string or file')
-parser.add_argument('-s', '--string', help='string of inp_ciphers_list', action='store_true')
-parser.add_argument('-f', '--file', help='txt file with cipher', action='store_true')
-parser.add_argument('-caesar', '--caesar', help='brute force caesar cipher', action='store_true')
-parser.add_argument('-binary', '--binary', help='decode binary to text', action='store_true')
-parser.add_argument('-b64', '--base64', help='decode base64', action='store_true')
-parser.add_argument('-morse', '--morse', help='decode morse code', action='store_true')
-parser.add_argument('-sbyteXOR', '--singlebyteXOR', help='decode single byte XOR', action='store_true')
-parser.add_argument('-ssub', '--simplesub', help='decode substitution cipher', action='store_true')
-parser.add_argument('-atb', '--atbash', help='decode atbash cipher', action='store_true')
-parser.add_argument('-rhs', '--hashsearch', help='search Bing for a hash', action='store_true')
-args = parser.parse_args()
-
-#Potential to add: letter to number, mirror (and its permutations), md5, sha1...
+try:
+	import cryptanalyzer
+	found_cryptanalyzer = True
+except ModuleNotFoundError:
+	print("Cryptanalyzer package not found.")
+	found_cryptanalyzer = False
 '''
 When adding a new cipher:
 1) add to argparse
@@ -27,16 +16,23 @@ When adding a new cipher:
 4) add to list under cryptanalyzer
 '''
 
-found_cryptanalyzer = True
-try:
-	import cryptanalyzer
-except ModuleNotFoundError:
-	print("Cryptanalyzer package not found.")
-	found_cryptanalyzer = False
+#command line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('input', help='input file or string')
+parser.add_argument('-s', '--string', help='string of ciphertext', action='store_true')
+parser.add_argument('-f', '--file', help='text file of ciphertext', action='store_true')
+parser.add_argument('-caesar', '--caesar', help='decode using caesar cipher', action='store_true')
+parser.add_argument('-binary', '--binary', help='convert binary to plaintext', action='store_true')
+parser.add_argument('-b64', '--base64', help='decode base64', action='store_true')
+parser.add_argument('-morse', '--morse', help='decode morse code', action='store_true')
+parser.add_argument('-sbyteXOR', '--singlebyteXOR', help='decode single byte XOR', action='store_true')
+parser.add_argument('-ssub', '--simplesub', help='decode substitution cipher', action='store_true')
+parser.add_argument('-atb', '--atbash', help='decode atbash cipher', action='store_true')
+parser.add_argument('-rhs', '--hashsearch', help='search Bing for a hash', action='store_true')
+args = parser.parse_args()
 
 def print_plaintext(plaintext_list):
 	columns, lines = shutil.get_terminal_size((80, 20))
-	print("-- ~ ~ ~ ~ ~ ~ ~ ~ --")
 	for item in plaintext_list:
 		print("#"*columns+"Cipher Text:\n\t"+item[2]+"\nCipher:\n\t"+item[0]+"\nPlaintext:")
 		if len(item[1])==0:
@@ -47,41 +43,37 @@ def print_plaintext(plaintext_list):
 	print("#"*columns)
 	return None
 			
-def given_cipher(cipher, ctext):
-	modules = {}
-	plaintext = []
-	english_plaintext = []
-	modules[cipher] = __import__('ciphers.' + cipher +'.' + cipher, fromlist=['*'])
-	for ct in ctext:
-		opt = modules[cipher].decrypt(ct, None)
-		plaintext.append([cipher, opt, ct])
+def given_cipher(cipher, ctext_list):
+	p_p, e_p = [], [] #potential_plaintext, english_plaintext
+	module = __import__('ciphers.' + cipher +'.' + cipher, fromlist=['*'])
+	for ct in ctext_list:
+		opt = module.decrypt(ct, None)
+		p_p.append([cipher, opt, ct])
 		if Verify.verify_english(opt, cipher) != []:
-			english_plaintext.append([cipher, opt, ct])
-	
-	if english_plaintext != []:
-		print_plaintext(english_plaintext)
+			e_p.append([cipher, opt, ct])
+	if e_p != []:
+		print_plaintext(e_p)
 	else:
-		print_plaintext(plaintext)
+		print_plaintext(p_p)
 	exit()
 
 		
 def main():
-	print("--CipherTool V.0.10--")
 	inp_ciphers_list = []
-	decrypt = False
-	encrypt = False
-	lang = ["English"]
+	decrypt, encrypt = False, False
 	key = None
-	
-	#Take input in the format of a STRING or FILE.
-	#Convert input to a list of strings.
+
+	#Take user input (string or file)
 	if args.string:
+		if args.file:
+			print("please specify -s or -f")
+			exit()
 		inp_ciphers_list.append(args.input)
-	elif args.file:
+	elif args.file: ###################Edit this pending input
 		with open(args.input, 'r') as file:
-			icl = file.readlines()###################Edit this pending input
+			icl = file.readlines()
 			for c in icl:
-				inp_ciphers_list.append(c[:-1])
+				inp_ciphers_list.append(c[:-1]) #removes '\n'
 	else:
 		print("please specify -s or -f")
 		exit()
@@ -90,56 +82,47 @@ def main():
 	IMPORT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ciphers')
 	if args.binary:
 		given_cipher("binary", inp_ciphers_list)
-	elif args.caesar:
+	if args.caesar:
 		given_cipher("caesar", inp_ciphers_list)
-	elif args.base64:
+	if args.base64:
 		given_cipher("b64", inp_ciphers_list)
-	elif args.morse:
+	if args.morse:
 		given_cipher("morse", inp_ciphers_list)
-	elif args.singlebyteXOR:
+	if args.singlebyteXOR:
 		given_cipher("singlebyteXOR", inp_ciphers_list)
-	elif args.simplesub:
+	if args.simplesub:
 		given_cipher("simplesub", inp_ciphers_list)
-	elif args.atbash:
+	if args.atbash:
 		given_cipher("atbash", inp_ciphers_list)
-	elif args.hashsearch:
+	if args.hashsearch:
 		given_cipher("hashsearch", inp_ciphers_list)
-	
 	#guess what cipher to use
 	else:
-		modules = {}
 		plaintext = []
 		for cipher_str in inp_ciphers_list:
 			if found_cryptanalyzer == True:
-				cracking_order = cryptanalyzer.cryptanalysis(cipher_str)	#Guesses ciphers from most to least likely
+				cracking_order = cryptanalyzer.cryptanalysis(cipher_str)
 			else:
 				cracking_order = ["binary", "b64", "morse", "singlebyteXOR", "subtypeciphers", "hashsearch"] ##### Temp #####
-			
-			#Trys to decrypt using every cipher; if sucessful will break
+			#Trys to decrypt using every cipher; stops when successful
 			failed_to_crack = True
 			for ci in cracking_order:
 				#print("Trying", ci)#######
-				modules[ci] = __import__('ciphers.' + ci +'.' + ci, fromlist=['*'])	#get the cipher's file
-				opt = modules[ci].decrypt(cipher_str, None)	#decrypt using that cipher
-				
+				opt = __import__('ciphers.' + ci +'.' + ci, fromlist=['*']).decrypt(cipher_str, None)	#get the cipher's file and decrypt using that cipher
 				check_decoded = Verify.verify_english(opt, ci)	#verify that the plaintext is in english
-				
-				#returns empty list if it could not verify
-				if check_decoded != []:
+				if check_decoded != []: #returns empty list if it could not verify
 					plaintext.append([ci, check_decoded, cipher_str])	#[the cipher, the plaintext, and the original ciphertext]
 					failed_to_crack = False
 					break #decryption sucessful
-				else:
-					pass  #decryption failed, try next cipher
-			
-			
-			if failed_to_crack:	############ do something else here?
+				#else, decryption failed, try next cipher
+			###Do something else here?###
+			if failed_to_crack:
 				plaintext.append(["FAILED", "", cipher_str])
-		
-		print_plaintext(plaintext) #print the final output	
+		print_plaintext(plaintext)	
 	exit()			
 				
 				
 if __name__ == '__main__':
+	print("--CipherTool V.0.20--")
 	main()	
 	

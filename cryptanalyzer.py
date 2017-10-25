@@ -1,32 +1,24 @@
 #cryptanalyzer
 
 class cipher:
-	def __init__(self, name, path, length, char_types, set_types, grouping):
+	def __init__(self, name, length, char_types, set_types, grouping, word_count):
 		self.name = name #str
-		self.path = path #currently not used
-		
 		self.length = length #dict
 		self.char_types = char_types #dict
 		self.set_types = set_types #dict
 		self.grouping = grouping #dict
+		self.word_count = word_count #dict
 
 def helper_get_set_types(ctext, s):
-	l = list(ctext)
-	for c in l:
+	for c in list(ctext):
 		if c in s[0]:
 			return True
 	return False
 			
 def get_set_types(ctext):
-	s_alphabet_lower = ("abcdefghijklmnopqrstuvwxyz", "L_ALPHA")
-	s_alphabet_upper = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "U_ALPHA")
-	s_numerical = ("1234567890", "NUMERICALS")
-	s_symbol = ("!@#$%^&*()_+" + "`~{[}]_-+=|\\\"':;?/>.<,", "SYMBOLS")
-	s_space = (" ", "SPACE")
-	sets = [s_alphabet_lower, s_alphabet_upper, s_numerical, s_symbol, s_space]
-
-	characters_in_ctext = list(ctext)
-	total = len(ctext)
+	sets = [("abcdefghijklmnopqrstuvwxyz", "L_ALPHA"), ("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "U_ALPHA"), 
+			("1234567890", "NUMERICALS"), ("!@#$%^&*()_+" + "`~{[}]_-+=|\\\"':;?/>.<,", "SYMBOLS"), (" ", "SPACE")]
+	characters_in_ctext, total = list(ctext), len(ctext)
 	groupbyset = {"L_ALPHA":0, "U_ALPHA":0, "NUMERICALS":0, "SYMBOLS":0,"SPACE":0}
 	#1) Record the total number of characters by each set.
 	for s in sets:
@@ -70,15 +62,17 @@ def cryptanalysis(ctext):	#string
 	#print("inp_settypes =", inp_settypes)
 	inp_grouping = get_character_grouping(ctext.split(" "))
 	#print("inp_grouping =", inp_grouping)
+	inp_word_count = str(len(ctext.split(" ")))
+	#print("inp_word_count =", inp_word_count)
 	
-	#                 name, path, length, char_types, set_types, grouping)
-	binary = cipher("binary", None, {"other":5}, {"2":20, "3":15, "4":7, "5":5, "other":0}, {"NUMERICALS":10, "SPACE":5, "other":2}, {"8":10,"other":4})
-	b64 = cipher("b64", None, {"other":5}, {"2":2, "3":2, "4":3, "other":5}, {"SYMBOLS":6, "other":5}, {"other":5})
-	morse = cipher("morse", None, {"other":5}, {"2":17, "3":14, "other":0}, {"SYMBOLS":10, "other":3}, {"other":5})
-	singlebyteXOR = cipher("singlebyteXOR", None, {"other":5}, {"2":2, "3":2, "4":2, "5":2, "other":5}, {"SYMBOLS":3, "SPACE":4,"other":5}, {"other":5})
+	#                 name, path, length, char_types, set_types, grouping, word_count)
+	binary = cipher("binary", {"other":5}, {"2":20, "3":15, "4":7, "5":5, "other":0}, {"NUMERICALS":10, "SPACE":5, "other":2}, {"8":10,"other":4}, {"other":5})
+	b64 = cipher("b64", {"other":5}, {"2":2, "3":2, "4":3, "other":5}, {"SYMBOLS":6, "other":5}, {"other":5}, {"1":8, "other":2})
+	morse = cipher("morse", {"other":5}, {"2":17, "3":14, "other":0}, {"SYMBOLS":10, "other":3}, {"other":5}, {"1":3, "2":3, "3":3, "other":6})
+	singlebyteXOR = cipher("singlebyteXOR", {"other":5}, {"2":2, "3":2, "4":2, "5":2, "other":5}, {"SYMBOLS":3, "SPACE":4,"other":5}, {"other":5}, {"other":5})
 	#subtypeciphers includes ceasar, atbash, simple substitution
-	subtypeciphers = cipher("subtypeciphers", None, {"other":5}, {"2":2, "3":2, "4":3, "other":6}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":3}, {"other":5})
-	hashsearch = cipher("hashsearch", None, {"other":5}, {"other":5}, {"other":5}, {"other":5})
+	subtypeciphers = cipher("subtypeciphers", {"other":5}, {"2":2, "3":2, "4":3, "other":6}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":3}, {"other":5}, {"other":5})
+	hashsearch = cipher("hashsearch", {"other":5}, {"other":5}, {"other":5}, {"other":5}, {"1":9, "other":0})
 	#ASCII = cipher("ASCII", None, {}, {}, {}, {})
 	
 	cipher_list = [binary, b64, morse, singlebyteXOR, subtypeciphers, hashsearch]
@@ -113,37 +107,31 @@ def cryptanalysis(ctext):	#string
 			else:
 				total += cp.grouping["other"] * inp_grouping[gro]
 		score = (score + total) / 2
+		#Update score with value of word_count
+		if inp_word_count in cp.word_count.keys():
+			score = (score + cp.word_count[inp_word_count]) / 2
+		else:
+			score = (score + cp.word_count["other"]) / 2
 		
-		#rest of indicators
+		#additional of indicators
 		if cp.name == "b64":
+			#b64 will add '=' to make it divisible by 4
 			if "=" in ctext[-4:-1]:
 				score = (score + 13) / 2
-			#base 64 is divisible by 4
+			#b64 is divisible by 4
 			if (len(ctext) % 4) == 0:
 				score = (score + 8) / 2
 			else:
 				score = (score + 0) / 2
-			#base 64 is a single block of text as an input
-			if len(ctext.split(" ")) == 1:
-				score = (score + 10) / 2
-			else:
-				score = (score + 2) / 2
-		if cp.name == "hashsearch":
-			if len(ctext.split(" ")) == 1:
-				score = (score + 10) / 2
-			else:
-				score = (score + 2) / 2
+				
 
-		
 		#subtypeciphers includes caesar, atbash, simplesub
-		if cp.name != "subtypeciphers":
-			weights[cp.name] = score
-		else:
+		if cp.name == "subtypeciphers":
 			weights["caesar"] = score
-			weights["atbash"] = score - 1
-			weights["simplesub"] = score - 2
-	
-	
+			weights["atbash"] = score - 0.5
+			weights["simplesub"] = score - 1
+		else:
+			weights[cp.name] = score
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 	#print(weights)
 	#print(sorted(weights, key=weights.get, reverse=True))
