@@ -3,8 +3,8 @@ An identification and decryption tool for ciphers.
 
 Run `cryptool.py` <br />
 For example: <br />
-> >> python cryptool.py -s "Khoor Zruog"  for string input <br />
-> >> python cryptool.py -f textfile.txt   for file input <br />
+`>> python cryptool.py -s "Khoor Zruog"`  for string input <br />
+`>> python cryptool.py -f textfile.txt`   for file input <br />
 
 The program will attempt to guess what kind of cipher you are trying to decrypt. <br />
 If you know what cipher you are decrypting, that can also be specified with one of the below flags. <br />
