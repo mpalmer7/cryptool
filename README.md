@@ -1,18 +1,18 @@
 # cryptool
 An identification and decryption tool for ciphers.
 
-Run > "cryptool.py" />
-For example:
+Run "cryptool.py" <br />
+For example: <br />
 > python cryptool.py -s "Khoor Zruog" <br />  for string input
 > python cryptool.py -f textfile.txt <br />   for file input
 
-The program will attempt to guess what kind of cipher you are trying to decrypt.
-If you know what cipher you are decrypting, that can also be specified with one of the below flags.
-> -caesar />    Caesar Cipher
-> -binary />    Binary to Plaintext
-> -b64 />       Base 64 to Plaintext
-> -morse />     Morse Code
-> -sbyteXOR />  Single Byte XOR
-> -ssub />      Simple Substitution*
-> -atb />       Atbash Cipher
+The program will attempt to guess what kind of cipher you are trying to decrypt. <br />
+If you know what cipher you are decrypting, that can also be specified with one of the below flags. <br />
+> -caesar />    Caesar Cipher <br />
+> -binary />    Binary to Plaintext <br />
+> -b64 />       Base 64 to Plaintext <br />
+> -morse />     Morse Code <br />
+> -sbyteXOR />  Single Byte XOR <br />
+> -ssub />      Simple Substitution* <br />
+> -atb />       Atbash Cipher <br />
 > -rhs />       Reverse Hash, by performing a Bing search
