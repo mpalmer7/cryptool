@@ -1,0 +1,3 @@
+#pip install
+1. beautifulsoup4
+2. requests

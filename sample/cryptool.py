@@ -1,13 +1,3 @@
-import os
-import argparse
-import Verify
-import shutil #used in print_plaintext
-try:
-	import cryptanalyzer
-	found_cryptanalyzer = True
-except ModuleNotFoundError:
-	print("Cryptanalyzer package not found.")
-	found_cryptanalyzer = False
 '''
 When adding a new cipher:
 1) add to argparse
@@ -16,11 +6,24 @@ When adding a new cipher:
 4) add to list under cryptanalyzer
 '''
 
+import os
+import argparse
+import Verify
+import shutil #used in print_plaintext
+
+try:
+	import cryptanalyzer
+	found_cryptanalyzer = True
+except ModuleNotFoundError:
+	print("Cryptanalyzer package not found.")
+	found_cryptanalyzer = False
+
 #command line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('input', help='input file or string')
 parser.add_argument('-s', '--string', help='string of ciphertext', action='store_true')
 parser.add_argument('-f', '--file', help='text file of ciphertext', action='store_true')
+
 parser.add_argument('-caesar', '--caesar', help='decode using caesar cipher', action='store_true')
 parser.add_argument('-binary', '--binary', help='convert binary to plaintext', action='store_true')
 parser.add_argument('-b64', '--base64', help='decode base64', action='store_true')
@@ -30,6 +33,7 @@ parser.add_argument('-ssub', '--simplesub', help='decode substitution cipher', a
 parser.add_argument('-atb', '--atbash', help='decode atbash cipher', action='store_true')
 parser.add_argument('-rhs', '--hashsearch', help='search Bing for a hash', action='store_true')
 args = parser.parse_args()
+
 
 def print_plaintext(plaintext_list):
 	columns, lines = shutil.get_terminal_size((80, 20))
@@ -63,13 +67,13 @@ def main():
 	decrypt, encrypt = False, False
 	key = None
 
-	#Take user input (string or file)
+	#Take user input (file or string)
 	if args.string:
 		if args.file:
 			print("please specify -s or -f")
 			exit()
 		inp_ciphers_list.append(args.input)
-	elif args.file: ###################Edit this pending input
+	elif args.file: ###################Edit this pending input... currently reads by lines
 		with open(args.input, 'r') as file:
 			icl = file.readlines()
 			for c in icl:

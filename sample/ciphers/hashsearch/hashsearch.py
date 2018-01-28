@@ -6,17 +6,16 @@ import re
 
 #query = "bdc87b9c894da5168059e00ebffb9077" #password1234
 #query = "fc5e038d38a57032085441e7fe7010b0" #helloworld
-#query = "d8578edf8458ce06fbc5bb76a58c5ca4" #qwerty
 #query = "25f9e794323b453885f5181f1b624d0b" #123456789
 
 def decrypt(query, ci):
-	url = "https://www.bing.com/search?q="+query+"&qs=n&form=QBRE&sp=-1&pq="+query
-	#print(url)
+	url = "https://duckduckgo.com/html/?q="+query
 	page = urllib.request.urlopen(url)
 	soup = BeautifulSoup(page, 'html.parser')
-	#print(soup.prettify())
 
-	test = soup.find_all('p')# class_="snippet"
+	#test = soup.find_all('result__snippet')# class_="snippet"
+	test = soup.find_all("a", class_="result__snippet")
+	
 	new = []
 	for t in test:
 		new.append(t.text.split(' '))
@@ -40,10 +39,12 @@ def decrypt(query, ci):
 			else:
 				dict[phrase] = 1
 	drm = []
-	blacklist = ["guess", "value", "pastebin", "crack", "through", "creating", "function", "development", "service", "hash", 
-				 "hashes", "python", "encryption", "accept", "decrypt", "reverse", "repair", "product"]
+	blacklist = ["function", "cracking", "hashing", "decrypt", "download", "pattern", "encrypted", 
+				 "through", "development", "devices", "developer", "working", "service", "automatically", 
+				 "anagrhash", "pastebin", "security", "professional", "produce", "publish", "recover", 
+				 "professionals", "digital", "original", "newspapers", "newspaper", "publications", "magazines"]
 	for key in dict.keys():
-		if len(key) < 6:
+		if len(key) < 7:
 			drm.append(key)
 		elif dict[key] == 1:
 			drm.append(key)

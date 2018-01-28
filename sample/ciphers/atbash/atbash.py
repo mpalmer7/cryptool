@@ -22,5 +22,3 @@ def decrypt(ciphertext, nullthing=None):
 		return []
 	else:
 		return [plaintext]
-	
-	

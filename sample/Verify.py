@@ -5,6 +5,10 @@
 #		a) list (most_likely)
 #		b) empty list
 
+#need training data...
+#tensorflow (from google) library for machine learning
+#cykit learn
+
 def verify_english(potential_plaintext, cipher=''):
 	try:
 		f = open("sownew.txt", "r")
@@ -17,7 +21,6 @@ def verify_english(potential_plaintext, cipher=''):
 		print("ERROR in VerifyPlaintext: Could not locate dictionary file... returning empty set.")
 		return []
 
-		
 	likely_plaintext = []
 	for p_p in potential_plaintext:
 		#split p_p into words and remove all non-alphabetic characters

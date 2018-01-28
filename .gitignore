@@ -1,4 +1,3 @@
-__pycache__/
-ciphers/__pycache__/
+sample/__pycache__/
 *.pyc
 *.pyo
