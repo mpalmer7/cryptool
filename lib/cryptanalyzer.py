@@ -72,7 +72,7 @@ def cryptanalysis(ctext):	#string
 	singlebyteXOR = cipher("singlebyteXOR", {"other":5}, {"2":2, "3":2, "4":2, "5":2, "other":5}, {"SYMBOLS":3, "SPACE":4,"other":5}, {"other":5}, {"other":5})
 	#subtypeciphers includes ceasar, atbash, simple substitution
 	subtypeciphers = cipher("subtypeciphers", {"other":5}, {"2":2, "3":2, "4":3, "other":6}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":3}, {"other":5}, {"other":5})
-	hashsearch = cipher("hashsearch", {"other":5}, {"other":5}, {"other":5}, {"other":5}, {"1":9, "other":0})
+	hashsearch = cipher("hashsearch", {"other":4}, {"other":4}, {"other":4}, {"other":4}, {"1":9, "other":0})
 	#ASCII = cipher("ASCII", None, {}, {}, {}, {})
 	
 	cipher_list = [binary, b64, morse, singlebyteXOR, subtypeciphers, hashsearch]

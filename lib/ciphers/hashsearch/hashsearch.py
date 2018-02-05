@@ -42,7 +42,8 @@ def decrypt(query, ci):
 	blacklist = ["function", "cracking", "hashing", "decrypt", "download", "pattern", "encrypted", 
 				 "through", "development", "devices", "developer", "working", "service", "automatically", 
 				 "anagrhash", "pastebin", "security", "professional", "produce", "publish", "recover", 
-				 "professionals", "digital", "original", "newspapers", "newspaper", "publications", "magazines"]
+				 "professionals", "digital", "original", "newspapers", "newspaper", "publications", "magazines", 
+				 "hash", "hashtable", "element", "strings", "internet"]
 	for key in dict.keys():
 		if len(key) < 7:
 			drm.append(key)
