@@ -4,6 +4,7 @@ When adding a new cipher:
 2) add to cryptool main under arg flags
 3) add values to cryptanalyzer
 4) add to list under cryptanalyzer
+5) update readme
 '''
 
 import os
@@ -32,6 +33,7 @@ parser.add_argument('-sbyteXOR', '--singlebyteXOR', help='decode single byte XOR
 parser.add_argument('-ssub', '--simplesub', help='decode substitution cipher', action='store_true')
 parser.add_argument('-atb', '--atbash', help='decode atbash cipher', action='store_true')
 parser.add_argument('-rhs', '--hashsearch', help='search Bing for a hash', action='store_true')
+parser.add_argument('-revtext', '--reversetext', help='Reverse a string', action='store_true')
 args = parser.parse_args()
 
 
@@ -100,6 +102,8 @@ def main():
 		given_cipher("atbash", inp_ciphers_list)
 	if args.hashsearch:
 		given_cipher("hashsearch", inp_ciphers_list)
+	if args.reversetext:
+		given_cipher("reversetext", inp_ciphers_list)
 	#guess what cipher to use
 	else:
 		plaintext = []

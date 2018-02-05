@@ -70,7 +70,7 @@ def cryptanalysis(ctext):	#string
 	b64 = cipher("b64", {"other":5}, {"2":2, "3":2, "4":3, "other":5}, {"SYMBOLS":6, "other":5}, {"other":5}, {"1":8, "other":2})
 	morse = cipher("morse", {"other":5}, {"2":17, "3":14, "other":0}, {"SYMBOLS":10, "other":3}, {"other":5}, {"1":3, "2":3, "3":3, "other":6})
 	singlebyteXOR = cipher("singlebyteXOR", {"other":5}, {"2":2, "3":2, "4":2, "5":2, "other":5}, {"SYMBOLS":3, "SPACE":4,"other":5}, {"other":5}, {"other":5})
-	#subtypeciphers includes ceasar, atbash, simple substitution
+	#subtypeciphers includes ceasar, atbash, reversetext, simple substitution
 	subtypeciphers = cipher("subtypeciphers", {"other":5}, {"2":2, "3":2, "4":3, "other":6}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":3}, {"other":5}, {"other":5})
 	hashsearch = cipher("hashsearch", {"other":4}, {"other":4}, {"other":4}, {"other":4}, {"1":9, "other":0})
 	#ASCII = cipher("ASCII", None, {}, {}, {}, {})
@@ -129,12 +129,13 @@ def cryptanalysis(ctext):	#string
 		if cp.name == "subtypeciphers":
 			weights["caesar"] = score
 			weights["atbash"] = score - 0.5
-			weights["simplesub"] = score - 1
+			weights["reversetext"] = score - 1
+			weights["simplesub"] = score - 1.5
 		else:
 			weights[cp.name] = score
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-	#print(weights)
-	#print(sorted(weights, key=weights.get, reverse=True))
+	print(weights)
+	print(sorted(weights, key=weights.get, reverse=True))
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 	return(sorted(weights, key=weights.get, reverse=True))
 	

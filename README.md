@@ -16,5 +16,6 @@ If you know what cipher you are decrypting, that can also be specified with one 
 `-ssub`      Simple Substitution* <br />
 `-atb`       Atbash Cipher <br />
 `-rhs`       Reverse Hash, by performing a Bing search*
+`-revtext`	 Reverse (or flip) the string <br />
 
 *Work in Progress
