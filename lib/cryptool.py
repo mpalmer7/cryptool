@@ -62,6 +62,24 @@ def given_cipher(cipher, ctext_list):
 	else:
 		print_plaintext(p_p)
 	exit()
+	
+def check_ciphers(cipher, cipher_str):
+	opt = __import__('ciphers.' + cipher +'.' + cipher, fromlist=['*']).decrypt(cipher_str, None)	#get the cipher's file and decrypt using that cipher
+	check_decoded = Verify.verify_english(opt, cipher)	#verify that the plaintext is in english
+	if check_decoded != []: #returns empty list if it could not verify
+		
+		print("Did the decryption work? Output: \n")
+		for str in check_decoded:
+			print(str)
+		while 1 == 1: #I realize this is ugly
+			temp = input("(Y/N): ")
+			if temp.lower() == "n":
+				return None
+			elif temp.lower() == "y": #decryption sucessful
+				failed_to_crack = False
+				return [cipher, check_decoded, cipher_str] #[the cipher, the plaintext, and the original ciphertext]
+			else:
+				print("Input not reconized, please try again.")
 
 		
 def main():
@@ -114,16 +132,14 @@ def main():
 				cracking_order = ["binary", "b64", "morse", "singlebyteXOR", "subtypeciphers", "hashsearch"] ##### Temp #####
 			#Trys to decrypt using every cipher; stops when successful
 			failed_to_crack = True
-			for ci in cracking_order:
-				#print("Trying", ci)#######
-				opt = __import__('ciphers.' + ci +'.' + ci, fromlist=['*']).decrypt(cipher_str, None)	#get the cipher's file and decrypt using that cipher
-				check_decoded = Verify.verify_english(opt, ci)	#verify that the plaintext is in english
-				if check_decoded != []: #returns empty list if it could not verify
-					plaintext.append([ci, check_decoded, cipher_str])	#[the cipher, the plaintext, and the original ciphertext]
+			
+			for cipher in cracking_order:
+				checker = check_ciphers(cipher, cipher_str)
+				if checker != None:
+					plaintext.append(checker)
 					failed_to_crack = False
-					break #decryption sucessful
+					break
 				#else, decryption failed, try next cipher
-			###Do something else here?###
 			if failed_to_crack:
 				plaintext.append(["FAILED", "", cipher_str])
 		print_plaintext(plaintext)	
