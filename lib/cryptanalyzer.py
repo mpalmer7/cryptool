@@ -1,13 +1,14 @@
 #cryptanalyzer
 
 class cipher:
-	def __init__(self, name, length, char_types, set_types, grouping, word_count):
+	def __init__(self, name, length, char_types, set_types, grouping, word_count, number_of_sets):
 		self.name = name #str
 		self.length = length #dict
 		self.char_types = char_types #dict
 		self.set_types = set_types #dict
 		self.grouping = grouping #dict
 		self.word_count = word_count #dict
+		self.number_of_sets = number_of_sets #int
 
 def helper_get_set_types(ctext, s):
 	for c in list(ctext):
@@ -53,6 +54,13 @@ def get_character_grouping(words):
 		ig[gro] = gro_weight
 	return ig
 	
+def get_number_of_sets(inp_settypes):
+	n = 0
+	for key in inp_settypes:
+		if inp_settypes[key] != 0.0:
+			n += 1
+	return n
+	
 def cryptanalysis(ctext):	#string
 	inp_len = str(len(ctext))
 	#print("inp_len =", inp_len)
@@ -60,19 +68,21 @@ def cryptanalysis(ctext):	#string
 	#print("inp_ctypes =", inp_ctypes)
 	inp_settypes = get_set_types(ctext)
 	#print("inp_settypes =", inp_settypes)
+	inp_numberofsets = get_number_of_sets(inp_settypes)
+	#print("inp_numberofsets =", inp_numberofsets)
 	inp_grouping = get_character_grouping(ctext.split(" "))
 	#print("inp_grouping =", inp_grouping)
 	inp_word_count = str(len(ctext.split(" ")))
 	#print("inp_word_count =", inp_word_count)
 	
-	#                 name, path, length, char_types, set_types, grouping, word_count)
-	binary = cipher("binary", {"other":5}, {"2":20, "3":15, "4":7, "5":5, "other":0}, {"NUMERICALS":10, "SPACE":5, "other":2}, {"8":10,"other":4}, {"other":5})
-	b64 = cipher("b64", {"other":5}, {"2":2, "3":2, "4":3, "other":5}, {"SYMBOLS":6, "other":5}, {"other":5}, {"1":8, "other":2})
-	morse = cipher("morse", {"other":5}, {"2":17, "3":14, "other":0}, {"SYMBOLS":10, "other":3}, {"other":5}, {"1":3, "2":3, "3":3, "other":6})
-	singlebyteXOR = cipher("singlebyteXOR", {"other":5}, {"2":2, "3":2, "4":2, "5":2, "other":5}, {"SYMBOLS":3, "SPACE":4,"other":5}, {"other":5}, {"other":5})
+	#                 name, path, length, char_types, set_types, grouping, word_count, inp_numberofsets)
+	binary = cipher("binary", {"other":5}, {"2":20, "3":15, "4":7, "5":5, "other":0}, {"NUMERICALS":10, "SPACE":5, "other":2}, {"8":10,"other":4}, {"other":5}, {"1":7, "2":5, "other":0})
+	b64 = cipher("b64", {"other":5}, {"2":2, "3":2, "4":3, "other":5}, {"SYMBOLS":6, "other":5}, {"other":5}, {"1":8, "other":2}, {"other":5})
+	morse = cipher("morse", {"other":5}, {"2":17, "3":14, "other":0}, {"SYMBOLS":10, "other":3}, {"other":5}, {"1":3, "2":3, "3":3, "other":6}, {"1":6, "other":3})
+	singlebyteXOR = cipher("singlebyteXOR", {"other":5}, {"2":2, "3":2, "4":2, "5":2, "other":5}, {"SYMBOLS":3, "SPACE":4,"other":5}, {"other":5}, {"other":5}, {"other":5})
 	#subtypeciphers includes ceasar, atbash, reversetext, simple substitution
-	subtypeciphers = cipher("subtypeciphers", {"other":5}, {"2":2, "3":2, "4":3, "other":6}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":3}, {"other":5}, {"other":5})
-	hashsearch = cipher("hashsearch", {"other":4}, {"other":4}, {"other":4}, {"other":4}, {"1":9, "other":0})
+	subtypeciphers = cipher("subtypeciphers", {"other":5}, {"2":2, "3":2, "4":3, "other":6}, {"U_ALPHA":7, "L_ALPHA":7, "SPACE":5, "other":3}, {"other":5}, {"other":5}, {"other":5})
+	hashsearch = cipher("hashsearch", {"other":4}, {"other":4}, {"other":4}, {"other":4}, {"1":9, "other":0}, {"1":0, "other":5})
 	#ASCII = cipher("ASCII", None, {}, {}, {}, {})
 	
 	cipher_list = [binary, b64, morse, singlebyteXOR, subtypeciphers, hashsearch]
@@ -112,6 +122,13 @@ def cryptanalysis(ctext):	#string
 			score = (score + cp.word_count[inp_word_count]) / 2
 		else:
 			score = (score + cp.word_count["other"]) / 2
+		#num of sets
+		if inp_numberofsets in cp.word_count.keys():
+			score = (score + cp.word_count[inp_word_count]) / 2
+		else:
+			score = (score + cp.word_count["other"]) / 2
+			
+			
 		
 		#additional of indicators
 		if cp.name == "b64":
@@ -123,7 +140,7 @@ def cryptanalysis(ctext):	#string
 				score = (score + 8) / 2
 			else:
 				score = (score + 0) / 2
-				
+		
 
 		#subtypeciphers includes caesar, atbash, simplesub
 		if cp.name == "subtypeciphers":
