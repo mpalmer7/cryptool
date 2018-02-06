@@ -68,7 +68,7 @@ def check_ciphers(cipher, cipher_str):
 	check_decoded = Verify.verify_english(opt, cipher)	#verify that the plaintext is in english
 	if check_decoded != []: #returns empty list if it could not verify
 		
-		print("Did the decryption work? Output: \n")
+		print("Did the %s decryption work? Output:" % cipher)
 		for str in check_decoded:
 			print(str)
 		while 1 == 1: #I realize this is ugly
@@ -145,8 +145,7 @@ def main():
 		print_plaintext(plaintext)	
 	exit()			
 				
-				
 if __name__ == '__main__':
-	print("--CipherTool V.0.20--")
+	print("--CipherTool V.0.30--")
 	main()	
 	
