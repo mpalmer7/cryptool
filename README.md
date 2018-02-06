@@ -15,7 +15,7 @@ If you know what cipher you are decrypting, that can also be specified with one 
 `-sbyteXOR`  Single Byte XOR <br />
 `-ssub`      Simple Substitution* <br />
 `-atb`       Atbash Cipher <br />
-`-rhs`       Reverse Hash, by performing a Bing search*
+`-rhs`       Reverse Hash, by performing a Bing search* <br />
 `-revtext`	 Reverse (or flip) the string <br />
 
 *Work in Progress
