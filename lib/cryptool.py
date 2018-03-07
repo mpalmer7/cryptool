@@ -6,10 +6,8 @@ When adding a new cipher:
 4) add to list under cryptanalyzer
 5) update readme
 '''
-
 import os
 import argparse
-import Verify
 import shutil #used in print_plaintext
 
 try:
@@ -19,12 +17,18 @@ except ModuleNotFoundError:
 	print("Cryptanalyzer package not found.")
 	found_cryptanalyzer = False
 
+try:
+	import Verify
+except ModuleNotFoundError:
+	print("Verify package not found.")
+	#should probably do something then...
+
 #command line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('input', help='input file or string')
 parser.add_argument('-s', '--string', help='string of ciphertext', action='store_true')
 parser.add_argument('-f', '--file', help='text file of ciphertext', action='store_true')
-
+#optional flags
 parser.add_argument('-caesar', '--caesar', help='decode using caesar cipher', action='store_true')
 parser.add_argument('-binary', '--binary', help='convert binary to plaintext', action='store_true')
 parser.add_argument('-b64', '--base64', help='decode base64', action='store_true')
@@ -35,7 +39,6 @@ parser.add_argument('-atb', '--atbash', help='decode atbash cipher', action='sto
 parser.add_argument('-rhs', '--hashsearch', help='search Bing for a hash', action='store_true')
 parser.add_argument('-revtext', '--reversetext', help='Reverse a string', action='store_true')
 args = parser.parse_args()
-
 
 def print_plaintext(plaintext_list):
 	columns, lines = shutil.get_terminal_size((80, 20))
@@ -48,8 +51,9 @@ def print_plaintext(plaintext_list):
 				print("\t"+i)
 	print("#"*columns)
 	return None
-	
-def check_ciphers(cipher, cipher_str):
+
+#
+def check_cipher(cipher, cipher_str):
 	opt = __import__('ciphers.' + cipher +'.' + cipher, fromlist=['*']).decrypt(cipher_str, None)	#get the cipher's file and decrypt using that cipher
 	check_decoded = Verify.verify_english(opt, cipher)												#verify that the plaintext is in english
 	if check_decoded != []: 																		#returns empty list if it could not verify
@@ -65,13 +69,15 @@ def check_ciphers(cipher, cipher_str):
 			else:
 				print("Input not reconized, please try again.")
 
+#When a flag specifies the decryption cipher to use
 def given_cipher(cipher, ctext_list):
 	plaintext_list = []
 	for ct in ctext_list:
-		plaintext_list.append(check_ciphers(cipher, ct))
+		plaintext_list.append(check_cipher(cipher, ct))
 	print_plaintext(plaintext_list)	
 		
 def main():
+	IMPORT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ciphers')
 	inp_ciphers_list = []
 	decrypt, encrypt = False, False
 	#key = None
@@ -93,7 +99,6 @@ def main():
 		exit()
 	
 	#If given cipher
-	IMPORT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ciphers')
 	if args.binary:
 		given_cipher("binary", inp_ciphers_list)
 	if args.caesar:
@@ -124,7 +129,7 @@ def main():
 			failed_to_crack = True
 			
 			for cipher in cracking_order:
-				checker = check_ciphers(cipher, cipher_str)
+				checker = check_cipher(cipher, cipher_str)
 				if checker != None:
 					plaintext.append(checker)
 					failed_to_crack = False
