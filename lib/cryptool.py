@@ -73,8 +73,11 @@ def check_cipher(cipher, cipher_str):
 def given_cipher(cipher, ctext_list):
 	plaintext_list = []
 	for ct in ctext_list:
-		plaintext_list.append(check_cipher(cipher, ct))
-	print_plaintext(plaintext_list)	
+		checker = check_cipher(cipher, ct)
+		if checker != None:
+			plaintext_list.append(checker)
+	print_plaintext(plaintext_list)
+	exit()
 		
 def main():
 	IMPORT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ciphers')
