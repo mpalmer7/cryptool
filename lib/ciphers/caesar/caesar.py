@@ -30,7 +30,7 @@ def encrypt(plaintext):
 	return check_keys(plaintext, key)
 	
 #run standalone
-def Ceasar():
+def Caesar():
 	pt = input("Enter a phrase: ")
 	huh = input("Encrypt (E) or Decrypt (D)? ")
 	if ((huh.lower() == "e") or ("encrypt" in huh.lower())):
