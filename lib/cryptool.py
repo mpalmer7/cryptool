@@ -65,9 +65,8 @@ def given_cipher(cipher, ctext_list):
 	
 def check_ciphers(cipher, cipher_str):
 	opt = __import__('ciphers.' + cipher +'.' + cipher, fromlist=['*']).decrypt(cipher_str, None)	#get the cipher's file and decrypt using that cipher
-	check_decoded = Verify.verify_english(opt, cipher)	#verify that the plaintext is in english
-	if check_decoded != []: #returns empty list if it could not verify
-		
+	check_decoded = Verify.verify_english(opt, cipher)												#verify that the plaintext is in english
+	if check_decoded != []: 																		#returns empty list if it could not verify
 		print("Did the %s decryption work? Output:" % cipher)
 		for str in check_decoded:
 			print(str)
@@ -76,7 +75,6 @@ def check_ciphers(cipher, cipher_str):
 			if temp.lower() == "n":
 				return None
 			elif temp.lower() == "y": #decryption sucessful
-				failed_to_crack = False
 				return [cipher, check_decoded, cipher_str] #[the cipher, the plaintext, and the original ciphertext]
 			else:
 				print("Input not reconized, please try again.")
@@ -85,13 +83,13 @@ def check_ciphers(cipher, cipher_str):
 def main():
 	inp_ciphers_list = []
 	decrypt, encrypt = False, False
-	key = None
+	#key = None
 
 	#Take user input (file or string)
 	if args.string:
-		if args.file:
-			print("please specify -s or -f")
-			exit()
+		#if args.file:
+		#	print("please specify -s or -f")
+		#	exit()
 		inp_ciphers_list.append(args.input)
 	elif args.file: ###################Edit this pending input... currently reads by lines
 		with open(args.input, 'r') as file:
@@ -100,6 +98,7 @@ def main():
 				inp_ciphers_list.append(c[:-1]) #removes '\n'
 	else:
 		print("please specify -s or -f")
+		print("Usage: ./cryptool.py [input] -sf [optional flags]")
 		exit()
 	
 	#If given cipher

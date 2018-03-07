@@ -1,7 +1,7 @@
 #unit conversion
 
 def text_to_binary(inp):
-	return None
+	return ' '.join(format(ord(x), 'b') for x in inp)
 	
 def binary_to_text(inp):
 	return None
@@ -18,8 +18,7 @@ def hex_to_text(inp):
 def hex_to_binary(inp):
 	return None
 	
-
-	
+#ASCII???
 	
 	
 	
