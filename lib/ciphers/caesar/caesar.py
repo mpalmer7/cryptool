@@ -26,7 +26,27 @@ def decrypt(inp, key=None):
 		return all_combos
 		
 def encrypt(plaintext):
-	key = int(input("Enter integer to rotate by: "))
+	key = int(input("Enter an integer (0-26) to rotate by:"))
 	return check_keys(plaintext, key)
 	
-#def Ceasar():
+#run standalone
+def Ceasar():
+	pt = input("Enter a phrase: ")
+	huh = input("Encrypt (E) or Decrypt (D)? ")
+	if ((huh.lower() == "e") or ("encrypt" in huh.lower())):
+		print("Encrypted Phrase: %s" % encrypt(pt))
+	elif ((huh.lower() == "d") or ("decrypt" in huh.lower())):
+		key = input("Enter the decryption key (leave blank otherwise): ")
+		if key != '':
+			try:
+				print("Decrypted Phrase: %s" % decrypt(pt, int(key)))
+			except ValueError:
+				print("Key not reconized... showing all options.")
+				print("Decrypted Phrase: %s" % decrypt(pt))
+		else:
+			print("Decrypted Phrase: %s" % decrypt(pt))
+	else:
+		print("Input not reconized, exiting.")
+		exit()
+		
+Ceasar()
