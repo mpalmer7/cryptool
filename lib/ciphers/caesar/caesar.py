@@ -1,7 +1,8 @@
-#Ceasar Key Decryption	
+#Ceasar Key Decryption
+lalpha = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
+ualpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	
 def check_keys(phrase, key):
-	lalpha = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
-	ualpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	decoded = ""
 	cipher_index = 0
 	for i in range(len(phrase)):

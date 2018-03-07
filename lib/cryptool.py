@@ -48,20 +48,6 @@ def print_plaintext(plaintext_list):
 				print("\t"+i)
 	print("#"*columns)
 	return None
-			
-def given_cipher(cipher, ctext_list):
-	p_p, e_p = [], [] #potential_plaintext, english_plaintext
-	module = __import__('ciphers.' + cipher +'.' + cipher, fromlist=['*'])
-	for ct in ctext_list:
-		opt = module.decrypt(ct, None)
-		p_p.append([cipher, opt, ct])
-		if Verify.verify_english(opt, cipher) != []:
-			e_p.append([cipher, opt, ct])
-	if e_p != []:
-		print_plaintext(e_p)
-	else:
-		print_plaintext(p_p)
-	exit()
 	
 def check_ciphers(cipher, cipher_str):
 	opt = __import__('ciphers.' + cipher +'.' + cipher, fromlist=['*']).decrypt(cipher_str, None)	#get the cipher's file and decrypt using that cipher
@@ -79,6 +65,11 @@ def check_ciphers(cipher, cipher_str):
 			else:
 				print("Input not reconized, please try again.")
 
+def given_cipher(cipher, ctext_list):
+	plaintext_list = []
+	for ct in ctext_list:
+		plaintext_list.append(check_ciphers(cipher, ct))
+	print_plaintext(plaintext_list)	
 		
 def main():
 	inp_ciphers_list = []
