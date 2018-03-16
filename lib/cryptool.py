@@ -48,26 +48,35 @@ def print_plaintext(plaintext_list):
 			print("\tDECRYPTION FAILED")
 		else:
 			for i in item[1]:
-				print("\t"+i)
+				
+				print("\t%s" % i)
 	print("#"*columns)
 	return None
 
 #
 def check_cipher(cipher, cipher_str):
 	opt = __import__('ciphers.' + cipher +'.' + cipher, fromlist=['*']).decrypt(cipher_str, None)	#get the cipher's file and decrypt using that cipher
-	check_decoded = Verify.verify_english(opt, cipher)												#verify that the plaintext is in english
-	if check_decoded != []: 																		#returns empty list if it could not verify
+	check_decoded = []
+	check_decoded.extend(Verify.verify_english(opt, cipher))
+	for derp in opt:
+		temper = Verify.verify_cipher(derp, cryptanalyzer.cryptanalysis(derp)[1])
+		if temper != []:
+			print("Detected a cipher within the original cipher.") #more printouts here needed
+			check_decoded.extend(temper)
+		
+	cd2 = list(set(check_decoded))
+	#verify that the plaintext is in english
+	if cd2 != []: 																		#returns empty list if it could not verify
 		print("Did the %s decryption work? Output:" % cipher)
-		for str in check_decoded:
+		for str in cd2:
 			print(str)
 		while 1 == 1: #I realize this is ugly
 			temp = input("(Y/N): ")
 			if temp.lower() == "n":
-				return None
+				break
 			elif temp.lower() == "y": #decryption sucessful
-				return [cipher, check_decoded, cipher_str] #[the cipher, the plaintext, and the original ciphertext]
-			else:
-				print("Input not reconized, please try again.")
+				return [cipher, cd2, cipher_str] #[the cipher, the plaintext, and the original ciphertext]				
+	return None
 
 #When a flag specifies the decryption cipher to use
 def given_cipher(cipher, ctext_list):
@@ -125,7 +134,7 @@ def main():
 		plaintext = []
 		for cipher_str in inp_ciphers_list:
 			if found_cryptanalyzer == True:
-				cracking_order = cryptanalyzer.cryptanalysis(cipher_str)
+				cracking_order = cryptanalyzer.cryptanalysis(cipher_str)[0]
 			else:
 				cracking_order = ["binary", "b64", "morse", "singlebyteXOR", "subtypeciphers", "hashsearch"] ##### Temp #####
 			#Trys to decrypt using every cipher; stops when successful
@@ -137,9 +146,12 @@ def main():
 					plaintext.append(checker)
 					failed_to_crack = False
 					break
-				#else, decryption failed, try next cipher
+					
+			#else, decryption failed, try next cipher
 			if failed_to_crack:
 				plaintext.append(["FAILED", "", cipher_str])
+				
+				
 		print_plaintext(plaintext)	
 	exit()			
 				

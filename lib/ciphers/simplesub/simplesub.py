@@ -73,7 +73,7 @@ def decrypt(ctext, nullthing=None):
 	
 		#sorted frequency in ctext
 		sfic = sorted(inp_letter_frequency.items(), key=operator.itemgetter(1))[::-1]
-		print(sfic)
+		#print(sfic)
 		
 		
 		
@@ -166,7 +166,7 @@ def decrypt(ctext, nullthing=None):
 					two_letter_words[word] += 1
 				else:
 					two_letter_words[word] = 1
-		print(two_letter_words)
+		#print(two_letter_words)
 		#check_2_letter_words
 		
 		
@@ -183,7 +183,7 @@ def decrypt(ctext, nullthing=None):
 		opt_str = ''.join(opt_lst)
 		#print(potential_letters)
 		#print(letters_it_has_to_be)
-		print(opt_str)
+		#print(opt_str)
 	
 	
 	

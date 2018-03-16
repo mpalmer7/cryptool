@@ -9,7 +9,23 @@
 #tensorflow (from google) library for machine learning
 #cykit learn
 
-def verify_english(potential_plaintext, cipher=''):
+
+try:
+	import cryptanalyzer
+except ModuleNotFoundError:
+	print("Cryptanalyzer package not found.")
+
+
+
+
+def verify_cipher(p_p, weights):
+	likely_plaintext = []
+	for w in weights:
+		if int(weights[w]) >= 6:
+			likely_plaintext.append(p_p)
+	return likely_plaintext
+	
+def verify_english(potential_plaintext, cipher):
 	try:
 		f = open("sownew.txt", "r")
 		sowpods = f.readlines()
@@ -87,7 +103,7 @@ def verify_english(potential_plaintext, cipher=''):
 	
 	#hashsearch is inaccurate, just return all possible hits.
 	if cipher == "hashsearch":
-		return set(likely_plaintext)
+		return likely_plaintext
 	
 	#decryption worked					
 	if len(likely_plaintext) > 0:
@@ -121,3 +137,7 @@ def verify_english(potential_plaintext, cipher=''):
 	#no english words detected
 	else:
 		return []
+		
+		
+def verify_all(potential_plaintext, cipher):
+	pass

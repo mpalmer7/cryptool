@@ -17,6 +17,6 @@ def decrypt(ciphertext, key=None):
 	while counter < 11:
 		all_combos.append(string_decode(ciphertext, counter))
 		counter+=1
-	print(all_combos)
+	#print(all_combos)
 	return all_combos
 	
