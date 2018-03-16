@@ -157,8 +157,8 @@ def cryptanalysis(ctext):	#string
 		else:
 			weights[cp.name] = score
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-	#print(weights)
-	#print(sorted(weights, key=weights.get, reverse=True))
+	print(weights)
+	print(sorted(weights, key=weights.get, reverse=True))
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 	return(sorted(weights, key=weights.get, reverse=True))
 	

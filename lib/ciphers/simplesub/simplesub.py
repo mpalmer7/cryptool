@@ -62,6 +62,10 @@ def decrypt(ctext, nullthing=None):
 				inp_letter_count[ch.lower()] += 1
 				totalalphachars += 1
 		
+		if totalalphachars == 0:
+			return []
+		
+		
 		#sorted frequency in ctext
 		inp_letter_frequency = {}
 		for lett in inp_letter_count:
