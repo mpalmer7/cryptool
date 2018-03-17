@@ -56,26 +56,19 @@ def print_plaintext(plaintext_list):
 #
 def check_cipher(cipher, cipher_str):
 	opt = __import__('ciphers.' + cipher +'.' + cipher, fromlist=['*']).decrypt(cipher_str, None)	#get the cipher's file and decrypt using that cipher
-	check_decoded = []
-	check_decoded.extend(Verify.verify_english(opt, cipher))
-	for derp in opt:
-		temper = Verify.verify_cipher(derp, cryptanalyzer.cryptanalysis(derp)[1])
-		if temper != []:
-			print("Detected a cipher within the original cipher.") #more printouts here needed
-			check_decoded.extend(temper)
-		
-	cd2 = list(set(check_decoded))
+	check_decoded = Verify.verify_all(opt)
+
 	#verify that the plaintext is in english
-	if cd2 != []: 																		#returns empty list if it could not verify
+	if check_decoded != {}: 																		#returns empty list if it could not verify
 		print("Did the %s decryption work? Output:" % cipher)
-		for str in cd2:
+		for str in check_decoded:
 			print(str)
 		while 1 == 1: #I realize this is ugly
 			temp = input("(Y/N): ")
 			if temp.lower() == "n":
 				break
 			elif temp.lower() == "y": #decryption sucessful
-				return [cipher, cd2, cipher_str] #[the cipher, the plaintext, and the original ciphertext]				
+				return [cipher, check_decoded, cipher_str] #[the cipher, the plaintext, and the original ciphertext]				
 	return None
 
 #When a flag specifies the decryption cipher to use

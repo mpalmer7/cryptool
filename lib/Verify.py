@@ -1,13 +1,17 @@
 #VerifyPlaintext
 
-#input (potential plaintext): list
-#output:
-#		a) list (most_likely)
-#		b) empty list
-
 #need training data...
 #tensorflow (from google) library for machine learning
 #cykit learn
+try:
+	f = open("sow3-6.txt", "r") #3-6 letter english words
+	sowpods = f.readlines()
+	for d in range(len(sowpods)):
+		temp = (sowpods[d].strip("\n")).lower()
+		sowpods[d] = temp
+	f.close
+except FileNotFoundError:
+	print("ERROR in VerifyPlaintext: Could not locate dictionary file... returning empty set.")
 
 
 try:
@@ -16,128 +20,76 @@ except ModuleNotFoundError:
 	print("Cryptanalyzer package not found.")
 
 
+def verify_cipher(p_p):
+	cipher_weights = cryptanalyzer.cryptanalysis(p_p)[1]
+	potential_ciphers = []
+	for w in cipher_weights:
+		if int(cipher_weights[w]) >= 6:
+			potential_ciphers.append(w)
+	return potential_ciphers
 
-
-def verify_cipher(p_p, weights):
-	likely_plaintext = []
-	for w in weights:
-		if int(weights[w]) >= 6:
-			likely_plaintext.append(p_p)
-	return likely_plaintext
 	
-def verify_english(potential_plaintext, cipher):
-	try:
-		f = open("sownew.txt", "r")
-		sowpods = f.readlines()
-		for d in range(len(sowpods)):
-			temp = (sowpods[d].strip("\n")).lower()
-			sowpods[d] = temp
-		f.close
-	except FileNotFoundError:
-		print("ERROR in VerifyPlaintext: Could not locate dictionary file... returning empty set.")
-		return []
-
-	likely_plaintext = []
-	for p_p in potential_plaintext:
-		#split p_p into words and remove all non-alphabetic characters
-		working_text = p_p.split(' ')
-		for n in range(len(working_text)):
-			working_text[n] = ''.join([i for i in working_text[n] if i.isalpha()])
-		#print(working_text)
-		#if words are not seperated by spaces
-		if len(working_text) == 1:
-			try:
-				f = open("sownew4.txt", "r")
-				sowpods = f.readlines()
-				for d in range(len(sowpods)):
-					temp = (sowpods[d].strip("\n")).lower()
-					sowpods[d] = temp
-				f.close
-			except FileNotFoundError:
-				print("ERROR in VerifyPlaintext: Could not locate dictionary file... returning empty set.")
-				return []
-		
-			for word in sowpods:
-				if word in working_text[0]:
-					likely_plaintext.append(p_p)
-					
-					
-		else: #we have seperate words
-			try:
-				f = open("sownew.txt", "r")
-				sowpods = f.readlines()
-				for d in range(len(sowpods)):
-					temp = (sowpods[d].strip("\n")).lower()
-					sowpods[d] = temp
-				f.close
-			except FileNotFoundError:
-				print("ERROR in VerifyPlaintext: Could not locate dictionary file... returning empty set.")
-				return []
-				
-			for test_word in sowpods:
-				for p_p_word in working_text:
-					if test_word == p_p_word.lower():
-						likely_plaintext.append(p_p)
-						
-			need_check_big = False
-			for w in working_text:
-				if len(w) > 6:
-					need_check_big = True
-			if need_check_big:
-				#print("checking big words")
-				try:
-					f = open("7+letterwords.txt", "r")
-					blw = f.readlines() #big letter words
-					for d in range(len(blw)):
-						temp = (blw[d].strip("\n")).lower()
-						blw[d] = temp
-					f.close	
-					
-					for test_word in blw:
-						for p_p_word in working_text:
-							if test_word == p_p_word.lower():
-								likely_plaintext.append(p_p)
-				except FileNotFoundError:
-					print("ERROR in VerifyPlaintext: Could not locate big words file, ignoring it...")
-					pass			
+def verify_english(p_p):
+	lp_counter = 0	#likely plaintext counter
+	need_check_big = False
+	#split p_p into words and remove all non-alphabetic characters
+	working_text = p_p.split(' ')
+	for n in range(len(working_text)):
+		working_text[n] = ''.join([i for i in working_text[n] if i.isalpha()])
+	#print(working_text)
 	
-	#hashsearch is inaccurate, just return all possible hits.
-	if cipher == "hashsearch":
-		return likely_plaintext
 	
-	#decryption worked					
-	if len(likely_plaintext) > 0:
-		lp = {}
-		#sort each phrase into the dictionary, if the phrase is already in dictionary increase count
-		for word in likely_plaintext:
-			if word in lp.keys():
-				lp[word] += 1
-			else:
-				lp[word] = 1
-		#now sort the decrypted text by count, i.e. which decrypted-text had the most words in the list of English words in it.
-		max = 0
-		most_likely = []
-		for key in lp:
-			if int(lp[key]) > max:
-				most_likely = [key]
-				max = lp[key]
-			elif int(lp[key]) == max:	#two words are evaluated as equally most likely, returns both
-				most_likely.append(key)
-		#attempts to avoid false positives, NEEDS WORK
-		if len(working_text) != 1:
-			temp = potential_plaintext[0].split(' ')
-			if (max > 2) and (len(temp)>2):
-				return most_likely
-			elif len(temp) <= 2:
-				return most_likely
-			else:
-				return []
-		else:
-			return most_likely
-	#no english words detected
+	#if words are not seperated by spaces
+	if len(working_text) == 1:
+		for word in sowpods:
+			if word in working_text[0]:
+				lp_counter+=1
+	#we have seperate words					
 	else:
-		return []
+		for test_word in sowpods:
+			for p_p_word in working_text:
+				if test_word == p_p_word.lower():
+					lp_counter+=1
+					
+		#this is seperated to reduce time, long list of words
+		for w in working_text:
+			if len(w) > 6:
+				need_check_big = True
+		if need_check_big:
+			#print("checking big words")
+			try:
+				f = open("7+letterwords.txt", "r")
+				blw = f.readlines() #big letter words
+				for d in range(len(blw)):
+					temp = (blw[d].strip("\n")).lower()
+					blw[d] = temp
+				f.close	
+				
+				for test_word in blw:
+					for p_p_word in working_text:
+						if test_word == p_p_word.lower():
+							lp_counter+=1
+			except FileNotFoundError:
+				print("ERROR in VerifyPlaintext: Could not locate big words file, ignoring it...")
+				pass
+
+	is_word = lp_counter - (len(p_p)/25)
+	#print(p_p, is_word)
+
+	return is_word
 		
-		
-def verify_all(potential_plaintext, cipher):
-	pass
+def verify_all(inp_list):
+	ppd = {} #potential plaintext dict
+	for p_p in inp_list:	#potential plaintext
+		is_word = verify_english(p_p)
+		if is_word > 1:	#0?	########################################
+			ppd[p_p] = is_word
+			
+			
+	if ppd == {}:
+		for p_p in inp_list:	#potential plaintext
+			is_cipher = verify_cipher(p_p)
+			if is_cipher != []:
+				ppd[p_p] = is_cipher
+	
+	return ppd
