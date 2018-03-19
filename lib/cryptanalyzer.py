@@ -146,6 +146,9 @@ def cryptanalysis(ctext):	#string
 				score = (score + 8) / 2
 			else:
 				score = (score + 0) / 2
+		else:
+			if "=" in ctext[-4:-1]:
+				score = (score + 2) / 2
 		
 
 		#subtypeciphers includes caesar, atbash, simplesub
