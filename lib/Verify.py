@@ -13,18 +13,19 @@ try:
 except FileNotFoundError:
 	print("ERROR in VerifyPlaintext: Could not locate dictionary file... returning empty set.")
 
-
 try:
 	import cryptanalyzer
 except ModuleNotFoundError:
 	print("Cryptanalyzer package not found.")
 
-
+	
+	
+	
 def verify_cipher(p_p):
 	cipher_weights = cryptanalyzer.cryptanalysis(p_p)[1]
 	potential_ciphers = []
 	for w in cipher_weights:
-		if int(cipher_weights[w]) >= 6:
+		if int(cipher_weights[w]) >= 6: #arbitrary	#############################
 			potential_ciphers.append(w)
 	return potential_ciphers
 
@@ -58,7 +59,7 @@ def verify_english(p_p):
 		if need_check_big:
 			#print("checking big words")
 			try:
-				f = open("7+letterwords.txt", "r")
+				f = open("sow7+.txt", "r")
 				blw = f.readlines() #big letter words
 				for d in range(len(blw)):
 					temp = (blw[d].strip("\n")).lower()
@@ -80,14 +81,16 @@ def verify_english(p_p):
 		
 def verify_all(inp_list):
 	ppd = {} #potential plaintext dict
-	for p_p in inp_list:	#potential plaintext
+	
+	#check against english
+	for p_p in inp_list: #potential plaintext
 		is_word = verify_english(p_p)
-		if is_word > 1:	#0?	########################################
+		if is_word > 1:	#arbitrary...	########################################
 			ppd[p_p] = is_word
 			
-			
+	#if no english found, maybe its wrapping another cipher
 	if ppd == {}:
-		for p_p in inp_list:	#potential plaintext
+		for p_p in inp_list:
 			is_cipher = verify_cipher(p_p)
 			if is_cipher != []:
 				ppd[p_p] = is_cipher

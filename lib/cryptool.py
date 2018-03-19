@@ -53,23 +53,22 @@ def print_plaintext(plaintext_list):
 	print("#"*columns)
 	return None
 
-#
-def check_cipher(cipher, cipher_str):
-	opt = __import__('ciphers.' + cipher +'.' + cipher, fromlist=['*']).decrypt(cipher_str, None)	#get the cipher's file and decrypt using that cipher
-	check_decoded = Verify.verify_all(opt)
 
-	#verify that the plaintext is in english
-	if check_decoded != {}: 																		#returns empty list if it could not verify
+def check_cipher(cipher, cipher_str):
+	opt = __import__('ciphers.' + cipher +'.' + cipher, fromlist=['*']).decrypt(cipher_str, None)	#get the file of a given cipher and attempt to decrypt it using that module
+	ppd = Verify.verify_all(opt)	#potential plaintext dictionary
+
+	#verify with the user that the decryption method worked
+	if ppd != {}: 
 		print("Did the %s decryption work? Output:" % cipher)
-		for str in check_decoded:
+		for str in ppd:
 			print(str)
 		while 1 == 1: #I realize this is ugly
 			temp = input("(Y/N): ")
 			if temp.lower() == "n":
-				break
+				return None
 			elif temp.lower() == "y": #decryption sucessful
-				return [cipher, check_decoded, cipher_str] #[the cipher, the plaintext, and the original ciphertext]				
-	return None
+				return [cipher, ppd, cipher_str] #[the cipher, the plaintext, and the original ciphertext]				
 
 #When a flag specifies the decryption cipher to use
 def given_cipher(cipher, ctext_list):
