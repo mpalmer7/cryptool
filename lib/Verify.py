@@ -3,6 +3,9 @@
 #need training data...
 #tensorflow (from google) library for machine learning
 #cykit learn
+
+
+
 try:
 	f = open("sow3-6.txt", "r") #3-6 letter english words
 	sowpods = f.readlines()
@@ -26,10 +29,11 @@ def verify_cipher(p_p):
 	potential_ciphers = []
 	for w in cipher_weights:
 		if int(cipher_weights[w]) >= 6: #arbitrary	#############################
+			print("Potentialy found a cipher within the cipher.")
 			potential_ciphers.append(w)
 	return potential_ciphers
 
-	
+
 def verify_english(p_p):
 	lp_counter = 0	#likely plaintext counter
 	need_check_big = False
@@ -87,12 +91,14 @@ def verify_all(inp_list):
 		is_word = verify_english(p_p)
 		if is_word > 1:	#arbitrary...	########################################
 			ppd[p_p] = is_word
-			
-	#if no english found, maybe its wrapping another cipher
+	
+	'''	
+	if no english found, maybe it is wrapping another cipher
 	if ppd == {}:
 		for p_p in inp_list:
 			is_cipher = verify_cipher(p_p)
 			if is_cipher != []:
 				ppd[p_p] = is_cipher
+	'''
 	
 	return ppd

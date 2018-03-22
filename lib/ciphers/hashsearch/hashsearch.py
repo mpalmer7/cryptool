@@ -10,8 +10,12 @@ import re
 
 def decrypt(query, ci):
 	url = "https://duckduckgo.com/html/?q="+query
-	page = urllib.request.urlopen(url)
+	try:
+		page = urllib.request.urlopen(url)
+	except urllib.error.HTTPError:
+		print("Hashsearch: urllib error")
 	soup = BeautifulSoup(page, 'html.parser')
+	
 
 	#test = soup.find_all('result__snippet')# class_="snippet"
 	test = soup.find_all("a", class_="result__snippet")

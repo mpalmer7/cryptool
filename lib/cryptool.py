@@ -141,7 +141,11 @@ def main():
 					
 			#else, decryption failed, try next cipher
 			if failed_to_crack:
-				plaintext.append(["FAILED", "", cipher_str])
+				ppd = Verify.verify_cipher(cipher_str)
+				if ppd == []:
+					plaintext.append(["FAILED", "", cipher_str])
+				else:
+					plaintext.extend(ppd)
 				
 				
 		print_plaintext(plaintext)	

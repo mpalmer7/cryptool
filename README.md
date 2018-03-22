@@ -9,7 +9,7 @@ For example: <br />
 
 The program will attempt to guess what kind of cipher you are trying to decrypt. <br />
 If you know what cipher you are decrypting, that can also be specified with one of the below flags: <br />
-`caesar`     Caesar Cipher <br />
+`-caesar`     Caesar Cipher <br />
 `-binary`    Binary to Plaintext <br />
 `-b64`       Base 64 to Plaintext <br />
 `-morse`     Morse Code <br />
