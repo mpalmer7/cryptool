@@ -20,3 +20,5 @@ If you know what cipher you are decrypting, that can also be specified with one 
 `-revtext`	 Reverse (or flip) the string <br />
 
 *Work in Progress
+
+Additionally, I am working on a catch for a cipher within a cipher.

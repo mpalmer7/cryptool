@@ -1,4 +1,4 @@
-
+# Binary fix...
 s = "BABAAAABBBABAAABAABAAABAAAABBBABBABBAABBBAAABAABAA"
 new = s.replace("B","0")
 new = new.replace("A","1")

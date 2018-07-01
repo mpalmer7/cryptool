@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="404f2d42-80e2-4519-a430-fd1ff16287fb" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/UnitConversion.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/UnitConversion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Verify.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Verify.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/atbash/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/atbash/atbash.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ciphers/atbash.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/b64/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/b64/b64.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ciphers/b64.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/binary/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/binary/binary.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ciphers/binary.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/binary/fixscript.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ciphers/fixscript.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/caesar/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/caesar/caesar.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ciphers/caesar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/hashsearch/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/hashsearch/hashsearch.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ciphers/hashsearch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/morse/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/morse/morse.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ciphers/morse.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/reversetext/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/reversetext/reversetext.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ciphers/reversetext.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/simplesub/README.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/simplesub/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/simplesub/simplesub.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ciphers/simplesub.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/singlebyteXOR/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ciphers/singlebyteXOR/singlebyteXOR.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ciphers/singlebyteXOR.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/cryptanalyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/cryptanalyzer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/cryptool.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/cryptool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/testcases.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lib/testcases.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/cryptool$cryptool.coverage" NAME="cryptool Coverage Results" MODIFIED="1530456231912" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lib" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="cryptanalyzer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/cryptanalyzer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Verify.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/Verify.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cryptool.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/cryptool.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="72" column="27" lean-forward="true" selection-start-line="72" selection-start-column="27" selection-end-line="72" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/lib/UnitConversion.py" />
+        <option value="$PROJECT_DIR$/lib/testcases.txt" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/lib/ciphers/atbash.py" />
+        <option value="$PROJECT_DIR$/lib/cryptool.py" />
+        <option value="$PROJECT_DIR$/lib/cryptanalyzer.py" />
+        <option value="$PROJECT_DIR$/lib/Verify.py" />
+        <option value="$PROJECT_DIR$/lib/ciphers/b64.py" />
+        <option value="$PROJECT_DIR$/lib/ciphers/binary.py" />
+        <option value="$PROJECT_DIR$/lib/ciphers/caesar.py" />
+        <option value="$PROJECT_DIR$/lib/ciphers/fixscript.py" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$PROJECT_DIR$/lib/ciphers/hashsearch.py" />
+        <option value="$PROJECT_DIR$/lib/ciphers/morse.py" />
+        <option value="$PROJECT_DIR$/lib/ciphers/reversetext.py" />
+        <option value="$PROJECT_DIR$/lib/ciphers/simplesub.py" />
+        <option value="$PROJECT_DIR$/lib/ciphers/singlebyteXOR.py" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="140" />
+    <option name="y" value="20" />
+    <option name="width" value="1400" />
+    <option name="height" value="970" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="cryptool" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cryptool" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cryptool" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cryptool" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cryptool" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cryptool" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="ciphers" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mitch\Desktop\cryptool\lib\ciphers" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="cryptool" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="cryptool" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/lib" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lib/cryptool.py" />
+      <option name="PARAMETERS" value="-f &quot;testcases.txt&quot;" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.cryptool" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="404f2d42-80e2-4519-a430-fd1ff16287fb" name="Default" comment="" />
+      <created>1530454297876</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1530454297876</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="140" y="20" width="1400" height="970" extended-state="0" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="12" />
+      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="8" visible="true" weight="0.32982457" />
+      <window_info anchor="bottom" id="Version Control" order="1" />
+      <window_info anchor="bottom" id="Python Console" order="5" />
+      <window_info anchor="right" id="Coverage" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="4" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
+      <window_info anchor="right" id="Database" order="0" />
+      <window_info anchor="right" id="SciView" order="1" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Debug" order="9" weight="0.4" />
+      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="7" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="2" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="5" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="6" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/README.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/UnitConversion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="34">
+            <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/testcases.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/cryptanalyzer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/atbash.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="34" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Verify.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/b64.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/binary.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="46" lean-forward="true" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/caesar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="33" lean-forward="true" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/fixscript.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="11" lean-forward="true" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/hashsearch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/morse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="17" lean-forward="true" selection-start-column="17" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/reversetext.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/simplesub.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-373">
+          <caret line="241" column="32" lean-forward="true" selection-start-line="241" selection-start-column="32" selection-end-line="241" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/singlebyteXOR.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/cryptool.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="72" column="27" lean-forward="true" selection-start-line="72" selection-start-column="27" selection-end-line="72" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
