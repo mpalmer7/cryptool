@@ -17,3 +17,8 @@ def decrypt(ctext, temp=None):
             plaintext.append(decoded)
 
     return plaintext
+
+
+def encrypt(inp):
+    print("single byte XOR encryption not implemented yet.")
+    exit()

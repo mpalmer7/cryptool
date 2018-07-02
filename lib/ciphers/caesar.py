@@ -31,10 +31,10 @@ def decrypt(inp, key=None):
 
 
 def encrypt(plaintext):
-    key = int(input("Enter an integer (0-26) to rotate by:"))
+    key = int(input("Enter an integer (0-26) to rotate by: "))
     return check_keys(plaintext, key)
 
-
+"""
 # run standalone
 def Caesar():
     pt = input("Enter a phrase: ")
@@ -54,5 +54,5 @@ def Caesar():
     else:
         print("Input not reconized, exiting.")
         exit()
-
 # Ceasar()
+"""

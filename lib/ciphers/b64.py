@@ -13,3 +13,13 @@ def decrypt(ciphertext, b=None):
         return [plaintext]
     except binascii.Error:
         return []
+
+
+def encrypt(plaintext):
+    try:
+        b = bytes(plaintext, 'utf-8')
+        ciphertext = base64.b64encode(b)
+    except binascii.Error:
+        print("ERROR in base64 encryption function")
+        exit()
+    return ciphertext

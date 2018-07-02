@@ -64,3 +64,7 @@ def decrypt(query, ci):
     for key in dict:
         opt.append(key)
     return opt
+
+def encrypt(inp):
+    print("Hashing not implemented yet.")
+    exit()

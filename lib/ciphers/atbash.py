@@ -10,19 +10,26 @@ ldict = {'a': 'z', 'b': 'y', 'c': 'x', 'd': 'w', 'e': 'v', 'f': 'u', 'g': 't',
          'o': 'l', 'p': 'k', 'q': 'j', 'r': 'i', 's': 'h', 't': 'g', 'u': 'f',
          'v': 'e', 'w': 'd', 'x': 'c', 'y': 'b', 'z': 'a'}
 
+def bothcrypt(inp):
+    opt = ''
+    for letter in list(inp):
+        if letter in udict.keys():
+            opt += str(udict.get(letter))
+        elif letter in ldict.keys():
+            opt += str(ldict.get(letter))
+        else:
+            opt += letter
+    return opt
 
 def decrypt(ciphertext, nullthing=None):
-    plaintext = ''
     # decryption
-    for letter in list(ciphertext):
-        if letter in udict.keys():
-            plaintext += str(udict.get(letter))
-        elif letter in ldict.keys():
-            plaintext += str(ldict.get(letter))
-        else:
-            plaintext += letter
+    plaintext = bothcrypt(ciphertext)
     # output
     if plaintext == '':
         return []
     else:
         return [plaintext]
+
+
+def encrypt(inp):
+    return bothcrypt(inp)

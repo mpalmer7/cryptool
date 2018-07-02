@@ -217,9 +217,12 @@ def decrypt(ctext, nullthing=None):
         return []
     else:
         return []
-    '''
 
+    def encrypt(inp):
+        print("Encryption for the simple substitution cipher not implemented yet.")
+        exit()
 
+    """
 	for ch in characters_in_ctext:
 			if ch in numericals:
 				print("ERROR in substitution: Doesn't work with numericals in input.")
@@ -284,4 +287,4 @@ def decrypt(ctext, nullthing=None):
 		return []
 		
 		
-	'''
+	"""
