@@ -2,7 +2,11 @@
 # Updated: 7/1/18
 
 import urllib.request
-from bs4 import BeautifulSoup
+try:
+	from bs4 import BeautifulSoup
+except:
+	print("bs4 package requirement not found.  Will attempt to install.")
+	os.system('pip install bs4')
 import re
 
 
@@ -17,9 +21,11 @@ def decrypt(query, ci):
     except urllib.error.HTTPError:
         print("Hashsearch: urllib error")
     soup = BeautifulSoup(page, 'html.parser')
+    print(soup.prettify())
 
     # test = soup.find_all('result__snippet')# class_="snippet"
     test = soup.find_all("a", class_="result__snippet")
+
 
     new = []
     for t in test:
@@ -48,16 +54,18 @@ def decrypt(query, ci):
                  "through", "development", "devices", "developer", "working", "service", "automatically",
                  "anagrhash", "pastebin", "security", "professional", "produce", "publish", "recover",
                  "professionals", "digital", "original", "newspapers", "newspaper", "publications", "magazines",
-                 "hash", "hashtable", "element", "strings", "internet"]
+                 "hash", "hashtable", "element", "strings", "internet", "string", "reverse", "password", "passwords",
+                 "value", "values", "create"]
     for key in dict.keys():
-        if len(key) < 7:
+        if len(key) < 6:
             drm.append(key)
-        elif dict[key] == 1:
+        elif dict[key] < 3:
             drm.append(key)
         elif key == query:
             drm.append(key)
         elif key.lower() in blacklist:
             drm.append(key)
+    print(query)
     for k in drm:
         dict.pop(k)
     opt = []

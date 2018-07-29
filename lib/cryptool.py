@@ -89,6 +89,8 @@ def given_cipher(cipher, ctext_list):
         checker = check_cipher(cipher, ct)
         if checker is not None:
             plaintext_list.append(checker)
+        else:
+            (plaintext_list.append([cipher, ["COULD NOT DECRYPT"], ct]))
     print_plaintext(plaintext_list)
     exit()
 
