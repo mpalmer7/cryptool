@@ -34,15 +34,16 @@ parser.add_argument('-f', '--file', help='text file of ciphertext', action='stor
 parser.add_argument('-e', '--encrypt', help='Encrypting or Decrypting?', action='store_true')
 parser.add_argument('-d', '--decrypt', help='Encrypting or Decrypting?', action='store_true')
 # optional flags
-parser.add_argument('-caesar', '--caesar', help='decode using caesar cipher', action='store_true')
+parser.add_argument('-caesar', '--caesar', help='Caesar Cipher', action='store_true')
 parser.add_argument('-binary', '--binary', help='convert binary to plaintext', action='store_true')
-parser.add_argument('-b64', '--base64', help='decode base64', action='store_true')
-parser.add_argument('-morse', '--morse', help='decode morse code', action='store_true')
-parser.add_argument('-sbyteXOR', '--singlebyteXOR', help='decode single byte XOR', action='store_true')
-parser.add_argument('-ssub', '--simplesub', help='decode substitution cipher', action='store_true')
-parser.add_argument('-atb', '--atbash', help='decode atbash cipher', action='store_true')
+parser.add_argument('-b64', '--base64', help='Base64', action='store_true')
+parser.add_argument('-morse', '--morse', help='Morse Code (-.)', action='store_true')
+parser.add_argument('-sbyteXOR', '--singlebyteXOR', help='Single Byte XOR', action='store_true')
+parser.add_argument('-ssub', '--simplesub', help='Substitution Cipher (WIP)', action='store_true')
+parser.add_argument('-atb', '--atbash', help='Atbash Cipher', action='store_true')
 parser.add_argument('-rhs', '--hashsearch', help='search Bing for a hash', action='store_true')
 parser.add_argument('-revtext', '--reversetext', help='Reverse a string', action='store_true')
+parser.add_argument('-vig', '--vigenere', help='Vigenère cipher', action='store_true')
 args = parser.parse_args()
 
 
@@ -111,27 +112,30 @@ def main():
         exit()
 
     # Encrypt or decrypt input
+    # TODO issue here, what if put multiple flags for ciphers.  It would run them in this order...
     if args.decrypt:
         # If given cipher
         # this can be simplified...
         if args.binary:
             given_cipher("binary", inp_ciphers_list)
-        if args.caesar:
+        elif args.caesar:
             given_cipher("caesar", inp_ciphers_list)
-        if args.base64:
+        elif args.base64:
             given_cipher("b64", inp_ciphers_list)
-        if args.morse:
+        elif args.morse:
             given_cipher("morse", inp_ciphers_list)
-        if args.singlebyteXOR:
+        elif args.singlebyteXOR:
             given_cipher("singlebyteXOR", inp_ciphers_list)
-        if args.simplesub:
+        elif args.simplesub:
             given_cipher("simplesub", inp_ciphers_list)
-        if args.atbash:
+        elif args.atbash:
             given_cipher("atbash", inp_ciphers_list)
-        if args.hashsearch:
+        elif args.hashsearch:
             given_cipher("hashsearch", inp_ciphers_list)
-        if args.reversetext:
+        elif args.reversetext:
             given_cipher("reversetext", inp_ciphers_list)
+        elif args.vigenere:
+            given_cipher("vigenere", inp_ciphers_list)
         # otherwise, guess what cipher to use
         else:
             plaintext = []

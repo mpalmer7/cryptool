@@ -18,6 +18,7 @@ If you know what cipher you are decrypting, that can also be specified with one 
 `-atb`       Atbash Cipher <br />
 `-rhs`       Reverse Hash, by performing a Bing search* <br />
 `-revtext`	 Reverse (or flip) the string <br />
+`-vigenere`  Vigenère Cipher* <br />
 
 *Work in Progress
 
