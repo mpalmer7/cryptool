@@ -9,17 +9,22 @@ For example: <br />
 
 The program will attempt to guess what kind of cipher you are trying to decrypt. <br />
 If you know what cipher you are decrypting, that can also be specified with one of the below flags: <br />
-`-caesar`     Caesar Cipher <br />
+
+__Substitution Ciphers__ <br />
+`-caesar`           Caesar Cipher <br />
+`-atb`              Atbash Cipher <br />
+(WIP)`-ssub`        Monoalphabetic (Simple) Substitution <br />
+(TODO) `-playfair`  Playfair Cipher <br />
+(TODO) `-hill`      Hill Cipher <br />
+(WIP)`-vigenere`    Vigenère Cipher <br />
+(TODO) `-vernam`    Vernam Cipher <br />
+
+__Other__ <br />
 `-binary`    Binary to Plaintext <br />
 `-b64`       Base 64 to Plaintext <br />
 `-morse`     Morse Code <br />
 `-sbyteXOR`  Single Byte XOR <br />
-`-ssub`      Simple Substitution* <br />
-`-atb`       Atbash Cipher <br />
-`-rhs`       Reverse Hash, by performing a Bing search* <br />
 `-revtext`	 Reverse (or flip) the string <br />
-`-vigenere`  Vigenère Cipher* <br />
-
-*Work in Progress
+(WIP)`-rhs`       Reverse Hash, by performing a DuckDuckGo search <br />
 
 Additionally, I am working on a catch for a cipher within a cipher.
