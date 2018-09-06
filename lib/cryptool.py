@@ -5,9 +5,10 @@
 When adding a new cipher:
 1) add to argparse
 2) add to cryptool main under arg flags
-3) add values to cryptanalyzer
-4) add to list under cryptanalyzer
-5) update readme
+3) add to cryptool main under encryption
+4) add values to cryptanalyzer
+5) add to list under cryptanalyzer
+6) update readme
 """
 import argparse
 import shutil  # used in print_plaintext
