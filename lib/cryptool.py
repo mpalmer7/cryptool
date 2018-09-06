@@ -28,12 +28,14 @@ except ModuleNotFoundError:
 
 # command line arguments
 parser = argparse.ArgumentParser()
-parser.add_argument('input', help='input file or string')
+parser.add_argument('input', help='input file or string', type=str)
 parser.add_argument('-s', '--string', help='string of ciphertext', action='store_true')
 parser.add_argument('-f', '--file', help='text file of ciphertext', action='store_true')
 parser.add_argument('-e', '--encrypt', help='Encrypting or Decrypting?', action='store_true')
 parser.add_argument('-d', '--decrypt', help='Encrypting or Decrypting?', action='store_true')
 # optional flags
+parser.add_argument('-key', '--key', help='decryption/encryption key, if given', action='store_true')
+
 parser.add_argument('-caesar', '--caesar', help='Caesar Cipher', action='store_true')
 parser.add_argument('-binary', '--binary', help='convert binary to plaintext', action='store_true')
 parser.add_argument('-b64', '--base64', help='Base64', action='store_true')
@@ -46,6 +48,8 @@ parser.add_argument('-revtext', '--reversetext', help='Reverse a string', action
 parser.add_argument('-vig', '--vigenere', help='Vigenère cipher', action='store_true')
 args = parser.parse_args()
 
+if args.key:
+    key = input("Please enter the key: ")
 
 def print_plaintext(plaintext_list):
     columns, lines = shutil.get_terminal_size((80, 20))
@@ -65,9 +69,9 @@ def encrypt_cipher(cipher, inp):
     return opt
 
 
-def check_cipher(cipher, cipher_str):
+def check_cipher(cipher, cipher_str, key=None):
     # get the file of a given cipher and attempt to decrypt it using that module
-    opt = __import__('ciphers.' + cipher, fromlist=['*']).decrypt(cipher_str, None)
+    opt = __import__('ciphers.' + cipher, fromlist=['*']).decrypt(cipher_str, key)
     ppd = Verify.verify_all(opt)  # potential plaintext dictionary
 
     # verify with the user that the decryption method worked
@@ -84,10 +88,10 @@ def check_cipher(cipher, cipher_str):
 
 
 # When a flag specifies the decryption cipher to use
-def given_cipher(cipher, ctext_list):
+def given_cipher(cipher, ctext_list, key=None):
     plaintext_list = []
     for ct in ctext_list:
-        checker = check_cipher(cipher, ct)
+        checker = check_cipher(cipher, ct, key)
         if checker is not None:
             plaintext_list.append(checker)
         else:
@@ -119,7 +123,7 @@ def main():
         if args.binary:
             given_cipher("binary", inp_ciphers_list)
         elif args.caesar:
-            given_cipher("caesar", inp_ciphers_list)
+            given_cipher("caesar", inp_ciphers_list, key)
         elif args.base64:
             given_cipher("b64", inp_ciphers_list)
         elif args.morse:
@@ -135,7 +139,7 @@ def main():
         elif args.reversetext:
             given_cipher("reversetext", inp_ciphers_list)
         elif args.vigenere:
-            given_cipher("vigenere", inp_ciphers_list)
+            given_cipher("vigenere", inp_ciphers_list, key)
         # otherwise, guess what cipher to use
         else:
             plaintext = []

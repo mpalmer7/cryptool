@@ -7,7 +7,6 @@ ualpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def check_keys(phrase, key):
     decoded = ""
-    cipher_index = 0
     for i in range(len(phrase)):
         if phrase[i] in lalpha:
             decoded += lalpha[lalpha.index(phrase[i]) + key]  # .index finds first occurrence of item
