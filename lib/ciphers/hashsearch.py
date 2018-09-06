@@ -1,5 +1,6 @@
 # Mitchell Palmer
 # Updated: 7/1/18
+import os
 
 import urllib.request
 try:

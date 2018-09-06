@@ -155,7 +155,7 @@ def main():
                 failed_to_crack = True
                 for cipher in cracking_order:
                     # Decrypts file using a cipher, also checks if plaintext is in english
-                    checker = check_cipher(cipher, cipher_str)
+                    checker = check_cipher(cipher, cipher_str, key)
                     if checker is not None:
                         plaintext.append(checker)
                         failed_to_crack = False
@@ -205,6 +205,9 @@ def main():
         elif args.reversetext:
             for inp in inp_ciphers_list:
                 opt.append(encrypt_cipher("reversetext", inp))
+        elif args.vigenere:
+            for inp in inp_ciphers_list:
+                opt.append(encrypt_cipher("vigenere", inp))
         else:
             print("Please specify a cipher to encrypt with.")
             print("Example usage: ./cryptool.py [input] -es -caesar")
