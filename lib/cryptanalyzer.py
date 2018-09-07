@@ -1,3 +1,7 @@
+# need training data...
+# tensorflow (from google) library for machine learning
+# cykit learn
+
 
 # sets
 L_ALPHA = "abcdefghijklmnopqrstuvwxyz"
@@ -25,7 +29,7 @@ def chars(ctext, total_number_of_chars):
     # change to percentage based
     for c in cod:
         cod[c] = cod[c] / total_number_of_chars
-    return cod  # character occurance dictionary
+    return cod  # character occurrence dictionary
 
 
 def sets(ctext, total_number_of_chars):
@@ -38,7 +42,7 @@ def sets(ctext, total_number_of_chars):
     # change to percentage based
     for s in sod:
         sod[s] = sod[s] / total_number_of_chars
-    return sod  # set occurance dictionary
+    return sod
 
 
 def words(ctext, delimeter=" "):
@@ -52,21 +56,21 @@ def words(ctext, delimeter=" "):
 def cryptanalysis(ctext):  # strig
     # analyse encoded text
     total_number_of_chars = len(ctext)
-    cod = chars(ctext, total_number_of_chars)
-    sod = sets(ctext, total_number_of_chars)
+    cod = chars(ctext, total_number_of_chars)  # character occurrence dictionary
+    sod = sets(ctext, total_number_of_chars)  # set occurrence dictionary
     word_boo = words(ctext)
 
     # name, cod, sod, words
     binary = cipher("binary", {"1": 10, "0": 10, " ": 5, "OTHER": 0},
                     {L_ALPHA: 0, U_ALPHA: 0, NUMERICALS: 10, SYMBOLS: 0, SPACE: 5}, {True: 5, False: 5})
-    b64 = cipher("b64", {"OTHER": 5}, {L_ALPHA: 5, U_ALPHA: 5, NUMERICALS: 5, SYMBOLS: 0, SPACE: 0},
+    b64 = cipher("b64", {"\\": 0, "]": 0, "OTHER": 5}, {L_ALPHA: 5, U_ALPHA: 5, NUMERICALS: 5, SYMBOLS: -2, SPACE: -2},
                  {True: 0, False: 10})
     morse = cipher("morse", {".": 10, "-": 10, " ": 5, "OTHER": 0},
-                   {L_ALPHA: 0, U_ALPHA: 0, NUMERICALS: 0, SYMBOLS: 10, SPACE: 5}, {True: 10, False: 0})
+                   {L_ALPHA: 0, U_ALPHA: 0, NUMERICALS: 0, SYMBOLS: 10, SPACE: 5}, {True: 5, False: 3})
     singlebyteXOR = cipher("singlebyteXOR", {"OTHER": 5}, {L_ALPHA: 5, U_ALPHA: 5, NUMERICALS: 5, SYMBOLS: 0, SPACE: 0},
                            {True: 0, False: 10})
-    subtypeciphers = cipher("subtypeciphers", {"OTHER": 5},
-                            {L_ALPHA: 10, U_ALPHA: 10, NUMERICALS: 0, SYMBOLS: 0, SPACE: 5}, {True: 10, False: 5})
+    subtypeciphers = cipher("subtypeciphers", {"-": 0, "1": 0, "0": 0, ".": 0, "OTHER": 5},
+                            {L_ALPHA: 10, U_ALPHA: 10, NUMERICALS: 0, SYMBOLS: 0, SPACE: 5}, {True: 6, False: 3})
     hashsearch = cipher("hashsearch", {"OTHER": 5}, {L_ALPHA: 5, U_ALPHA: 5, NUMERICALS: 5, SYMBOLS: 0, SPACE: 0},
                         {True: 0, False: 10})
 
@@ -91,10 +95,10 @@ def cryptanalysis(ctext):  # strig
         score = score / 2
 
         # Update score with value of words
-        if word_boo == True:
-            score = (score + cp.word_booc[True]) / 2
+        if word_boo:
+            score = (score*3 + cp.word_booc[True]) / 4
         else:
-            score = (score + cp.word_booc[False]) / 2
+            score = (score*3 + cp.word_booc[False]) / 4
 
         # additional indicators: b64
         if cp.name == "b64":
@@ -129,19 +133,31 @@ def cryptanalysis(ctext):  # strig
             if cp.name == "hashsearch":
                 score = (score - 5) / 2
 
-        # subtypeciphers includes caesar, atbash, simplesub, vigenere
+        # subtypeciphers includes caesar, atbash, simplesub, reverse text, vigenere
         if cp.name == "subtypeciphers":
             weights["caesar"] = score
-            weights["atbash"] = score - 0.5
-            weights["vigenere"] = score - 0.75
-            weights["reversetext"] = score - 1
-            weights["simplesub"] = score - 1.5
+            weights["atbash"] = score - 0.25
+            weights["vigenere"] = score - 0.5
+            weights["reversetext"] = score - 0.75
+            weights["simplesub"] = score - 1
         else:
             weights[cp.name] = score
+
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
     # print(weights)
     # print(sorted(weights, key=weights.get, reverse=True))
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-    return [sorted(weights, key=weights.get, reverse=True), weights]
+
+    final_weights = {}
+    for ciph in weights:
+        if weights[ciph] > 4:   # arbitrary
+            final_weights[ciph] = weights[ciph]
+
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+    # print(final_weights)
+    # print(sorted(final_weights, key=final_weights.get, reverse=True))
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+    return [sorted(final_weights, key=final_weights.get, reverse=True), final_weights]
 
 # cryptanalysis(input("Enter code: "))

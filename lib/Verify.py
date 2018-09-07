@@ -1,32 +1,25 @@
+import cryptanalyzer
 
-# need training data...
-# tensorflow (from google) library for machine learning
-# cykit learn
-
-
-try:
-    f = open("sow3-6.txt", "r")  # 3-6 letter english words
-    sowpods = f.readlines()
-    for d in range(len(sowpods)):
-        temp = (sowpods[d].strip("\n")).lower()
-        sowpods[d] = temp
-    f.close
-except FileNotFoundError:
-    print("ERROR in VerifyPlaintext: Could not locate dictionary file... returning empty set.")
-
-try:
-    import cryptanalyzer
-except ModuleNotFoundError:
-    print("Cryptanalyzer package not found.")
+# sow3-6 is the official list of scrabble words, 3-6 letters in length
+f = open("sow3-6.txt", "r")
+sowpods = f.readlines()
+for d in range(len(sowpods)):
+    temp = (sowpods[d].strip("\n")).lower()
+    sowpods[d] = temp
+f.close()
 
 
 def verify_cipher(p_p):
     cipher_weights = cryptanalyzer.cryptanalysis(p_p)[1]
     potential_ciphers = []
     for w in cipher_weights:
-        if int(cipher_weights[w]) >= 6:  # arbitrary	#############################
-            print("Potentialy found a cipher within the cipher.")
-            potential_ciphers.append(w)
+        if w in ["caesar", "atbash", "simplesub", "reversetext", "vigenere"]:
+            pass
+        else:
+            if int(cipher_weights[w]) >= 7:  # arbitrary	#############################
+                print("Potentially found a cipher within the cipher.")
+                # print(p_p, w)
+                potential_ciphers.append(w)
     return potential_ciphers
 
 
@@ -87,14 +80,11 @@ def verify_all(inp_list):
         is_word = verify_english(p_p)
         if is_word > 1:  # arbitrary...	########################################
             ppd[p_p] = is_word
+        else:
+            cipher_in_cipher = verify_cipher(p_p)
+            if not cipher_in_cipher:
+                pass
+            else:
+                ppd[p_p] = 0
 
-    """
-    if no english found, maybe it is wrapping another cipher
-    if ppd == {}:
-        for p_p in inp_list:
-        is_cipher = verify_cipher(p_p)
-             if is_cipher != []:
-                  ppd[p_p] = is_cipher
-    """
-
-    return ppd
+    return sorted(ppd, key=ppd.get, reverse=True)

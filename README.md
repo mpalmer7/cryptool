@@ -8,7 +8,8 @@ For example: <br />
 -f will interpret the file line by line. <br />
 
 The program will attempt to guess what kind of cipher you are trying to decrypt. <br />
-If you know what cipher you are decrypting, that can also be specified with one of the below flags: <br />
+If you know what cipher you are decrypting, that can also be specified with one of the below flags. <br />
+Optional flag `-key` may be added and you will be asked to specify a key. <br />
 
 __Substitution Ciphers__ <br />
 `-caesar`           Caesar Cipher <br />

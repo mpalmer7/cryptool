@@ -64,7 +64,7 @@ def decrypt(query, ci):
             drm.append(key)
         elif key.lower() in blacklist:
             drm.append(key)
-    print(query)
+    #print(query)
     for k in drm:
         dict.pop(k)
     opt = []
