@@ -17,9 +17,9 @@ parser.add_argument('-s', '--string', help='string of ciphertext', action='store
 parser.add_argument('-f', '--file', help='text file of ciphertext', action='store_true')
 parser.add_argument('-e', '--encrypt', help='Encrypting or Decrypting?', action='store_true')
 parser.add_argument('-d', '--decrypt', help='Encrypting or Decrypting?', action='store_true')
-# optional flags
+# optional flags: key
 parser.add_argument('-key', '--key', help='decryption/encryption key, if given', action='store_true')
-
+# optional flags: ciphers
 parser.add_argument('-caesar', '--caesar', help='Caesar Cipher', action='store_true')
 parser.add_argument('-binary', '--binary', help='convert binary to plaintext', action='store_true')
 parser.add_argument('-b64', '--base64', help='Base64', action='store_true')
@@ -46,7 +46,7 @@ def print_plaintext(plaintext_list):
             print("\tDECRYPTION FAILED")
         else:
             for i in item[1]:
-                print("\t%s" % i)
+                print("\t%s" % i[0])
     print("#" * columns)
     return None
 
@@ -54,23 +54,25 @@ def print_plaintext(plaintext_list):
 def check_cipher(cipher, cipher_str, key=None, gc=False):
     # get the file of a given cipher and attempt to decrypt it using that module
     opt = __import__('ciphers.' + cipher, fromlist=['*']).decrypt(cipher_str, key)
-    # If cipher isn't given, check if output is in English
-    if gc is False:
-        ppd = Verify.verify_all(opt)  # potential plaintext dictionary
+    inv = []
+    if gc: # cipher is given
+        for o in opt:
+            inv.append([o, "Unverified"])
     else:
-        ppd = opt
+        inv = Verify.verify_all(opt)
 
-    # verify with the user that the decryption method worked
-    if ppd != {}:
-        print("Did the %s decryption work? Output:" % cipher)
-        for str in ppd:
-            print(str)
-        while 1 == 1:  # I realize this is ugly
-            temp = input("(Y/N): ")
-            if temp.lower() == "n":
-                return None
-            elif temp.lower() == "y":  # decryption sucessful
-                return [cipher, ppd, cipher_str]  # [the cipher, the plaintext, and the original ciphertext]
+    print("Did the %s decryption work? Output:" % cipher)
+    for plaintext, ver_type in inv:
+        if ver_type not in ["English", "Unverified"]:
+            print("Cipher within a cipher found: " + ver_type)
+        print(plaintext)
+
+    while 1 == 1:  # TODO ugly
+        temp = input("(Y/N): ")
+        if temp.lower() == "n":
+            return None
+        elif temp.lower() == "y":  # decryption successful
+            return [cipher, inv, cipher_str]  # [the cipher, the plaintext(s), and the original ciphertext]
 
 
 # When a flag specifies the decryption cipher to use
@@ -154,6 +156,7 @@ def main():
                     print("Here is your encrypted message: ")
                     for o in opt:
                         print(o)
+                    exit()
 
         print("Please specify a cipher to encrypt with.")
         print("Example usage: ./cryptool.py [input] -es -caesar")

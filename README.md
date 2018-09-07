@@ -28,4 +28,4 @@ __Other__ <br />
 `-revtext`	 Reverse (or flip) the string <br />
 (WIP)`-rhs`       Reverse Hash, by performing a DuckDuckGo search <br />
 
-Additionally, I am working on a catch for a cipher within a cipher.
+Additionally, the program includes a catch for a ciphers within ciphers.

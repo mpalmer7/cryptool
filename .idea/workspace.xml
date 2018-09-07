@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="404f2d42-80e2-4519-a430-fd1ff16287fb" name="Default" comment="&quot;removed Verify_English check if specify cipher + some commenting&quot;">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" afterDir="false" />
+    <list default="true" id="404f2d42-80e2-4519-a430-fd1ff16287fb" name="Default" comment="&quot;cleaned cryptool.py, reworked verify.py, updated cryptanalyzer weights&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ciphers/hashsearch.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ciphers/hashsearch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ciphers/simplesub.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ciphers/simplesub.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Verify.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Verify.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/cryptanalyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/cryptanalyzer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/cryptool.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/cryptool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/testcases.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lib/testcases.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,7 +16,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/cryptool$cryptool.coverage" NAME="cryptool Coverage Results" MODIFIED="1536114196687" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lib" />
+    <SUITE FILE_PATH="coverage/cryptool$Test_Cases.coverage" NAME="Test Cases Coverage Results" MODIFIED="1536362407940" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lib" />
+    <SUITE FILE_PATH="coverage/cryptool$cryptool.coverage" NAME="cryptool Coverage Results" MODIFIED="1536362946550" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lib" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-534346284">
@@ -24,33 +26,36 @@
           <entry key="project.closed" value="2" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="md" value="1" />
-          <entry key="py" value="3" />
+          <entry key="md" value="3" />
+          <entry key="py" value="8" />
+          <entry key="txt" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Markdown" value="1" />
-          <entry key="Python" value="3" />
+          <entry key="Markdown" value="3" />
+          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="Python" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="md" value="332" />
-          <entry key="py" value="1064" />
-          <entry key="txt" value="101" />
+          <entry key="md" value="443" />
+          <entry key="py" value="4103" />
+          <entry key="txt" value="200" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Markdown" value="332" />
-          <entry key="PLAIN_TEXT" value="101" />
-          <entry key="Python" value="1064" />
+          <entry key="Markdown" value="443" />
+          <entry key="PLAIN_TEXT" value="200" />
+          <entry key="Python" value="4103" />
         </counts>
       </usages-collector>
     </session>
@@ -100,32 +105,31 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/cryptool.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="161" column="14" selection-start-line="161" selection-start-column="14" selection-end-line="161" selection-end-column="14" />
+            <state relative-caret-position="1207">
+              <caret line="71" column="31" lean-forward="true" selection-start-line="71" selection-start-column="31" selection-end-line="71" selection-end-column="31" />
               <folding>
-                <marker date="1536338362954" expanded="true" signature="4060:5165" ph="..." />
+                <element signature="e#136#151#0" expanded="true" />
+                <marker date="1536362826269" expanded="true" signature="4465:4470" ph="..." />
+                <marker date="1536362826269" expanded="true" signature="6902:6907" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/ciphers/hashsearch.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-170">
-              <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/ciphers/simplesub.py">
+        <entry file="file://$PROJECT_DIR$/lib/cryptanalyzer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4081">
-              <caret line="272" lean-forward="true" selection-start-line="272" selection-end-line="272" />
-              <folding>
-                <marker date="1536337608540" expanded="true" signature="12156:12161" ph="..." />
-              </folding>
+            <state relative-caret-position="-51">
+              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/Verify.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="380">
+              <caret line="83" column="39" selection-start-line="83" selection-start-column="39" selection-end-line="83" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -135,6 +139,8 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>inp_ciphers</find>
+      <find>print_plaint</find>
+      <find>verify</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -144,25 +150,25 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/lib/UnitConversion.py" />
-        <option value="$PROJECT_DIR$/lib/testcases.txt" />
         <option value="$PROJECT_DIR$/lib/ciphers/fixscript.py" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/lib/ciphers/atbash.py" />
         <option value="$PROJECT_DIR$/lib/ciphers/singlebyteXOR.py" />
         <option value="$PROJECT_DIR$/lib/hashtests.txt" />
         <option value="$PROJECT_DIR$/lib/ciphers/vigenere.py" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/lib/ciphers/reversetext.py" />
         <option value="$PROJECT_DIR$/lib/ciphers/morse.py" />
         <option value="$PROJECT_DIR$/lib/ciphers/caesar.py" />
         <option value="$PROJECT_DIR$/lib/ciphers/binary.py" />
-        <option value="$PROJECT_DIR$/lib/cryptanalyzer.py" />
-        <option value="$PROJECT_DIR$/lib/Verify.py" />
         <option value="$PROJECT_DIR$/lib/ciphers/b64.py" />
         <option value="$PROJECT_DIR$/lib/ciphers/simplesub.py" />
-        <option value="$PROJECT_DIR$/lib/cryptool.py" />
         <option value="$PROJECT_DIR$/lib/ciphers/hashsearch.py" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/lib/testcases.txt" />
+        <option value="$PROJECT_DIR$/lib/cryptanalyzer.py" />
+        <option value="$PROJECT_DIR$/lib/cryptool.py" />
+        <option value="$PROJECT_DIR$/lib/Verify.py" />
       </list>
     </option>
   </component>
@@ -183,7 +189,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -206,9 +211,11 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/mitch/Desktop/cryptool/lib/Verify.py" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
@@ -229,7 +236,29 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.cryptool">
+    <configuration name="Test Cases" type="PythonConfigurationType" factoryName="Python">
+      <module name="cryptool" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/lib" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lib/cryptool.py" />
+      <option name="PARAMETERS" value="&quot;testcases.txt&quot; -df" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="cryptool" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="cryptool" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -244,7 +273,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lib/cryptool.py" />
-      <option name="PARAMETERS" value="-ds &quot;nGmni Tskcxipo esdskkxgmejvc&quot; -vig -key" />
+      <option name="PARAMETERS" value="&quot;testcases.txt&quot; -ef -atb" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -252,6 +281,10 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.Test Cases" />
+      <item itemvalue="Python.cryptool" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.cryptool" />
@@ -311,15 +344,21 @@
       <option name="project" value="LOCAL" />
       <updated>1536335318712</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="&quot;cleaned cryptool.py, reworked verify.py, updated cryptanalyzer weights&quot;">
+      <created>1536360019885</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1536360019885</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.21946308" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.21904762" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="1" />
@@ -329,7 +368,7 @@
       <window_info anchor="bottom" id="Python Console" order="5" />
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Find" order="7" />
-      <window_info anchor="bottom" id="Run" order="8" weight="0.30941704" />
+      <window_info active="true" anchor="bottom" id="Run" order="8" visible="true" weight="0.3085339" />
       <window_info anchor="bottom" id="Debug" order="9" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
@@ -357,18 +396,12 @@
     <MESSAGE value="&quot;Updated README to reflect recent changes&quot;" />
     <MESSAGE value="&quot;gitignore update&quot;" />
     <MESSAGE value="&quot;removed Verify_English check if specify cipher + some commenting&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;removed Verify_English check if specify cipher + some commenting&quot;" />
+    <MESSAGE value="&quot;cleaned cryptool.py, reworked verify.py, updated cryptanalyzer weights&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;cleaned cryptool.py, reworked verify.py, updated cryptanalyzer weights&quot;" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/lib/ciphers/README.txt" />
     <entry file="file://$PROJECT_DIR$/requirements.txt" />
-    <entry file="file://$PROJECT_DIR$/lib/testcases.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="26" lean-forward="true" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/hashtests.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -380,16 +413,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="17">
-            <caret line="1" column="22" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
@@ -427,9 +450,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ciphers/caesar.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/ciphers/binary.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -440,39 +460,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Verify.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/ciphers/b64.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/cryptanalyzer.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/ciphers/simplesub.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4081">
-          <caret line="272" lean-forward="true" selection-start-line="272" selection-end-line="272" />
-          <folding>
-            <marker date="1536337608540" expanded="true" signature="12156:12161" ph="..." />
-          </folding>
+        <state relative-caret-position="4607">
+          <caret line="271" selection-start-line="271" selection-end-line="271" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="527">
+            <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/caesar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-171" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ciphers/hashsearch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="56" column="30" selection-start-line="56" selection-start-column="30" selection-end-line="56" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/testcases.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/cryptool.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="161" column="14" selection-start-line="161" selection-start-column="14" selection-end-line="161" selection-end-column="14" />
+        <state relative-caret-position="1207">
+          <caret line="71" column="31" lean-forward="true" selection-start-line="71" selection-start-column="31" selection-end-line="71" selection-end-column="31" />
           <folding>
-            <marker date="1536338362954" expanded="true" signature="4060:5165" ph="..." />
+            <element signature="e#136#151#0" expanded="true" />
+            <marker date="1536362826269" expanded="true" signature="4465:4470" ph="..." />
+            <marker date="1536362826269" expanded="true" signature="6902:6907" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ciphers/hashsearch.py">
+    <entry file="file://$PROJECT_DIR$/lib/cryptanalyzer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-170">
-          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+        <state relative-caret-position="-51">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Verify.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="83" column="39" selection-start-line="83" selection-start-column="39" selection-end-line="83" selection-end-column="39" />
         </state>
       </provider>
     </entry>

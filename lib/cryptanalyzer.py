@@ -2,8 +2,6 @@
 # tensorflow (from google) library for machine learning
 # cykit learn
 
-
-# sets
 L_ALPHA = "abcdefghijklmnopqrstuvwxyz"
 U_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 NUMERICALS = "1234567890"
