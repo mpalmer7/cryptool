@@ -1,28 +1,14 @@
 """
 When adding a new cipher:
 1) add to argparse
-2) add to cryptool main under arg flags
-3) add to cryptool main under encryption
-4) add values to cryptanalyzer
-5) add to list under cryptanalyzer
-6) update readme
+2) add values to cryptanalyzer
+3) add to list under cryptanalyzer
+4) update readme
 """
 import argparse
 import shutil  # used in print_plaintext
-
-try:
-    import cryptanalyzer
-
-    found_cryptanalyzer = True
-except ModuleNotFoundError:
-    print("Cryptanalyzer package not found.")
-    found_cryptanalyzer = False
-
-try:
-    import Verify
-except ModuleNotFoundError:
-    print("Verify package not found.")
-# should probably do something then...
+import cryptanalyzer
+import Verify
 
 # command line arguments
 parser = argparse.ArgumentParser()
@@ -105,11 +91,7 @@ def guess_cipher(inp_list):
     plaintext_list = []
     for cipher_str in inp_list:
         # Guess what kind of cipher the input is, rank results
-        if found_cryptanalyzer:
-            cracking_order = cryptanalyzer.cryptanalysis(cipher_str)[0]
-        else:
-            # Arbitrary
-            cracking_order = ["binary", "b64", "morse", "singlebyteXOR", "subtypeciphers", "hashsearch"]
+        cracking_order = cryptanalyzer.cryptanalysis(cipher_str)[0]
 
         # Will attempt to decrypt using the ranking of ciphers; stops when successful
         failed_to_crack = True
