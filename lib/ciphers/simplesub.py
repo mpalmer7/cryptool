@@ -1,6 +1,4 @@
 # WORK IN PROGRESS
-# Mitchell Palmer
-# Updated: 7/1/18
 
 import operator
 import string, re

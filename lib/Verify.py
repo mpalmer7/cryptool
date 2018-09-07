@@ -1,5 +1,3 @@
-# Mitchell Palmer
-# Updated: 7/1/18
 
 # need training data...
 # tensorflow (from google) library for machine learning

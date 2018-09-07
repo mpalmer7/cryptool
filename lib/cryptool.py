@@ -1,6 +1,3 @@
-# Mitchell Palmer
-# Updated: 7/1/18
-
 """
 When adding a new cipher:
 1) add to argparse
@@ -51,6 +48,8 @@ args = parser.parse_args()
 
 if args.key:
     key = input("Please enter the key: ")
+else:
+	key = None
 
 def print_plaintext(plaintext_list):
     columns, lines = shutil.get_terminal_size((80, 20))
@@ -70,10 +69,14 @@ def encrypt_cipher(cipher, inp):
     return opt
 
 
-def check_cipher(cipher, cipher_str, key=None):
+def check_cipher(cipher, cipher_str, key=None, gc=False):
     # get the file of a given cipher and attempt to decrypt it using that module
     opt = __import__('ciphers.' + cipher, fromlist=['*']).decrypt(cipher_str, key)
-    ppd = Verify.verify_all(opt)  # potential plaintext dictionary
+    # If cipher isn't given, check if output is in English
+    if gc is False:
+        ppd = Verify.verify_all(opt)  # potential plaintext dictionary
+    else:
+        ppd = opt
 
     # verify with the user that the decryption method worked
     if ppd != {}:
@@ -92,7 +95,7 @@ def check_cipher(cipher, cipher_str, key=None):
 def given_cipher(cipher, ctext_list, key=None):
     plaintext_list = []
     for ct in ctext_list:
-        checker = check_cipher(cipher, ct, key)
+        checker = check_cipher(cipher, ct, key, gc=True)
         if checker is not None:
             plaintext_list.append(checker)
         else:

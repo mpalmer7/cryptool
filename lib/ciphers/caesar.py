@@ -1,5 +1,3 @@
-# Mitchell Palmer
-# Updated: 7/1/18
 
 lalpha = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
 ualpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"

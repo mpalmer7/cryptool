@@ -1,5 +1,4 @@
-# Mitchell Palmer
-# Updated: 7/1/18
+
 # currently having some issues
 import binascii
 
@@ -17,6 +16,7 @@ def decrypt(ciphertext, key=None):
     ciphertext = ""
     for char in characters_append:
         ciphertext += char
+    #print(string_decode(ciphertext, length))
     return [string_decode(ciphertext, length)]
 
 def encrypt(plaintext):
