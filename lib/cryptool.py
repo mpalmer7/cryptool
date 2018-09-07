@@ -49,7 +49,7 @@ args = parser.parse_args()
 if args.key:
     key = input("Please enter the key: ")
 else:
-	key = None
+    key = None
 
 def print_plaintext(plaintext_list):
     columns, lines = shutil.get_terminal_size((80, 20))
@@ -65,8 +65,7 @@ def print_plaintext(plaintext_list):
 
 
 def encrypt_cipher(cipher, inp):
-    opt = __import__('ciphers.' + cipher, fromlist=['*']).encrypt(inp)
-    return opt
+    return __import__('ciphers.' + cipher, fromlist=['*']).encrypt(inp)
 
 
 def check_cipher(cipher, cipher_str, key=None, gc=False):
@@ -100,20 +99,49 @@ def given_cipher(cipher, ctext_list, key=None):
             plaintext_list.append(checker)
         else:
             (plaintext_list.append([cipher, ["COULD NOT DECRYPT"], ct]))
-    print_plaintext(plaintext_list)
-    exit()
+    return plaintext_list
+
+def guess_cipher(inp_list):
+    plaintext_list = []
+    for cipher_str in inp_list:
+        # Guess what kind of cipher the input is, rank results
+        if found_cryptanalyzer:
+            cracking_order = cryptanalyzer.cryptanalysis(cipher_str)[0]
+        else:
+            # Arbitrary
+            cracking_order = ["binary", "b64", "morse", "singlebyteXOR", "subtypeciphers", "hashsearch"]
+
+        # Will attempt to decrypt using the ranking of ciphers; stops when successful
+        failed_to_crack = True
+        for cipher in cracking_order:
+            # Decrypts file using a cipher, also checks if plaintext is in english
+            checker = check_cipher(cipher, cipher_str, key)
+            if checker is not None:
+                plaintext_list.append(checker)
+                failed_to_crack = False
+                break
+
+        # else, decryption failed
+        if failed_to_crack:
+            ppd = Verify.verify_cipher(cipher_str)
+            if not ppd:
+                plaintext_list.append(["FAILED", "", cipher_str])
+            else:
+                plaintext_list.extend(ppd)
+
+    return plaintext_list
 
 
 def main():
     # Take user input (file or string)
-    inp_ciphers_list = []
+    inp_list = []
     if args.string:
-        inp_ciphers_list.append(args.input)
+        inp_list.append(args.input)
     elif args.file:  # Edit this pending input... currently reads line by line
         with open(args.input, 'r') as file:
             icl = file.readlines()
             for c in icl:
-                inp_ciphers_list.append(c[:-1])  # removes '\n'
+                inp_list.append(c[:-1])  # removes '\n'
     else:
         print("please specify -s or -f for a string or file input")
         print("Example usage: ./cryptool.py [input] -sd [cipher flag]")
@@ -122,59 +150,15 @@ def main():
     # Encrypt or decrypt input
     # TODO issue here, what if put multiple flags for ciphers.  It would run them in this order...
     if args.decrypt:
-        # If given cipher
-        # this can be simplified...
-        if args.binary:
-            given_cipher("binary", inp_ciphers_list)
-        elif args.caesar:
-            given_cipher("caesar", inp_ciphers_list, key)
-        elif args.base64:
-            given_cipher("b64", inp_ciphers_list)
-        elif args.morse:
-            given_cipher("morse", inp_ciphers_list)
-        elif args.singlebyteXOR:
-            given_cipher("singlebyteXOR", inp_ciphers_list)
-        elif args.simplesub:
-            given_cipher("simplesub", inp_ciphers_list)
-        elif args.atbash:
-            given_cipher("atbash", inp_ciphers_list)
-        elif args.hashsearch:
-            given_cipher("hashsearch", inp_ciphers_list)
-        elif args.reversetext:
-            given_cipher("reversetext", inp_ciphers_list)
-        elif args.vigenere:
-            given_cipher("vigenere", inp_ciphers_list, key)
-        # otherwise, guess what cipher to use
-        else:
-            plaintext = []
-            for cipher_str in inp_ciphers_list:
-                # Guess what kind of cipher the input is, rank results
-                if found_cryptanalyzer:
-                    cracking_order = cryptanalyzer.cryptanalysis(cipher_str)[0]
-                else:
-                    # Arbitrary
-                    cracking_order = ["binary", "b64", "morse", "singlebyteXOR", "subtypeciphers", "hashsearch"]
+        plaintext_list = []
+        for arg in args.__dict__:
+            if arg not in ["input", "string", "file", "encrypt", "decrypt", "key"]:
+                if args.__dict__[arg]:
+                    print_plaintext(given_cipher(arg, inp_list, key))
+                    exit()
 
-                # Will attempt to decrypt using the ranking of ciphers; stops when successful
-                failed_to_crack = True
-                for cipher in cracking_order:
-                    # Decrypts file using a cipher, also checks if plaintext is in english
-                    checker = check_cipher(cipher, cipher_str, key)
-                    if checker is not None:
-                        plaintext.append(checker)
-                        failed_to_crack = False
-                        break
-
-                # else, decryption failed
-                if failed_to_crack:
-                    ppd = Verify.verify_cipher(cipher_str)
-                    if not ppd:
-                        plaintext.append(["FAILED", "", cipher_str])
-                    else:
-                        plaintext.extend(ppd)
-
-            # print findings to Terminal
-            print_plaintext(plaintext)
+        # Otherwise, have to guess what cipher it is.
+        print_plaintext(guess_cipher(inp_list))
         exit()
 
     elif args.encrypt:
@@ -182,37 +166,15 @@ def main():
             print("File will be encrypted line by line.")
         opt = []
 
-        if args.binary:
-            for inp in inp_ciphers_list:
-                opt.append(encrypt_cipher("binary", inp))
-        elif args.caesar:
-            for inp in inp_ciphers_list:
-                opt.append(encrypt_cipher("caesar", inp))
-        elif args.base64:
-            for inp in inp_ciphers_list:
-                opt.append(encrypt_cipher("b64", inp))
-        elif args.morse:
-            for inp in inp_ciphers_list:
-                opt.append(encrypt_cipher("morse", inp))
-        elif args.singlebyteXOR:
-            for inp in inp_ciphers_list:
-                opt.append(encrypt_cipher("singlebyteXOR", inp))
-        elif args.simplesub:
-            for inp in inp_ciphers_list:
-                opt.append(encrypt_cipher("simplesub", inp))
-        elif args.atbash:
-            for inp in inp_ciphers_list:
-                opt.append(encrypt_cipher("atbash", inp))
-        elif args.hashsearch:
-            for inp in inp_ciphers_list:
-                opt.append(encrypt_cipher("hashsearch", inp))
-        elif args.reversetext:
-            for inp in inp_ciphers_list:
-                opt.append(encrypt_cipher("reversetext", inp))
-        elif args.vigenere:
-            for inp in inp_ciphers_list:
-                opt.append(encrypt_cipher("vigenere", inp))
-        else:
+        gc = False
+        for arg in args.__dict__:
+            if arg not in ["input", "string", "file", "encrypt", "decrypt", "key"]:
+                if args.__dict__[arg]:
+                    for inp in inp_list:
+                        opt.append(encrypt_cipher(arg, inp))
+                    gc = True
+
+        if gc is False:
             print("Please specify a cipher to encrypt with.")
             print("Example usage: ./cryptool.py [input] -es -caesar")
             exit()

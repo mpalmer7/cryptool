@@ -286,3 +286,7 @@ def decrypt(ctext, nullthing=None):
 		
 		
 	"""
+
+def encrypt(plaintext, key=None):
+    print("Simple Substitution encryption not implemented yet.")
+    return None

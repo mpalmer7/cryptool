@@ -20,7 +20,7 @@ def decrypt(query, ci):
     except urllib.error.HTTPError:
         print("Hashsearch: urllib error")
     soup = BeautifulSoup(page, 'html.parser')
-    print(soup.prettify())
+    #print(soup.prettify())
 
     # test = soup.find_all('result__snippet')# class_="snippet"
     test = soup.find_all("a", class_="result__snippet")
