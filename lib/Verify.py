@@ -23,11 +23,12 @@ def verify_cipher(p_p):
         if w in ["caesar", "atbash", "simplesub", "reversetext", "vigenere"]:
             pass  # too easily mistaken with English; therefore skip
         else:
-            if int(cipher_weights[w]) >= 7:  # TODO arbitrary ceiling...
+            if int(cipher_weights[w]) >= 6:  # TODO arbitrary ceiling...
                 print("Potentially found a cipher within the cipher.")
                 # print(p_p, w)
                 potential_ciphers[w] = cipher_weights[w]
     counter = 0
+
     likely_cipher = ""
     for pc in potential_ciphers:
         if potential_ciphers[pc] > counter:
@@ -75,15 +76,16 @@ def verify_english(p_p):
         return False
 
 
-def verify_all(inp_list):
+def verify_all(inp_list, boo_cic=False):  # cic is optional check for ciphers within ciphers
     inv = []  # input now verified
     for p_p in inp_list:  # potential_plaintext
         if verify_english(p_p):  # check against english
             inv.append([p_p, "English"])
         else:
-            cipher_in_cipher = verify_cipher(p_p)
-            if not cipher_in_cipher:
-                pass
-            else:
-                inv.append([p_p, cipher_in_cipher])
+            if boo_cic:
+                cipher_in_cipher = verify_cipher(p_p)
+                if not cipher_in_cipher:
+                    pass
+                else:
+                    inv.append([p_p, cipher_in_cipher])
     return inv

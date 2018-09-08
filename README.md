@@ -7,9 +7,12 @@ For example: <br />
 `>> python cryptool.py -f textfile.txt`   for file input <br />
 -f will interpret the file line by line. <br />
 
+Optional Flags:
+`-key` add to specify a key to encrypt/decrypt with. <br />
+`-cic` add to check if the cipher-text was encrypted with multiple different ciphers. <br />
+
 The program will attempt to guess what kind of cipher you are trying to decrypt. <br />
 If you know what cipher you are decrypting, that can also be specified with one of the below flags. <br />
-Optional flag `-key` may be added and you will be asked to specify a key. <br />
 
 __Substitution Ciphers__ <br />
 `-caesar`           Caesar Cipher <br />
@@ -27,5 +30,3 @@ __Other__ <br />
 `-sbyteXOR`  Single Byte XOR <br />
 `-revtext`	 Reverse (or flip) the string <br />
 (WIP)`-rhs`       Reverse Hash, by performing a DuckDuckGo search <br />
-
-Additionally, the program includes a catch for a ciphers within ciphers.

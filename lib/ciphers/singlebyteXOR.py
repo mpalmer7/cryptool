@@ -19,6 +19,6 @@ def decrypt(ctext, temp=None):
     return plaintext
 
 
-def encrypt(inp):
+def encrypt(inp, key=None):
     print("single byte XOR encryption not implemented yet.")
     exit()

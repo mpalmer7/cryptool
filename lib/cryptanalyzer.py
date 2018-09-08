@@ -61,18 +61,18 @@ def cryptanalysis(ctext):  # strig
     # name, cod, sod, words
     binary = cipher("binary", {"1": 10, "0": 10, " ": 5, "OTHER": 0},
                     {L_ALPHA: 0, U_ALPHA: 0, NUMERICALS: 10, SYMBOLS: 0, SPACE: 5}, {True: 5, False: 5})
-    b64 = cipher("b64", {"\\": 0, "]": 0, "OTHER": 5}, {L_ALPHA: 5, U_ALPHA: 5, NUMERICALS: 5, SYMBOLS: -2, SPACE: -2},
-                 {True: 0, False: 10})
+    base64 = cipher("base64", {"OTHER": 5}, {L_ALPHA: 5, U_ALPHA: 5, NUMERICALS: 5, SYMBOLS: 4, SPACE: -5},
+                 {True: -5, False: 10})
     morse = cipher("morse", {".": 10, "-": 10, " ": 5, "OTHER": 0},
                    {L_ALPHA: 0, U_ALPHA: 0, NUMERICALS: 0, SYMBOLS: 10, SPACE: 5}, {True: 5, False: 3})
     singlebyteXOR = cipher("singlebyteXOR", {"OTHER": 5}, {L_ALPHA: 5, U_ALPHA: 5, NUMERICALS: 5, SYMBOLS: 0, SPACE: 0},
                            {True: 0, False: 10})
-    subtypeciphers = cipher("subtypeciphers", {"-": 0, "1": 0, "0": 0, ".": 0, "OTHER": 5},
-                            {L_ALPHA: 10, U_ALPHA: 10, NUMERICALS: 0, SYMBOLS: 0, SPACE: 5}, {True: 6, False: 3})
-    hashsearch = cipher("hashsearch", {"OTHER": 5}, {L_ALPHA: 5, U_ALPHA: 5, NUMERICALS: 5, SYMBOLS: 0, SPACE: 0},
-                        {True: 0, False: 10})
+    subtypeciphers = cipher("subtypeciphers", {"-": 2, "1": 0, "0": 0, "OTHER": 5},
+                            {L_ALPHA: 10, U_ALPHA: 10, NUMERICALS: 0, SYMBOLS: 0, SPACE: 5}, {True: 8, False: 3})
+    hashsearch = cipher("hashsearch", {"OTHER": 5}, {L_ALPHA: 5, U_ALPHA: 2, NUMERICALS: 5, SYMBOLS: 0, SPACE: -5},
+                        {True: -10, False: 10})
 
-    cipher_list = [binary, b64, morse, singlebyteXOR, subtypeciphers, hashsearch]
+    cipher_list = [binary, base64, morse, singlebyteXOR, subtypeciphers, hashsearch]
     # Reinforcement machine learning?
     # if it gets the correct code add +.01 to the value, otherwise -.01 (or something along those lines...)
     weights = {}
@@ -92,16 +92,16 @@ def cryptanalysis(ctext):  # strig
             score += cp.sodc[s] * sod[s]
         score = score / 2
 
-        # Update score with value of words
+        # Update score with value of if there is words or if one long string
         if word_boo:
-            score = (score*3 + cp.word_booc[True]) / 4
+            score = (score*2 + cp.word_booc[True]) / 3
         else:
-            score = (score*3 + cp.word_booc[False]) / 4
+            score = (score*2 + cp.word_booc[False]) / 3
 
         # additional indicators: b64
-        if cp.name == "b64":
+        if cp.name == "base64":
             # b64 will add '=' to make it divisible by 4
-            if (len(ctext) % 4) == 0:
+            if ((len(ctext) % 4) == 0) or ((len(ctext)-3) % 4 == 0):
                 if "=" in ctext[-4:-1]:
                     score = (score + 20) / 2
                 else:
@@ -112,29 +112,29 @@ def cryptanalysis(ctext):  # strig
             if (len(ctext) % 4) == 0:
                 if "=" in ctext[-4:-1]:
                     score = (score - 5) / 2
+
         # additional indicators: singlebyteXOR
         if ctext[0:2] == "1b":
-            if cp.name == "singlebyteXOR":
+            if cp.name == "singlebyteXOR" or cp.name == "base64":
                 score = (score + 20) / 2
             else:
                 score = (score + 0) / 2
         else:
             if cp.name == "singlebyteXOR":
                 score = (score - 5) / 2
+
         # additional indicators:	hashsearch
         if total_number_of_chars % 16 == 0:
             if cp.name == "hashsearch":
-                score = (score + 10) / 2
-            elif cp.name != "binary":
-                score = (score - 2) / 2
+                score = (score + 8) / 2
         else:
             if cp.name == "hashsearch":
                 score = (score - 5) / 2
 
         # subtypeciphers includes caesar, atbash, simplesub, reverse text, vigenere
         if cp.name == "subtypeciphers":
-            weights["caesar"] = score
-            weights["atbash"] = score - 0.25
+            weights["atbash"] = score
+            weights["caesar"] = score - 0.25
             weights["vigenere"] = score - 0.5
             weights["reversetext"] = score - 0.75
             weights["simplesub"] = score - 1
@@ -142,6 +142,7 @@ def cryptanalysis(ctext):  # strig
             weights[cp.name] = score
 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+    # print(ctext)
     # print(weights)
     # print(sorted(weights, key=weights.get, reverse=True))
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -152,6 +153,7 @@ def cryptanalysis(ctext):  # strig
             final_weights[ciph] = weights[ciph]
 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+    # print(ctext)
     # print(final_weights)
     # print(sorted(final_weights, key=final_weights.get, reverse=True))
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#

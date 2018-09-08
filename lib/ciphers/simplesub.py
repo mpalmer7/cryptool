@@ -216,9 +216,10 @@ def decrypt(ctext, nullthing=None):
     else:
         return []
 
-    def encrypt(inp):
-        print("Encryption for the simple substitution cipher not implemented yet.")
-        exit()
+
+def encrypt(inp, key=None):
+    print("Encryption for the simple substitution cipher not implemented yet.")
+    exit()
 
     """
 	for ch in characters_in_ctext:

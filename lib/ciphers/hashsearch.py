@@ -3,7 +3,7 @@ import os
 import urllib.request
 try:
 	from bs4 import BeautifulSoup
-except:
+except ModuleNotFoundError:
 	print("bs4 package requirement not found.  Will attempt to install.")
 	os.system('pip install bs4')
 import re
@@ -14,6 +14,10 @@ import re
 # query = "25f9e794323b453885f5181f1b624d0b" #123456789
 
 def decrypt(query, ci):
+    print("Hashsearch decryption currently broken.")
+    return []
+
+    '''
     url = "https://duckduckgo.com/html/?q=" + query
     try:
         page = urllib.request.urlopen(url)
@@ -71,7 +75,8 @@ def decrypt(query, ci):
     for key in dict:
         opt.append(key)
     return opt
+    '''
 
-def encrypt(inp):
+def encrypt(inp, key=None):
     print("Hashing not implemented yet.")
     exit()

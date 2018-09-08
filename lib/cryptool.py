@@ -19,6 +19,7 @@ parser.add_argument('-e', '--encrypt', help='Encrypting or Decrypting?', action=
 parser.add_argument('-d', '--decrypt', help='Encrypting or Decrypting?', action='store_true')
 # optional flags: key
 parser.add_argument('-key', '--key', help='decryption/encryption key, if given', action='store_true')
+parser.add_argument('-cic', '--cipherincipher', help='Check for recursive ciphers', action='store_true')
 # optional flags: ciphers
 parser.add_argument('-caesar', '--caesar', help='Caesar Cipher', action='store_true')
 parser.add_argument('-binary', '--binary', help='convert binary to plaintext', action='store_true')
@@ -55,11 +56,14 @@ def check_cipher(cipher, cipher_str, key=None, gc=False):
     # get the file of a given cipher and attempt to decrypt it using that module
     opt = __import__('ciphers.' + cipher, fromlist=['*']).decrypt(cipher_str, key)
     inv = []
-    if gc: # cipher is given
+    if gc:  # cipher is given
         for o in opt:
             inv.append([o, "Unverified"])
     else:
-        inv = Verify.verify_all(opt)
+        inv = Verify.verify_all(opt, args.cipherincipher)
+
+    if inv == [] or inv is None:
+        return None
 
     print("Did the %s decryption work? Output:" % cipher)
     for plaintext, ver_type in inv:
@@ -112,7 +116,7 @@ def guess_cipher(inp_list):
 
 
 def encrypt_cipher(cipher, inp):
-    return __import__('ciphers.' + cipher, fromlist=['*']).encrypt(inp)
+    return __import__('ciphers.' + cipher, fromlist=['*']).encrypt(inp, key)
 
 
 def main():
@@ -135,7 +139,7 @@ def main():
     if args.decrypt:
         # a. If cipher is specified:
         for arg in args.__dict__:
-            if arg not in ["input", "string", "file", "encrypt", "decrypt", "key"]:
+            if arg not in ["input", "string", "file", "encrypt", "decrypt", "key", "cipherincipher"]:
                 if args.__dict__[arg]:
                     print_plaintext(given_cipher(arg, inp_list, key))
                     exit()
@@ -149,7 +153,7 @@ def main():
 
         opt = []
         for arg in args.__dict__:  # locate what user specified to encrypt with
-            if arg not in ["input", "string", "file", "encrypt", "decrypt", "key"]:
+            if arg not in ["input", "string", "file", "encrypt", "decrypt", "key", "cipherincipher"]:
                 if args.__dict__[arg]:
                     for inp in inp_list:
                         opt.append(encrypt_cipher(arg, inp))

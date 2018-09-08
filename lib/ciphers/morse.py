@@ -13,7 +13,7 @@ def decrypt(ciphertext, nope=None):
         plaintext += str(mdict.get(letter))  # if letter not in mdict, adds "None"
     return [plaintext.replace("None", " ").lower()]
 
-def encrypt(plaintext):
+def encrypt(plaintext, key=None):
     ciphertext = ''
     for letter in list(plaintext):
         for m, t in mdict.items():

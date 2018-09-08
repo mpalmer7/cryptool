@@ -31,5 +31,5 @@ def decrypt(ciphertext, nullthing=None):
         return [plaintext]
 
 
-def encrypt(inp):
+def encrypt(inp, key=None):
     return bothcrypt(inp)

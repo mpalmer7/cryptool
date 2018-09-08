@@ -1,15 +1,15 @@
 
-lalpha = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
-ualpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
+lalpha = "abcdefghijklmnopqrstuvwxyz"
+ualpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 def check_keys(phrase, key):
     decoded = ""
     for i in range(len(phrase)):
         if phrase[i] in lalpha:
-            decoded += lalpha[lalpha.index(phrase[i]) + key]  # .index finds first occurrence of item
+            decoded += lalpha[(lalpha.index(phrase[i]) - int(key)) % 26]  # .index finds first occurrence of item
         elif phrase[i] in ualpha:
-            decoded += ualpha[ualpha.index(phrase[i]) + key]
+            decoded += ualpha[(ualpha.index(phrase[i]) - int(key)) % 26]
         else:
             decoded += phrase[i]
     return decoded
@@ -27,9 +27,19 @@ def decrypt(inp, key=None):
         return all_combos
 
 
-def encrypt(plaintext):
-    key = int(input("Enter an integer (0-26) to rotate by: "))
-    return check_keys(plaintext, key)
+def encrypt(plaintext, key=None):
+    if key is None:
+        key = int(input("Enter an integer to rotate by: "))
+
+    encoded = ""
+    for i in range(len(plaintext)):
+        if plaintext[i] in lalpha:
+            encoded += lalpha[(lalpha.index(plaintext[i]) + int(key)) % 26]  # .index finds first occurrence of item
+        elif plaintext[i] in ualpha:
+            encoded += ualpha[(ualpha.index(plaintext[i]) + int(key)) % 26]
+        else:
+            encoded += plaintext[i]
+    return encoded
 
 """
 # run standalone
