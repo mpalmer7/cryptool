@@ -18,7 +18,7 @@ __Substitution Ciphers__ <br />
 `-caesar`           Caesar Cipher <br />
 `-atb`              Atbash Cipher <br />
 `-vigenere`    Vigenère Cipher <br />
-(WIP)`-ssub`        Monoalphabetic (Simple) Substitution <br />
+(WIP)`-mono`        Monoalphabetic (Simple) Substitution <br />
 (TODO) `-playfair`  Playfair Cipher <br />
 (TODO) `-hill`      Hill Cipher <br />
 (TODO) `-vernam`    Vernam Cipher <br />

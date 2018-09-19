@@ -26,7 +26,7 @@ parser.add_argument('-binary', '--binary', help='convert binary to plaintext', a
 parser.add_argument('-b64', '--base64', help='Base64', action='store_true')
 parser.add_argument('-morse', '--morse', help='Morse Code (-.)', action='store_true')
 parser.add_argument('-sbyteXOR', '--singlebyteXOR', help='Single Byte XOR', action='store_true')
-parser.add_argument('-ssub', '--simplesub', help='Substitution Cipher (WIP)', action='store_true')
+parser.add_argument('-mono', '--monoalphabetic', help='Monoalphabetic Substitution Cipher (WIP)', action='store_true')
 parser.add_argument('-atb', '--atbash', help='Atbash Cipher', action='store_true')
 parser.add_argument('-rhs', '--hashsearch', help='search Bing for a hash', action='store_true')
 parser.add_argument('-revtext', '--reversetext', help='Reverse a string', action='store_true')

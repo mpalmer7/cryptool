@@ -20,15 +20,15 @@ http://practicalcryptography.com/ciphers/simple-substitution-cipher/
 '''
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 
-MUST_be_of = {'a': [], 'b': [], 'c': [], 'd': [], 'e': [], 'f': [], 'g': [], 'h': [], 'i': [],
-                                'j': [], 'k': [], 'l': [], 'm': [], 'n': [],
-                                'o': [], 'p': [], 'q': [], 'r': [], 's': [], 't': [], 'u': [], 'v': [], 'w': [],
-                                'x': [], 'y': [], 'z': []}
-CANT_be_of = {'a': [], 'b': [], 'c': [], 'd': [], 'e': [], 'f': [], 'g': [], 'h': [], 'i': [],
-                                'j': [], 'k': [], 'l': [], 'm': [], 'n': [],
-                                'o': [], 'p': [], 'q': [], 'r': [], 's': [], 't': [], 'u': [], 'v': [], 'w': [],
-                                'x': [], 'y': [], 'z': []}
-COULD_be_of = alphabet
+MUST_be_of = {'a': [], 'b': [], 'c': [], 'd': [], 'e': [], 'f': [], 'g': [], 'h': [],
+              'i': [], 'j': [], 'k': [], 'l': [], 'm': [], 'n': [], 'o': [], 'p': [],
+              'q': [], 'r': [], 's': [], 't': [], 'u': [], 'v': [], 'w': [], 'x': [], 'y': [], 'z': []}
+CANT_be_of = {'a': [], 'b': [], 'c': [], 'd': [], 'e': [], 'f': [], 'g': [], 'h': [],
+              'i': [], 'j': [], 'k': [], 'l': [], 'm': [], 'n': [], 'o': [], 'p': [],
+              'q': [], 'r': [], 's': [], 't': [], 'u': [], 'v': [], 'w': [], 'x': [], 'y': [], 'z': []}
+COULD_be_of = {'a': [], 'b': [], 'c': [], 'd': [], 'e': [], 'f': [], 'g': [], 'h': [],
+              'i': [], 'j': [], 'k': [], 'l': [], 'm': [], 'n': [], 'o': [], 'p': [],
+              'q': [], 'r': [], 's': [], 't': [], 'u': [], 'v': [], 'w': [], 'x': [], 'y': [], 'z': []}
 
 
 def update_must_cant(clet, plet):
@@ -37,8 +37,7 @@ def update_must_cant(clet, plet):
             MUST_be_of[key].append(plet)
         else:
             CANT_be_of[key].append(plet)
-
-    return COULD_be_of.replace(plet, '')
+    return None
 
 
 def replace_letter(opt_lst, characters_in_ctext, clet, plet):
@@ -97,27 +96,35 @@ def decrypt(ctext, key=None):
         ''' STEP 1 '''
         # replace most common letter with 'e'
         opt_lst = replace_letter(opt_lst, characters_in_ctext, sfic[0][0], 'e') #ToDo temp, do at end
-        COULD_be_of = update_must_cant(sfic[0][0], 'e')
+        update_must_cant(sfic[0][0], 'e')
+
+        ''' STEP 2 '''
+        # one letter words must be either 'I' or 'A'
+        one_lw = {}
+        for w in words:
+            if len(w) == 1:
+                one_lw[w] = words[w]
+        # print(one_lw)
 
 
+        # DOUBLE LETTERS, like 'aa' will never appear together.
 
+        '''
+        # find first letter frequency
+        flf = {}
+        for w in words:
+            print(w)
+            if w[0] in flf.keys():
+                flf[w[0]] += words[w]
+            else:
+                flf[w[0]] = words[w]
+        print(sorted(flf.items(), key=operator.itemgetter(1))[::-1])
+        '''
 
-
-
-
-
-
-
-
-
-
-
+        print("MUST")
         print(MUST_be_of)
-        print(" ")
+        print("CANT")
         print(CANT_be_of)
-        print(" ")
-        print(COULD_be_of)
-
 
         opt_str = ''.join(opt_lst)
         print(opt_str)
