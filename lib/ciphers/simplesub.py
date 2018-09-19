@@ -18,8 +18,142 @@ https://quipqiup.com/
 Additional reference:
 http://practicalcryptography.com/ciphers/simple-substitution-cipher/
 '''
+alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+MUST_be_of = {'a': [], 'b': [], 'c': [], 'd': [], 'e': [], 'f': [], 'g': [], 'h': [], 'i': [],
+                                'j': [], 'k': [], 'l': [], 'm': [], 'n': [],
+                                'o': [], 'p': [], 'q': [], 'r': [], 's': [], 't': [], 'u': [], 'v': [], 'w': [],
+                                'x': [], 'y': [], 'z': []}
+CANT_be_of = {'a': [], 'b': [], 'c': [], 'd': [], 'e': [], 'f': [], 'g': [], 'h': [], 'i': [],
+                                'j': [], 'k': [], 'l': [], 'm': [], 'n': [],
+                                'o': [], 'p': [], 'q': [], 'r': [], 's': [], 't': [], 'u': [], 'v': [], 'w': [],
+                                'x': [], 'y': [], 'z': []}
+COULD_be_of = alphabet
 
 
+def update_must_cant(clet, plet):
+    for key in MUST_be_of.keys():
+        if key == clet:
+            MUST_be_of[key].append(plet)
+        else:
+            CANT_be_of[key].append(plet)
+
+    return COULD_be_of.replace(plet, '')
+
+
+def replace_letter(opt_lst, characters_in_ctext, clet, plet):
+    for n in range(len(characters_in_ctext)):
+        if characters_in_ctext[n] == clet:
+            opt_lst[n] = plet
+    return opt_lst
+
+
+def decrypt(ctext, key=None):
+    characters_in_ctext = list(ctext.lower())  # ToDo all lowercase for now
+    opt_lst = list("_" * len(ctext))
+    opt_lst = replace_letter(opt_lst, characters_in_ctext, " ", " ") # add spaces
+
+    if len(characters_in_ctext) > 150:  # ToDo arbitrary...
+
+        # via: http://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html
+        # based on sample of 40,000
+        # assume error of += 0.01%
+        # english_frequency = {'e': 12.02, 't': 9.1, 'a': 8.12, 'o': 7.68, 'i': 7.31, 'n': 6.95, 's': 6.28, 'r': 6.02,
+        #                     'h': 5.92, 'd': 4.32, 'l': 3.98, 'u': 2.88, 'c': 2.71,
+        #                     'm': 2.61, 'f': 2.30, 'y': 2.11, 'w': 2.09, 'g': 2.03, 'p': 1.82, 'b': 1.49, 'v': 1.11,
+        #                     'k': 0.69, 'x': 0.17, 'q': 0.11, 'j': 0.1, 'z': 0.07}
+
+        inp_letter_count = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 0, 'h': 0, 'i': 0, 'j': 0, 'k': 0,
+                            'l': 0, 'm': 0, 'n': 0, 'o': 0, 'p': 0, 'q': 0, 'r': 0,
+                            's': 0, 't': 0, 'u': 0, 'v': 0, 'w': 0, 'x': 0, 'y': 0, 'z': 0}
+
+        totalalphachars = 0
+        for ch in characters_in_ctext:
+            if ch.lower() in alphabet:
+                inp_letter_count[ch.lower()] += 1
+                totalalphachars += 1
+
+        if totalalphachars == 0:
+            return []
+
+        # sorted frequency in ctext
+        inp_letter_frequency = {}
+        for lett in inp_letter_count:
+            inp_letter_frequency[lett] = (inp_letter_count[lett] / totalalphachars) * 100
+        sfic = sorted(inp_letter_frequency.items(), key=operator.itemgetter(1))[::-1]
+        # print(sfic)
+
+        # find words
+        # ToDo what if no spaces????
+        fwl = ctext.lower().split(" ")  # ToDo all lowercase for now
+        words = {}
+        for w in fwl:
+            if w in words.keys():
+                words[w] += 1
+            else:
+                words[w] = 1
+        # print(words)
+
+        ''' STEP 1 '''
+        # replace most common letter with 'e'
+        opt_lst = replace_letter(opt_lst, characters_in_ctext, sfic[0][0], 'e') #ToDo temp, do at end
+        COULD_be_of = update_must_cant(sfic[0][0], 'e')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        print(MUST_be_of)
+        print(" ")
+        print(CANT_be_of)
+        print(" ")
+        print(COULD_be_of)
+
+
+        opt_str = ''.join(opt_lst)
+        print(opt_str)
+        return []
+
+    # To short to do frequency analysis
+    else:
+        return []
+
+
+
+
+
+'''
+        # ToDo, remove?
+        # replace second most common letter with 't'
+        opt_lst = replace_letter(opt_lst, characters_in_ctext, sfic[1][0], 't')
+        opt_lst = replace_letter(opt_lst, characters_in_ctext, sfic[2][0], 'a')
+        opt_lst = replace_letter(opt_lst, characters_in_ctext, sfic[3][0], 'i')
+
+        # ToDo, redo?
+        # replace three letter words of form 't_e' with 'the'
+        for w in words:
+            if len(w) == 3:
+                # ToDo more here, what if multiple three letter words end in e? Add weights also...
+                hi = list(w)
+                if hi[2] == sfic[0][0] and hi[0] == sfic[1][0]:
+                    opt_lst = replace_letter(opt_lst, characters_in_ctext, hi[1], 'h')
+                    break
+'''
+
+
+
+
+
+'''
 # Test Case: giuifg cei iprc tpnn du cei qprcni
 def update_potential_letters(pl, rm_char, other_than):  # pl is potential_letters, other_than is a list
     for ch in pl.keys():
@@ -142,7 +276,8 @@ def decrypt(ctext, nullthing=None):
 
         for ch in range(len(characters_in_ctext)):
             if characters_in_ctext[ch] == sfic[0][0]:
-                opt_lst[ch] = 'e'
+				print('Hi')
+				opt_lst[ch] = 'e'
 
         # find a or i or both
         inp_split_by_space = ctext.split(" ")
@@ -198,7 +333,8 @@ def decrypt(ctext, nullthing=None):
                     two_letter_words[word] += 1
                 else:
                     two_letter_words[word] = 1
-        # print(two_letter_words)
+        print(two_letter_words)
+		
         # check_2_letter_words
 
         # 3 end in i
@@ -208,14 +344,14 @@ def decrypt(ctext, nullthing=None):
         # pea, ana, boa, spa, via, aha, ava, bra, sea, tea, era, yea
 
         opt_str = ''.join(opt_lst)
-        # print(potential_letters)
-        # print(letters_it_has_to_be)
-        # print(opt_str)
+        #print(potential_letters)
+        print(letters_it_has_to_be)
+        #print(opt_str)
 
         return []
     else:
         return []
-
+'''
 
 def encrypt(inp, key=None):
     print("Encryption for the simple substitution cipher not implemented yet.")
