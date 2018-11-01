@@ -8,7 +8,6 @@ print(r.json())
 # query = "fc5e038d38a57032085441e7fe7010b0" #helloworld
 # query = "25f9e794323b453885f5181f1b624d0b" #123456789
 
-
 def rainbow_table_lookup():
     pass
 
