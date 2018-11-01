@@ -69,7 +69,7 @@ def cryptanalysis(ctext):  # strig
                            {True: 0, False: 10})
     subtypeciphers = cipher("subtypeciphers", {"-": 2, "1": 0, "0": 0, "OTHER": 5},
                             {L_ALPHA: 10, U_ALPHA: 10, NUMERICALS: 0, SYMBOLS: 0, SPACE: 5}, {True: 8, False: 3})
-    hashsearch = cipher("hashsearch", {"OTHER": 5}, {L_ALPHA: 5, U_ALPHA: 2, NUMERICALS: 5, SYMBOLS: 0, SPACE: -5},
+    hashsearch = cipher("hash", {"OTHER": 5}, {L_ALPHA: 5, U_ALPHA: 2, NUMERICALS: 5, SYMBOLS: 0, SPACE: -5},
                         {True: -10, False: 10})
 
     cipher_list = [binary, base64, morse, singlebyteXOR, subtypeciphers, hashsearch]
@@ -125,10 +125,10 @@ def cryptanalysis(ctext):  # strig
 
         # additional indicators:	hashsearch
         if total_number_of_chars % 16 == 0:
-            if cp.name == "hashsearch":
+            if cp.name == "hash":
                 score = (score + 8) / 2
         else:
-            if cp.name == "hashsearch":
+            if cp.name == "hash":
                 score = (score - 5) / 2
 
         # subtypeciphers includes caesar, atbash, simplesub, reverse text, vigenere

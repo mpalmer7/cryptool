@@ -1,23 +1,57 @@
-import os
-
-import urllib.request
-try:
-	from bs4 import BeautifulSoup
-except ModuleNotFoundError:
-	print("bs4 package requirement not found.  Will attempt to install.")
-	os.system('pip install bs4')
-import re
+import requests, json
+url = "https://isc.sans.edu/tools/reversehash.html"
+r = requests.get(url)
+print(r.json())
 
 
 # query = "bdc87b9c894da5168059e00ebffb9077" #password1234
 # query = "fc5e038d38a57032085441e7fe7010b0" #helloworld
 # query = "25f9e794323b453885f5181f1b624d0b" #123456789
 
-def decrypt(query, ci):
-    print("Hashsearch decryption currently broken.")
-    return []
 
-    '''
+def rainbow_table_lookup():
+    pass
+
+
+def decrypt(query, ci):
+    # Ignore bing search for now
+    return rainbow_table_lookup()
+
+
+def encrypt(inp, key=None):
+    print("Hashing not implemented yet.")
+    exit()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+import os
+import urllib.request
+try:
+    from bs4 import BeautifulSoup
+except ModuleNotFoundError:
+    print("bs4 package requirement not found.  Will attempt to install.")
+    os.system('pip install bs4')
+import re
+def duckduckgo_search():
     url = "https://duckduckgo.com/html/?q=" + query
     try:
         page = urllib.request.urlopen(url)
@@ -28,7 +62,6 @@ def decrypt(query, ci):
 
     # test = soup.find_all('result__snippet')# class_="snippet"
     test = soup.find_all("a", class_="result__snippet")
-
 
     new = []
     for t in test:
@@ -68,15 +101,11 @@ def decrypt(query, ci):
             drm.append(key)
         elif key.lower() in blacklist:
             drm.append(key)
-    #print(query)
+    # print(query)
     for k in drm:
         dict.pop(k)
     opt = []
     for key in dict:
         opt.append(key)
     return opt
-    '''
-
-def encrypt(inp, key=None):
-    print("Hashing not implemented yet.")
-    exit()
+'''
