@@ -5,10 +5,11 @@ When adding a new cipher:
 3) add to list under cryptanalyzer
 4) update readme
 """
-import shutil  # used in print_plaintext
-import cryptanalyzer
-import Verify
 import argparse
+import shutil  # used in print_plaintext
+
+import Verify
+import cryptanalyzer
 
 # Command Line Arguments
 parser = argparse.ArgumentParser()
@@ -31,7 +32,6 @@ parser.add_argument('-rhs', '--hash', help='search DuckDuckGo for a hash', actio
 parser.add_argument('-revtext', '--reversetext', help='reverse the text', action='store_true')
 parser.add_argument('-vig', '--vigenere', help='Vigenère cipher (needs key)', action='store_true')
 args = parser.parse_args()
-
 key = args.key
 
 
@@ -98,10 +98,8 @@ def guess_cipher(inp_list):
     plaintext_list = []
     for cipher_str in inp_list:
         failed_to_crack = True
-
         # Guess what kind of cipher the input is, returns ranked results
         cracking_order = cryptanalyzer.cryptanalysis(cipher_str)[0]
-
         # Will attempt to decrypt using the ranking of ciphers; stops when successful
         for cipher in cracking_order:
             # Decrypts file using a cipher, also checks if plaintext is in english
@@ -110,11 +108,9 @@ def guess_cipher(inp_list):
                 plaintext_list.append(checker)
                 failed_to_crack = False
                 break
-
         # else, decryption failed
         if failed_to_crack:
             plaintext_list.append(["FAILED", "", cipher_str])
-
     return plaintext_list
 
 
@@ -140,14 +136,13 @@ def main():
     # 2. DECRYPT FILE; IF SPECIFIED -----------------------------------------------------------------------------------#
     if args.decrypt:
         # a. If cipher is specified:
-        for arg in args.__dict__:
+        for arg in args.__dict__:  # ToDo change to parent/child argparse to not need to do this
             if arg not in ["input", "string", "file", "encrypt", "decrypt", "key", "cipherincipher"]:
                 if args.__dict__[arg]:
                     print_plaintext(given_cipher(arg, inp_list, key))
                     exit()
         # b. Otherwise, have to guess what cipher it is:
         print_plaintext(guess_cipher(inp_list))
-
     # 2. ENCRYPT FILE; IF SPECIFIED -----------------------------------------------------------------------------------#
     elif args.encrypt:
         if args.file:
@@ -163,7 +158,7 @@ def main():
                     for o in opt:
                         print(o)
                     exit()
-
+        InputError("no cipher specified to encrypt with")
     # 3. NOT SPECIFIED; QUIT ------------------------------------------------------------------------------------------#
     else:
         InputError("encrypt or decrypt")
