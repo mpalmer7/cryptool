@@ -131,13 +131,13 @@ def cryptanalysis(ctext):  # strig
             if cp.name == "hash":
                 score = (score - 5) / 2
 
-        # subtypeciphers includes caesar, atbash, simplesub, reverse text, vigenere
+        # subtypeciphers includes caesar, atbash, monoalphabetic, reverse text, vigenere
         if cp.name == "subtypeciphers":
             weights["atbash"] = score
             weights["caesar"] = score - 0.25
             weights["vigenere"] = score - 0.5
             weights["reversetext"] = score - 0.75
-            weights["simplesub"] = score - 1
+            weights["monoalphabetic"] = score - 1
         else:
             weights[cp.name] = score
 

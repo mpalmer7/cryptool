@@ -5,38 +5,41 @@ When adding a new cipher:
 3) add to list under cryptanalyzer
 4) update readme
 """
-import argparse
 import shutil  # used in print_plaintext
 import cryptanalyzer
 import Verify
+import argparse
 
-# command line arguments
+# Command Line Arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('input', help='input file or string', type=str)
-parser.add_argument('-s', '--string', help='string of ciphertext', action='store_true')
-parser.add_argument('-f', '--file', help='text file of ciphertext', action='store_true')
-parser.add_argument('-e', '--encrypt', help='Encrypting or Decrypting?', action='store_true')
-parser.add_argument('-d', '--decrypt', help='Encrypting or Decrypting?', action='store_true')
-# optional flags: key
-parser.add_argument('-key', '--key', help='decryption/encryption key, if given', action='store_true')
-parser.add_argument('-cic', '--cipherincipher', help='Check for recursive ciphers', action='store_true')
-# optional flags: ciphers
+parser.add_argument('-s', '--string', help='string input', action='store_true')
+parser.add_argument('-f', '--file', help='file input', action='store_true')
+parser.add_argument('-e', '--encrypt', help='encrypt the input', action='store_true')
+parser.add_argument('-d', '--decrypt', help='decrypt the input', action='store_true')
+parser.add_argument('-key', '--key', help='specify a key', type=str)
+parser.add_argument('-cic', '--cipherincipher', help='check for encryption with multiple ciphers', action='store_true')  # ToDo
+# Optional Flags: ciphers
 parser.add_argument('-caesar', '--caesar', help='Caesar Cipher', action='store_true')
-parser.add_argument('-binary', '--binary', help='convert binary to plaintext', action='store_true')
+parser.add_argument('-binary', '--binary', help='Binary-Plaintext Conversion', action='store_true')
 parser.add_argument('-b64', '--base64', help='Base64', action='store_true')
 parser.add_argument('-morse', '--morse', help='Morse Code (-.)', action='store_true')
 parser.add_argument('-sbyteXOR', '--singlebyteXOR', help='Single Byte XOR', action='store_true')
-parser.add_argument('-mono', '--monoalphabetic', help='Monoalphabetic Substitution Cipher (WIP)', action='store_true')
+parser.add_argument('-mono', '--monoalphabetic', help='Monoalphabetic Substitution Cipher', action='store_true')
 parser.add_argument('-atb', '--atbash', help='Atbash Cipher', action='store_true')
-parser.add_argument('-rhs', '--hash', help='search Bing for a hash', action='store_true')
-parser.add_argument('-revtext', '--reversetext', help='Reverse a string', action='store_true')
-parser.add_argument('-vig', '--vigenere', help='Vigenère cipher', action='store_true')
+parser.add_argument('-rhs', '--hash', help='search DuckDuckGo for a hash', action='store_true')
+parser.add_argument('-revtext', '--reversetext', help='reverse the text', action='store_true')
+parser.add_argument('-vig', '--vigenere', help='Vigenère cipher (needs key)', action='store_true')
 args = parser.parse_args()
 
-if args.key:
-    key = input("Please enter the key: ")
-else:
-    key = None
+key = args.key
+
+
+class InputError:
+    def __init__(self, err):
+        print("ERROR with input formatting of: %s" % err)
+        print("Example usage: ./cryptool.py [input] -d -f [optional flags]")
+        exit()
 
 
 def print_plaintext(plaintext_list):
@@ -124,15 +127,14 @@ def main():
     inp_list = []
     if args.string:
         inp_list.append(args.input)
-    elif args.file:  # Edit this pending input... currently reads line by line
+    elif args.file:
+        print("File will be read line by line.")
         with open(args.input, 'r') as file:
             icl = file.readlines()
             for c in icl:
                 inp_list.append(c[:-1])  # removes '\n'
     else:
-        print("please specify -s or -f for a string or file input")
-        print("Example usage: ./cryptool.py [input] -sd [cipher flag]")
-        exit()
+        InputError("string or file")
 
     # TODO issue here, what if put multiple flags for ciphers.  It would run them in order; just one...
     # 2. DECRYPT FILE; IF SPECIFIED -----------------------------------------------------------------------------------#
@@ -162,13 +164,9 @@ def main():
                         print(o)
                     exit()
 
-        print("Please specify a cipher to encrypt with.")
-        print("Example usage: ./cryptool.py [input] -es -caesar")
-
     # 3. NOT SPECIFIED; QUIT ------------------------------------------------------------------------------------------#
     else:
-        print("please specify -e or -d for encryption or decryption")
-        print("Example usage: ./cryptool.py [input] -sd [optional flags]")
+        InputError("encrypt or decrypt")
 
 
 if __name__ == "__main__":
