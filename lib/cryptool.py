@@ -19,7 +19,7 @@ parser.add_argument('-f', '--file', help='file input', action='store_true')
 parser.add_argument('-e', '--encrypt', help='encrypt the input', action='store_true')
 parser.add_argument('-d', '--decrypt', help='decrypt the input', action='store_true')
 parser.add_argument('-key', '--key', help='specify a key', type=str)
-parser.add_argument('-cic', '--cipherincipher', help='check for encryption with multiple ciphers', action='store_true')  # ToDo
+parser.add_argument('-cic', '--cipherincipher', help='check for encryption with multiple ciphers', action='store_true')
 # Optional Flags: ciphers
 parser.add_argument('-caesar', '--caesar', help='Caesar Cipher', action='store_true')
 parser.add_argument('-binary', '--binary', help='Binary-Plaintext Conversion', action='store_true')

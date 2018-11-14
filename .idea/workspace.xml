@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="404f2d42-80e2-4519-a430-fd1ff16287fb" name="Default" comment="&quot;reworked command line argument parser&quot;">
+    <list default="true" id="404f2d42-80e2-4519-a430-fd1ff16287fb" name="Default" comment="&quot;updated cryptool&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Verify.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Verify.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/cryptool.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/cryptool.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -75,53 +76,53 @@
         <counts>
           <entry key="gitignore" value="36" />
           <entry key="md" value="61" />
-          <entry key="py" value="3946" />
-          <entry key="txt" value="257" />
+          <entry key="py" value="4387" />
+          <entry key="txt" value="274" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="61" />
-          <entry key="PLAIN_TEXT" value="293" />
-          <entry key="Python" value="3946" />
+          <entry key="PLAIN_TEXT" value="310" />
+          <entry key="Python" value="4387" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="gitignore" value="1" />
           <entry key="md" value="2" />
-          <entry key="py" value="20" />
+          <entry key="py" value="22" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Markdown" value="2" />
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Python" value="20" />
+          <entry key="Python" value="22" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/cryptool.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
+            <state relative-caret-position="341">
+              <caret line="71" column="25" lean-forward="true" selection-start-line="71" selection-start-column="25" selection-end-line="71" selection-end-column="25" />
               <folding>
-                <element signature="e#136#176#0" expanded="true" />
-                <marker date="1542149925442" expanded="true" signature="1901:2083" ph="..." />
+                <element signature="e#136#151#0" expanded="true" />
+                <marker date="1542150417228" expanded="true" signature="1893:2075" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/cryptanalyzer.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/Verify.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2261">
-              <caret line="133" column="64" selection-start-line="133" selection-start-column="64" selection-end-line="133" selection-end-column="64" />
+            <state relative-caret-position="980">
+              <caret line="81" column="40" lean-forward="true" selection-start-line="81" selection-start-column="40" selection-end-line="81" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -139,12 +140,12 @@
     <findStrings>
       <find>inp_ciphers</find>
       <find>print_plaint</find>
-      <find>verify</find>
       <find>cic</find>
       <find>input</find>
       <find>simple</find>
       <find>key</find>
       <find>decr</find>
+      <find>verify</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -178,7 +179,6 @@
         <option value="$PROJECT_DIR$/lib/testcases/BasicSet-binaryTODO.txt" />
         <option value="$PROJECT_DIR$/lib/BasicSet-reversetext.txt" />
         <option value="$PROJECT_DIR$/lib/ciphers/binary.py" />
-        <option value="$PROJECT_DIR$/lib/Verify.py" />
         <option value="$PROJECT_DIR$/lib/ciphers/simplesub.py" />
         <option value="$PROJECT_DIR$/lib/ciphers/monoalphabetic.py" />
         <option value="$PROJECT_DIR$/lib/ciphers/hashsearch.py" />
@@ -186,6 +186,7 @@
         <option value="$PROJECT_DIR$/lib/cryptanalyzer.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/lib/cryptool.py" />
+        <option value="$PROJECT_DIR$/lib/Verify.py" />
       </list>
     </option>
   </component>
@@ -440,7 +441,14 @@
       <option name="project" value="LOCAL" />
       <updated>1542148643836</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="&quot;updated cryptool&quot;">
+      <created>1542150069116</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1542150069116</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -448,8 +456,9 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.26912752" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.26912752" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Messages" weight="0.32907802" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="1" />
       <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
@@ -480,6 +489,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <MESSAGE value="&quot;Updated cipher argument descriptions and started Vigenère cipher&quot;" />
     <MESSAGE value="&quot;Updated README.md&quot;" />
     <MESSAGE value="&quot;Finished implementing Vigenere Cipher&quot;" />
@@ -490,7 +500,8 @@
     <MESSAGE value="&quot;made code more readable&quot;" />
     <MESSAGE value="&quot;Created large testcase sets for most of the ciphers and fixed copious bugs in the process&quot;" />
     <MESSAGE value="&quot;reworked command line argument parser&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;reworked command line argument parser&quot;" />
+    <MESSAGE value="&quot;updated cryptool&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;updated cryptool&quot;" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/lib/ciphers/README.txt" />
@@ -632,13 +643,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Verify.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="31" column="22" lean-forward="true" selection-start-line="31" selection-start-column="22" selection-end-line="31" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/ML.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -660,13 +664,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/cryptanalyzer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2261">
-          <caret line="133" column="64" selection-start-line="133" selection-start-column="64" selection-end-line="133" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -677,14 +674,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib/cryptanalyzer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="133" column="64" selection-start-line="133" selection-start-column="64" selection-end-line="133" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/cryptool.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
+        <state relative-caret-position="341">
+          <caret line="71" column="25" lean-forward="true" selection-start-line="71" selection-start-column="25" selection-end-line="71" selection-end-column="25" />
           <folding>
-            <element signature="e#136#176#0" expanded="true" />
-            <marker date="1542149925442" expanded="true" signature="1901:2083" ph="..." />
+            <element signature="e#136#151#0" expanded="true" />
+            <marker date="1542150417228" expanded="true" signature="1893:2075" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Verify.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="980">
+          <caret line="81" column="40" lean-forward="true" selection-start-line="81" selection-start-column="40" selection-end-line="81" selection-end-column="40" />
         </state>
       </provider>
     </entry>
