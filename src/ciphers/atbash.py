@@ -10,6 +10,7 @@ ldict = {'a': 'z', 'b': 'y', 'c': 'x', 'd': 'w', 'e': 'v', 'f': 'u', 'g': 't',
          'o': 'l', 'p': 'k', 'q': 'j', 'r': 'i', 's': 'h', 't': 'g', 'u': 'f',
          'v': 'e', 'w': 'd', 'x': 'c', 'y': 'b', 'z': 'a'}
 
+
 def bothcrypt(inp):
     opt = ''
     for letter in list(inp):
@@ -21,14 +22,13 @@ def bothcrypt(inp):
             opt += letter
     return opt
 
+
 def decrypt(ciphertext, nullthing=None):
     # decryption
     plaintext = bothcrypt(ciphertext)
     # output
-    if plaintext == '':
-        return []
-    else:
-        return [plaintext]
+    if plaintext != '':
+        yield plaintext
 
 
 def encrypt(inp, key=None):

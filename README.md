@@ -30,3 +30,4 @@ __Other__ <br />
 `-sbyteXOR`  Single Byte XOR <br />
 `-revtext`	 Reverse (or flip) the string <br />
 (WIP)`-rhs`  Reverse Hash, by performing a DuckDuckGo search <br />
+`-aes`       AES encryption/decryption <br />

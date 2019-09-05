@@ -10,9 +10,9 @@ def decrypt(ciphertext, b=None):
         plaintext = str(base64.b64decode(ciphertext))
         if plaintext.startswith("b'") and plaintext.endswith("'"):
             plaintext = plaintext[2:-1]  # fixes formatting
-        return [plaintext]
+            yield plaintext
     except binascii.Error:
-        return []
+        pass
 
 
 def encrypt(plaintext, key=None):

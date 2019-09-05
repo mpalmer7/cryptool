@@ -13,10 +13,7 @@ def decrypt(ctext, temp=None):
     for xor_key in range(256):
         decoded = ''.join(chr(b ^ xor_key) for b in encoded)
         if decoded.isprintable():
-            # print(decoded)
-            plaintext.append(decoded)
-
-    return plaintext
+            yield decoded
 
 
 def encrypt(inp, key=None):

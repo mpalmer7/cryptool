@@ -5,10 +5,10 @@ except ModuleNotFoundError:
     print("Module requires Google TensorFlow, will attempt to install.")
     os.system('pip3 install --upgrade tensorflow')
 
-form tensorflow import keras
-import numpy as np
+#from tensorflow import keras
+#import numpy as np
 
-print(tf.__version__)
+#print(tf.__version__)
 
 
 

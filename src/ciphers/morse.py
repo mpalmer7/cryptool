@@ -7,11 +7,13 @@ mdict = {'-': 'T', '-.--': 'Y', '.': 'E', '-.-': 'K', '..---': '2',
              'A', '--': 'M', '--...': '7', '.....': '5', '--.-': 'Q', '-----':
              '0', '.----': '1'}
 
+
 def decrypt(ciphertext, nope=None):
     plaintext = ''
     for letter in ciphertext.split(' '):
         plaintext += str(mdict.get(letter))  # if letter not in mdict, adds "None"
-    return [plaintext.replace("None", " ").lower()]
+    yield plaintext.replace("None", " ").lower()
+
 
 def encrypt(plaintext, key=None):
     ciphertext = ''

@@ -8,7 +8,7 @@ When adding a new cipher:
 import argparse
 import shutil  # used in print_plaintext
 
-import Verify
+import LanguageVerifier
 import cryptanalyzer
 
 # Command Line Arguments
@@ -30,7 +30,8 @@ parser.add_argument('-mono', '--monoalphabetic', help='Monoalphabetic Substituti
 parser.add_argument('-atb', '--atbash', help='Atbash Cipher', action='store_true')
 parser.add_argument('-rhs', '--hash', help='search DuckDuckGo for a hash', action='store_true')
 parser.add_argument('-revtext', '--reversetext', help='reverse the text', action='store_true')
-parser.add_argument('-vig', '--vigenere', help='Vigenère cipher (needs key)', action='store_true')
+parser.add_argument('-vig', '--vigenere', help='Vigenere cipher (needs key)', action='store_true')
+parser.add_argument('-aes', '--aes', help="AES Cipher", action='store_true')
 args = parser.parse_args()
 key = args.key
 
@@ -42,76 +43,51 @@ class InputError:
         exit()
 
 
-def print_plaintext(plaintext_list):
-    columns, lines = shutil.get_terminal_size((80, 20))
-    for item in plaintext_list:
-        print("#" * columns + "\nCipher Text:\n\t" + item[2] + "\nCipher:\n\t" + item[0] + "\nPlaintext:")
-        if len(item[1]) == 0:
-            print("\tDECRYPTION FAILED")
-        else:
-            for i in item[1]:
-                print("\t%s" % i[0])
-    print("#" * columns)
-    return None
+columns, lines = shutil.get_terminal_size((80, 20))
+COLBAR = "#" * columns
 
 
-def check_cipher(cipher, cipher_str, key=None, gc=False):
-    # get the file of a given cipher and attempt to decrypt it using that module
-    opt = __import__('ciphers.' + cipher, fromlist=['*']).decrypt(cipher_str, key)
-    inv = []
-    if gc:  # cipher is given
-        for o in opt:
-            inv.append([o, "Unverified"])
-    else:
-        inv = Verify.verify_all(opt, args.cipherincipher)
+# run the decrypt function of a given cipher, this function by convention attempts to decrypt the cipher-text
+# this function by convention attempts to decrypt the cipher-text, and will yield any results
+def decrypt_ciphertext(ciphertext, cipher, key=None):
+    for unverified_decrypted_text in __import__('ciphers.' + cipher, fromlist=['*']).decrypt(ciphertext, key):
+        if unverified_decrypted_text:
+            yield unverified_decrypted_text
 
-    if inv == [] or inv is None:
-        return None
 
-    print("Did the %s decryption work? Output:" % cipher)
-    for plaintext, ver_type in inv:
-        if ver_type not in ["English", "Unverified"]:
-            print("Cipher within a cipher found: " + ver_type)
-        print(plaintext)
+def verify_plaintext(potential_plaintext, language_obj):
+    verified_boo = LanguageVerifier.verify_string(potential_plaintext, language_obj)
+    return verified_boo
 
-    while 1 == 1:  # TODO ugly
-        temp = input("(Y/N): ")
+
+def get_user_feedback(ciphertext, cipher, plaintext):
+    print(COLBAR, end='')
+    print(ciphertext)
+    print("Did the %s decryption work? ('X' to not try again)" % cipher)
+    print(plaintext)
+    while 1 == 1:  # ToDo ugly
+        temp = input("(Y/N/X): ")
         if temp.lower() == "n":
-            return None
-        elif temp.lower() == "y":  # decryption successful
-            return [cipher, inv, cipher_str]  # [the cipher, the plaintext(s), and the original ciphertext]
+            return 0
+        elif temp.lower() == "y":
+            return 1
+        elif temp.lower() == "x":
+            return 2
 
 
-# When a flag specifies the decryption cipher to use
-def given_cipher(cipher, ctext_list, key=None):
-    plaintext_list = []
-    for ct in ctext_list:
-        checker = check_cipher(cipher, ct, key, gc=True)
-        if checker is not None:
-            plaintext_list.append(checker)
-        else:
-            (plaintext_list.append([cipher, ["COULD NOT DECRYPT"], ct]))
-    return plaintext_list
-
-
-def guess_cipher(inp_list):
-    plaintext_list = []
-    for cipher_str in inp_list:
-        failed_to_crack = True
-        # Guess what kind of cipher the input is, returns ranked results
-        cracking_order = cryptanalyzer.cryptanalysis(cipher_str)[0]
-        # Will attempt to decrypt using the ranking of ciphers; stops when successful
-        for cipher in cracking_order:
-            # Decrypts file using a cipher, also checks if plaintext is in english
-            checker = check_cipher(cipher, cipher_str, key)
-            if checker is not None:
-                plaintext_list.append(checker)
-                failed_to_crack = False
-                break
-        # else, decryption failed
-        if failed_to_crack:
-            plaintext_list.append(["FAILED", "", cipher_str])
-    return plaintext_list
+def guess_cipher(ciphertext, lang_obj):
+    cracking_order = cryptanalyzer.cryptanalysis(ciphertext)[0]
+    for cipher in cracking_order:
+        for unverified_decrypted_text in decrypt_ciphertext(ciphertext, cipher):
+            if verify_plaintext(unverified_decrypted_text, lang_obj):
+                machine_verified_decrypted_text = unverified_decrypted_text
+                res = get_user_feedback(ciphertext, cipher, machine_verified_decrypted_text)
+                if res == 2:
+                    return False
+                if res == 1:
+                    human_verified_decrypted_text = machine_verified_decrypted_text
+                    return human_verified_decrypted_text
+    return False
 
 
 def encrypt_cipher(cipher, inp):
@@ -123,7 +99,7 @@ def main():
     inp_list = []
     if args.string:
         inp_list.append(args.input)
-    elif args.file:
+    elif args.file:  # ToDo change to regex check then reading line-by-line
         print("File will be read line by line.")
         with open(args.input, 'r') as file:
             icl = file.readlines()
@@ -139,11 +115,29 @@ def main():
         for arg in args.__dict__:  # ToDo change to parent/child argparse to not need to do this
             if arg not in ["input", "string", "file", "encrypt", "decrypt", "key", "cipherincipher"]:
                 if args.__dict__[arg]:
-                    print_plaintext(given_cipher(arg, inp_list, key))
+                    for ciphertext in inp_list:
+                        print("Decrypted %s as:" % ciphertext)
+                        for plaintext in decrypt_ciphertext(ciphertext, arg, key):  # arg is cipher name
+                            print("\t"+plaintext)
                     exit()
+
         # b. Otherwise, have to guess what cipher it is:
-        print_plaintext(guess_cipher(inp_list))
-    # 2. ENCRYPT FILE; IF SPECIFIED -----------------------------------------------------------------------------------#
+        json_opt = {}
+        for ciphertext in inp_list:
+            lang_obj = LanguageVerifier.Language("english")  # ToDo hardcoded english
+            decrypted_cipher = guess_cipher(ciphertext, lang_obj)
+            if decrypted_cipher:
+                json_opt[ciphertext] = decrypted_cipher
+            else:
+                print(COLBAR, end='')
+                print("Failed to decrypt: %s" % ciphertext)  # ToDo add press any key for acknowledgement
+                json_opt[ciphertext] = "FAILED TO DECRYPT"
+
+        print("\n\nFINAL JSON OPT:\n\n")
+        print(json_opt)
+        exit()
+
+    # 3. ENCRYPT FILE; IF SPECIFIED -----------------------------------------------------------------------------------#
     elif args.encrypt:
         if args.file:
             print("File will be encrypted line by line.")
@@ -159,7 +153,7 @@ def main():
                         print(o)
                     exit()
         InputError("no cipher specified to encrypt with")
-    # 3. NOT SPECIFIED; QUIT ------------------------------------------------------------------------------------------#
+    # 4. NOT SPECIFIED; QUIT ------------------------------------------------------------------------------------------#
     else:
         InputError("encrypt or decrypt")
 

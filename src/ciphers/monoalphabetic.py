@@ -128,11 +128,11 @@ def decrypt(ctext, key=None):
 
         opt_str = ''.join(opt_lst)
         print(opt_str)
-        return []
+        pass
 
     # To short to do frequency analysis
     else:
-        return []
+        pass
 
 
 

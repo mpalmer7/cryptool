@@ -18,13 +18,11 @@ def check_keys(phrase, key):
 def decrypt(inp, key=None):
     ctext = list(inp)
     if key is not None:
-        return [check_keys(ctext, key)]
+        yield check_keys(ctext, key)
     else:  # Key not given, try all keys
-        all_combos = []
         for key in range(0, 26):
-            all_combos.append(check_keys(ctext, key))
+            yield check_keys(ctext, key)
             key += 1
-        return all_combos
 
 
 def encrypt(plaintext, key=None):

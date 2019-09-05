@@ -17,8 +17,8 @@ def decrypt(ciphertext, key=None):
     ciphertext = ""
     for char in characters_append:
         ciphertext += char
-    #print(string_decode(ciphertext, length))
-    return [string_decode(ciphertext, length)]
+    # print("strdecode:" + string_decode(ciphertext, length))
+    yield string_decode(ciphertext, length)
 
 
 def encrypt(plaintext, key=None):

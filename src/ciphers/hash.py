@@ -1,8 +1,10 @@
-import requests, json
-url = "https://isc.sans.edu/tools/reversehash.html"
-r = requests.get(url)
-print(r.json())
+import requests
+import json
+import hashlib
 
+url = "https://isc.sans.edu/tools/reversehash.html"
+# r = requests.get(url)
+# print(r.json())
 
 # query = "bdc87b9c894da5168059e00ebffb9077" #password1234
 # query = "fc5e038d38a57032085441e7fe7010b0" #helloworld
@@ -13,13 +15,27 @@ def rainbow_table_lookup():
 
 
 def decrypt(query, ci):
-    # Ignore bing search for now
-    return rainbow_table_lookup()
+    yield None
 
 
 def encrypt(inp, key=None):
     print("Hashing not implemented yet.")
-    exit()
+
+
+def hash_sha1(inp_str):
+    return hashlib.sha1(inp_str).hexdigest()
+
+
+def hash_sha256(inp_str):
+    return hashlib.sha256(inp_str).hexdigest()
+
+
+def hash_sha512(inp_str):
+    return hashlib.sha512(inp_str).hexdigest()
+
+
+def hash_md5(inp_str):
+    return hashlib.md5(inp_str).hexdigest()
 
 
 

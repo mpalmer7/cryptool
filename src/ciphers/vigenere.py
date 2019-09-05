@@ -38,8 +38,8 @@ def decrypt(ctext, key=None):
     for i in range(len(ctext)):
         ptext += code_char(ctext[i], key[i], "d")
 
-    print(ptext)
-    return [ptext]
+    # print(ptext)
+    yield ptext
 
 
 def encrypt(inp, key=None):
@@ -53,5 +53,5 @@ def encrypt(inp, key=None):
     for i in range(len(inp)):
         ctext += code_char(inp[i], key[i], "e")
 
-    print(ctext)
+    # print(ctext)
     return ctext
