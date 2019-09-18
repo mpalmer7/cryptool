@@ -40,396 +40,198 @@ def update_must_cant(clet, plet):
     return None
 
 
-def replace_letter(opt_lst, characters_in_ctext, clet, plet):
-    for n in range(len(characters_in_ctext)):
-        if characters_in_ctext[n] == clet:
+def replace_letter(opt_lst, ctext, clet, plet):
+    for n in range(len(ctext)):
+        if ctext[n] == clet:
             opt_lst[n] = plet
+    for n in range(len(ctext)):
+        if ctext[n] == clet.upper():
+            opt_lst[n] = plet.upper()
+    return opt_lst
+
+
+def calc_inp_letter_frequency(ctext):
+    inp_letter_count = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 0, 'h': 0, 'i': 0, 'j': 0, 'k': 0,
+                        'l': 0, 'm': 0, 'n': 0, 'o': 0, 'p': 0, 'q': 0, 'r': 0,
+                        's': 0, 't': 0, 'u': 0, 'v': 0, 'w': 0, 'x': 0, 'y': 0, 'z': 0}
+    characters_in_ctext = list(ctext.lower())  # ToDo all lowercase for now
+    totalalphachars = 0
+    for ch in characters_in_ctext:
+        if ch.lower() in alphabet:
+            inp_letter_count[ch.lower()] += 1
+            totalalphachars += 1
+
+    if totalalphachars == 0:
+        return []
+
+    # sorted frequency in ctext
+    inp_letter_frequency = {}
+    for lett in inp_letter_count:
+        inp_letter_frequency[lett] = (inp_letter_count[lett] / totalalphachars) * 100
+    sfic = sorted(inp_letter_frequency.items(), key=operator.itemgetter(1))[::-1]
+    return sfic
+
+
+def calc_inp_double_letters(ctext):
+    bigram_dict = {}
+    for c in range(len(ctext)-1):
+        if ctext[c] == ctext[c+1]:
+            if ctext[c] in bigram_dict:
+                bigram_dict[ctext[c]] += 1
+            else:
+                bigram_dict[ctext[c]] = 1
+
+    return sorted(bigram_dict.items(), key=operator.itemgetter(1))[::-1]
+
+
+def calc_bigram_freq(ctext):
+    bigram_dict = {}
+    for c in range(len(ctext)-1):
+        bigram = ctext[c:c+2]
+        if bigram in bigram_dict:
+            bigram_dict[bigram] += 1
+        else:
+            bigram_dict[bigram] = 1
+
+    to_pop = []
+    for bigram in bigram_dict:
+        if bigram_dict[bigram] <= 2:
+            to_pop.append(bigram)
+    for bigram in to_pop:
+        bigram_dict.pop(bigram)
+
+    return sorted(bigram_dict.items(), key=operator.itemgetter(1))[::-1]
+
+
+def calc_trigram_freq(ctext):
+    trigram_dict = {}
+    for c in range(len(ctext)-2):
+        trigram = ctext[c:c+3]
+        if trigram in trigram_dict:
+            trigram_dict[trigram] += 1
+        else:
+            trigram_dict[trigram] = 1
+
+    to_pop = []
+    for trigram in trigram_dict:
+        if trigram_dict[trigram] <= 2:
+            to_pop.append(trigram)
+    for trigram in to_pop:
+        trigram_dict.pop(trigram)
+
+    return sorted(trigram_dict.items(), key=operator.itemgetter(1))[::-1]
+
+
+def update_opt_non_alpha(opt_lst, ctext):
+    chars = []
+    for c in ctext:
+        if c not in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz":
+            chars.append(c)
+    for c in set(chars):
+        opt_lst = replace_letter(opt_lst, ctext, c, c)
+    return opt_lst
+
+
+def get_single_letter_frequency_match(opt_lst, ctext, sfic):
+    english_frequency = {'e': 12.02, 't': 9.1, 'a': 8.12, 'o': 7.68, 'i': 7.31, 'n': 6.95, 's': 6.28, 'r': 6.02,
+                         'h': 5.92, 'd': 4.32, 'l': 3.98, 'u': 2.88, 'c': 2.71,
+                         'm': 2.61, 'f': 2.30, 'y': 2.11, 'w': 2.09, 'g': 2.03, 'p': 1.82, 'b': 1.49, 'v': 1.11,
+                         'k': 0.69, 'x': 0.17, 'q': 0.11, 'j': 0.1, 'z': 0.07}
+    n = 0
+    for char in english_frequency:
+        opt_lst = replace_letter(opt_lst, ctext, sfic[n][0], char)
+        n+= 1
     return opt_lst
 
 
 def decrypt(ctext, key=None):
-    characters_in_ctext = list(ctext.lower())  # ToDo all lowercase for now
+    # opt_lst uses '_' as a placeholder.  Any '_' in input will stay '_' as final output.
     opt_lst = list("_" * len(ctext))
-    opt_lst = replace_letter(opt_lst, characters_in_ctext, " ", " ") # add spaces
+    opt_lst = update_opt_non_alpha(opt_lst, ctext)
+    print(opt_lst)
 
-    if len(characters_in_ctext) > 150:  # ToDo arbitrary...
+    sfic = calc_inp_letter_frequency(ctext)
+    print("Input letter frequency:")
+    for x in sfic:
+        print(x[0] + ": " + str(x[1]))
 
-        # via: http://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html
-        # based on sample of 40,000
-        # assume error of += 0.01%
-        # english_frequency = {'e': 12.02, 't': 9.1, 'a': 8.12, 'o': 7.68, 'i': 7.31, 'n': 6.95, 's': 6.28, 'r': 6.02,
-        #                     'h': 5.92, 'd': 4.32, 'l': 3.98, 'u': 2.88, 'c': 2.71,
-        #                     'm': 2.61, 'f': 2.30, 'y': 2.11, 'w': 2.09, 'g': 2.03, 'p': 1.82, 'b': 1.49, 'v': 1.11,
-        #                     'k': 0.69, 'x': 0.17, 'q': 0.11, 'j': 0.1, 'z': 0.07}
+    double_let_dict = calc_inp_double_letters(ctext)
+    print("Input double letter frequency:")
+    for x in double_let_dict:
+        print(x[0] + ": " + str(x[1]))
 
-        inp_letter_count = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 0, 'h': 0, 'i': 0, 'j': 0, 'k': 0,
-                            'l': 0, 'm': 0, 'n': 0, 'o': 0, 'p': 0, 'q': 0, 'r': 0,
-                            's': 0, 't': 0, 'u': 0, 'v': 0, 'w': 0, 'x': 0, 'y': 0, 'z': 0}
+    # print("".join(get_single_letter_frequency_match(opt_lst, ctext, sfic)))
 
-        totalalphachars = 0
-        for ch in characters_in_ctext:
-            if ch.lower() in alphabet:
-                inp_letter_count[ch.lower()] += 1
-                totalalphachars += 1
+    bigram_count = calc_bigram_freq(ctext)
+    print("Bigram frequency:")
+    for x in bigram_count:
+        print(x[0] + ": " + str(x[1]))
 
-        if totalalphachars == 0:
-            return []
-
-        # sorted frequency in ctext
-        inp_letter_frequency = {}
-        for lett in inp_letter_count:
-            inp_letter_frequency[lett] = (inp_letter_count[lett] / totalalphachars) * 100
-        sfic = sorted(inp_letter_frequency.items(), key=operator.itemgetter(1))[::-1]
-        # print(sfic)
-
-        # find words
-        # ToDo what if no spaces????
-        fwl = ctext.lower().split(" ")  # ToDo all lowercase for now
-        words = {}
-        for w in fwl:
-            if w in words.keys():
-                words[w] += 1
-            else:
-                words[w] = 1
-        # print(words)
-
-        ''' STEP 1 '''
-        # replace most common letter with 'e'
-        opt_lst = replace_letter(opt_lst, characters_in_ctext, sfic[0][0], 'e') #ToDo temp, do at end
-        update_must_cant(sfic[0][0], 'e')
-
-        ''' STEP 2 '''
-        # one letter words must be either 'I' or 'A'
-        one_lw = {}
-        for w in words:
-            if len(w) == 1:
-                one_lw[w] = words[w]
-        # print(one_lw)
+    trigram_count = calc_trigram_freq(ctext)
+    print("Trigram frequency:")
+    for x in trigram_count:
+        print(x[0] + ": " + str(x[1]))
 
 
-        # DOUBLE LETTERS, like 'aa' will never appear together.
+    # via: http://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html
+    # based on sample of 40,000
+    # assume error of += 0.01%
+    # english_frequency = {'e': 12.02, 't': 9.1, 'a': 8.12, 'o': 7.68, 'i': 7.31, 'n': 6.95, 's': 6.28, 'r': 6.02,
+    #                     'h': 5.92, 'd': 4.32, 'l': 3.98, 'u': 2.88, 'c': 2.71,
+    #                     'm': 2.61, 'f': 2.30, 'y': 2.11, 'w': 2.09, 'g': 2.03, 'p': 1.82, 'b': 1.49, 'v': 1.11,
+    #                     'k': 0.69, 'x': 0.17, 'q': 0.11, 'j': 0.1, 'z': 0.07}
 
-        '''
-        # find first letter frequency
-        flf = {}
-        for w in words:
-            print(w)
-            if w[0] in flf.keys():
-                flf[w[0]] += words[w]
-            else:
-                flf[w[0]] = words[w]
-        print(sorted(flf.items(), key=operator.itemgetter(1))[::-1])
-        '''
-
-        print("MUST")
-        print(MUST_be_of)
-        print("CANT")
-        print(CANT_be_of)
-
-        opt_str = ''.join(opt_lst)
-        print(opt_str)
-        pass
-
-    # To short to do frequency analysis
-    else:
-        pass
-
-
-
-
-
-'''
-        # ToDo, remove?
-        # replace second most common letter with 't'
-        opt_lst = replace_letter(opt_lst, characters_in_ctext, sfic[1][0], 't')
-        opt_lst = replace_letter(opt_lst, characters_in_ctext, sfic[2][0], 'a')
-        opt_lst = replace_letter(opt_lst, characters_in_ctext, sfic[3][0], 'i')
-
-        # ToDo, redo?
-        # replace three letter words of form 't_e' with 'the'
-        for w in words:
-            if len(w) == 3:
-                # ToDo more here, what if multiple three letter words end in e? Add weights also...
-                hi = list(w)
-                if hi[2] == sfic[0][0] and hi[0] == sfic[1][0]:
-                    opt_lst = replace_letter(opt_lst, characters_in_ctext, hi[1], 'h')
-                    break
-'''
-
-
-
-
-
-'''
-# Test Case: giuifg cei iprc tpnn du cei qprcni
-def update_potential_letters(pl, rm_char, other_than):  # pl is potential_letters, other_than is a list
-    for ch in pl.keys():
-        if ch not in other_than:
-            pl[ch].remove(rm_char)
-    return pl
-
-
-def check_2_letter_words(pl):
-    # 2 letter words
-    # ox, ax, ex, by, my, up, um, of, if, me, ow, am, we, uh, be, oh, go, eh, ah, he,
-    # hi, yo, us, on, in, an, do, no, as, at, it, is, or, so
-    return pl
-
-
-def decrypt(ctext, nullthing=None):
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    numericals = "0123456789"
-    symbols = " !@#$%^&*()-_+=\\|\"':;<>,.?/[]{}"
-    characters_in_ctext = list(ctext)
-
-    # print(ctext)
-    # print(characters_in_ctext)
-
-    if len(ctext) > 200:  # 200 arbitrary... #############
-
-        # via: http://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html
-        # based on sample of 40,000
-        # assume error of += 0.01%
-        english_frequency = {'e': 12.02, 't': 9.1, 'a': 8.12, 'o': 7.68, 'i': 7.31, 'n': 6.95, 's': 6.28, 'r': 6.02,
-                             'h': 5.92, 'd': 4.32, 'l': 3.98, 'u': 2.88, 'c': 2.71,
-                             'm': 2.61, 'f': 2.30, 'y': 2.11, 'w': 2.09, 'g': 2.03, 'p': 1.82, 'b': 1.49, 'v': 1.11,
-                             'k': 0.69, 'x': 0.17, 'q': 0.11, 'j': 0.1, 'z': 0.07}
-
-        inp_letter_count = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 0, 'h': 0, 'i': 0, 'j': 0, 'k': 0,
-                            'l': 0, 'm': 0, 'n': 0, 'o': 0, 'p': 0, 'q': 0, 'r': 0,
-                            's': 0, 't': 0, 'u': 0, 'v': 0, 'w': 0, 'x': 0, 'y': 0, 'z': 0}
-
-        totalalphachars = 0
-        for ch in characters_in_ctext:
-            if ch.lower() in alphabet:
-                inp_letter_count[ch.lower()] += 1
-                totalalphachars += 1
-
-        if totalalphachars == 0:
-            return []
-
-        # sorted frequency in ctext
-        inp_letter_frequency = {}
-        for lett in inp_letter_count:
-            inp_letter_frequency[lett] = (inp_letter_count[lett] / totalalphachars) * 100
-
-        # sorted frequency in ctext
-        sfic = sorted(inp_letter_frequency.items(), key=operator.itemgetter(1))[::-1]
-        # print(sfic)
-
-        opt_lst = list("_" * len(ctext))
-        potential_letters = {
-            'a': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'b': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'c': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'd': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'e': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'f': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'g': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'h': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'i': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'j': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'k': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'l': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'm': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'n': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'o': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'p': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'q': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'r': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            's': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            't': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'u': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'v': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'w': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'x': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'y': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z'],
-            'z': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-                  'u', 'v', 'w', 'x', 'y', 'z']}
-        letters_it_has_to_be = {'a': [], 'b': [], 'c': [], 'd': [], 'e': [], 'f': [], 'g': [], 'h': [], 'i': [],
-                                'j': [], 'k': [], 'l': [], 'm': [], 'n': [],
-                                'o': [], 'p': [], 'q': [], 'r': [], 's': [], 't': [], 'u': [], 'v': [], 'w': [],
-                                'x': [], 'y': [], 'z': []}
-
-        # replace most common character with 'e'
-        letters_it_has_to_be[sfic[0][0]].append('e')
-        potential_letters[sfic[0][0]] = 'e'
-        potential_letters = update_potential_letters(potential_letters, 'e', [sfic[0][0]])
-
-        for ch in range(len(characters_in_ctext)):
-            if characters_in_ctext[ch] == sfic[0][0]:
-				print('Hi')
-				opt_lst[ch] = 'e'
-
-        # find a or i or both
-        inp_split_by_space = ctext.split(" ")
-        i_or_a = []
-        for word in inp_split_by_space:
-            if len(word) == 2:
-                temp = list(word)
-                if temp[0] in alphabet:
-                    if temp[1] in alphabet:
-                        pass
-                    else:
-                        i_or_a.append(temp[0])
-                elif temp[1] in alphabet:
-                    i_or_a.append(temp[0])
-            elif len(word) == 1:
-                if word in alphabet:
-                    i_or_a.append(word)
-
-        temp = set(i_or_a)
-        i_or_a = []
-        for t in temp:
-            i_or_a.append(t)
-        piplup = len(i_or_a)
-        if piplup > 2:
-            print("ERROR in simplesub: multiple single letter words detected (ln 91).")
-            exit()
-        elif piplup == 2:
-            letters_it_has_to_be[i_or_a[0]].append('i')
-            letters_it_has_to_be[i_or_a[0]].append('a')
-            letters_it_has_to_be[i_or_a[1]].append('i')
-            letters_it_has_to_be[i_or_a[1]].append('a')
-            potential_letters = update_potential_letters(potential_letters, 'a', i_or_a)
-            potential_letters = update_potential_letters(potential_letters, 'i', i_or_a)
-        elif piplup == 1:
-            # could be an 'i' or 'a'
-            letters_it_has_to_be[i_or_a[0]].append('i')
-            letters_it_has_to_be[i_or_a[0]].append('a')
+    # find words
+    # ToDo what if no spaces????
+    fwl = ctext.lower().split(" ")  # ToDo all lowercase for now
+    words = {}
+    for w in fwl:
+        if w in words.keys():
+            words[w] += 1
         else:
-            pass  # no one letter words detected
+            words[w] = 1
+    # print(words)
 
-        ctext_by_word = []
-        for phrase in inp_split_by_space:
-            regex = re.compile('[^a-zA-Z]')
-            # First parameter is the replacement, second parameter is your input string
-            ctext_by_word.append(regex.sub('', phrase) + "")
+    ''' STEP 1 '''
+    # replace most common letter with 'e'
+    opt_lst = replace_letter(opt_lst, ctext, sfic[0][0], 'e') #ToDo temp, do at end
+    update_must_cant(sfic[0][0], 'e')
 
-        # print(ctext_by_word)
 
-        two_letter_words = {}
-        for word in ctext_by_word:
-            if len(word) == 2:
-                if word in two_letter_words.keys():
-                    two_letter_words[word] += 1
-                else:
-                    two_letter_words[word] = 1
-        print(two_letter_words)
-		
-        # check_2_letter_words
+    ''' STEP 2 '''
+    # one letter words must be either 'I' or 'A'
+    one_lw = {}
+    for w in words:
+        if len(w) == 1:
+            one_lw[w] = words[w]
+    # print(one_lw)
 
-        # 3 end in i
-        # dui, koi, lei, psi, ski
+    # DOUBLE LETTERS, like 'aa' will never appear together.
 
-        # 3 end in a
-        # pea, ana, boa, spa, via, aha, ava, bra, sea, tea, era, yea
+    '''
+    # find first letter frequency
+    flf = {}
+    for w in words:
+        print(w)
+        if w[0] in flf.keys():
+            flf[w[0]] += words[w]
+        else:
+            flf[w[0]] = words[w]
+    print(sorted(flf.items(), key=operator.itemgetter(1))[::-1])
+    '''
 
-        opt_str = ''.join(opt_lst)
-        #print(potential_letters)
-        print(letters_it_has_to_be)
-        #print(opt_str)
+    print("MUST")
+    print(MUST_be_of)
+    print("CANT")
+    print(CANT_be_of)
 
-        return []
-    else:
-        return []
-'''
+    opt_str = ''.join(opt_lst)
+    print(opt_str)
+    pass
 
-def encrypt(inp, key=None):
-    print("Encryption for the simple substitution cipher not implemented yet.")
-    exit()
 
-    """
-	for ch in characters_in_ctext:
-			if ch in numericals:
-				print("ERROR in substitution: Doesn't work with numericals in input.")
-				return []
-		
-		#print(ctext)#######
-		
-		numtext = []
-		for c in characters_in_ctext:
-			numtext.append(" ")
-			
-		save = []
-		for c in characters_in_ctext:
-			save.append(c)
-		counter = 0
-		for ch in range(len(characters_in_ctext)):
-			count = False
-			if characters_in_ctext[ch] in alphabet:
-				newal = alphabet.replace(characters_in_ctext[ch], "")
-				alphabet = newal
-				
-				#print(characters_in_ctext[ch], end=' ')
-				for pos in range(len(save)):
-					if save[pos] == characters_in_ctext[ch]:
-						numtext[pos] = counter
-						count = True
-						
-			if count == True:
-				counter += 1
-		#print(numtext)
-		
-		frequency_in_ctext = {}
-		for char in numtext:
-			if str(char) != ' ':
-				if str(char) in frequency_in_ctext.keys():
-					frequency_in_ctext[str(char)] += 1
-				else:
-					frequency_in_ctext[str(char)] = 1
-		#sorted frequency in ctext
-		sfic = sorted(frequency_in_ctext.items(), key=operator.itemgetter(1))[::-1]
-		#print(sfic)###
+decrypt(hw2_ciphertext)
 
-		for pos in range(len(english_frequency)):
-			for entry in range(len(numtext)):
-				try:
-					if str(numtext[entry]) == sfic[pos][0]:
-						numtext[entry] = english_frequency[pos]
-				except IndexError:
-					pass
-
-		newtxt = "".join(numtext)		
-		#print(newtxt)
-		return [newtxt]
-		
-
-	#According to the unicity distance of English, 27.6 letters of ciphertext are required to crack a mixed alphabet simple substitution. 
-	#In practice, typically about 50 letters are needed, although some messages can be broken with fewer if unusual patterns are found.
-	elif len(ctext) > 50:
-		return []	###work in progress
-	else:
-		print("ERROR in substitution: input is too short.")
-		return []
-		
-		
-	"""
 
 def encrypt(plaintext, key=None):
     print("Simple Substitution encryption not implemented yet.")
