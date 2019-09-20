@@ -26,29 +26,6 @@ MUST_be_of = {'a': [], 'b': [], 'c': [], 'd': [], 'e': [], 'f': [], 'g': [], 'h'
 CANT_be_of = {'a': [], 'b': [], 'c': [], 'd': [], 'e': [], 'f': [], 'g': [], 'h': [],
               'i': [], 'j': [], 'k': [], 'l': [], 'm': [], 'n': [], 'o': [], 'p': [],
               'q': [], 'r': [], 's': [], 't': [], 'u': [], 'v': [], 'w': [], 'x': [], 'y': [], 'z': []}
-COULD_be_of = {'a': [], 'b': [], 'c': [], 'd': [], 'e': [], 'f': [], 'g': [], 'h': [],
-              'i': [], 'j': [], 'k': [], 'l': [], 'm': [], 'n': [], 'o': [], 'p': [],
-              'q': [], 'r': [], 's': [], 't': [], 'u': [], 'v': [], 'w': [], 'x': [], 'y': [], 'z': []}
-
-
-def update_must_cant(clet, plet):
-    for key in MUST_be_of.keys():
-        if key == clet:
-            MUST_be_of[key].append(plet)
-        else:
-            CANT_be_of[key].append(plet)
-    return None
-
-
-def replace_letter(opt_lst, ctext, clet, plet):
-    for n in range(len(ctext)):
-        if ctext[n] == clet:
-            opt_lst[n] = plet
-    for n in range(len(ctext)):
-        if ctext[n] == clet.upper():
-            opt_lst[n] = plet.upper()
-    return opt_lst
-
 
 def calc_inp_letter_frequency(ctext):
     inp_letter_count = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 0, 'h': 0, 'i': 0, 'j': 0, 'k': 0,
@@ -122,16 +99,71 @@ def calc_trigram_freq(ctext):
     return sorted(trigram_dict.items(), key=operator.itemgetter(1))[::-1]
 
 
-def update_opt_non_alpha(opt_lst, ctext):
-    chars = []
-    for c in ctext:
-        if c not in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz":
-            chars.append(c)
-    for c in set(chars):
-        opt_lst = replace_letter(opt_lst, ctext, c, c)
-    return opt_lst
+class CipherText:
+    def __init__(self, inp_str):
+        self.ctext = inp_str
+        self.certain_mappings = {}  # format 'a': 'o', means 'a' in ciphertext -> 'o' in plaintext
+        self.possible_mappings = {'a': alphabet, 'b': alphabet, 'c': alphabet, 'd': alphabet,
+                                  'e': alphabet, 'f': alphabet, 'g': alphabet, 'h': alphabet,
+                                  'i': alphabet, 'j': alphabet, 'k': alphabet, 'l': alphabet,
+                                  'm': alphabet, 'n': alphabet, 'o': alphabet, 'p': alphabet,
+                                  'q': alphabet, 'r': alphabet, 's': alphabet, 't': alphabet,
+                                  'u': alphabet, 'v': alphabet, 'w': alphabet, 'x': alphabet,
+                                  'y': alphabet, 'z': alphabet}
+        self.letter_frequency = calc_inp_letter_frequency(inp_str)
+        self.double_letter_count = calc_inp_double_letters(inp_str)
+        self.bigram_frequency = calc_bigram_freq(inp_str)
+        self.trigram_frequency = calc_trigram_freq(inp_str)
+
+    def add_certain_mapping(self, cipher_letter, plaintext_letter):
+        # Add certain mapping
+        self.certain_mappings[cipher_letter] = plaintext_letter
+        del self.possible_mappings[cipher_letter]
+
+        # Remove plaintext_letter from possible_mappings of other letters
+        for letter in self.possible_mappings:
+            self.possible_mappings[letter] = self.possible_mappings[letter].replace(plaintext_letter, '')
+
+    def remove_possible_mapping(self, letter_list, impossible_letter):
+        for letter in letter_list:
+            self.possible_mappings[letter] = self.possible_mappings[letter].replace(impossible_letter, '')
+
+    def check_only_one_mapping_for_cipherletter(self):
+        for letter in self.possible_mappings:
+            if len(self.possible_mappings[letter]) == 1:
+                self.add_certain_mapping(letter, self.possible_mappings[letter])
+
+    def check_only_one_mapping_for_plaintextletter(self):
+        for p_letter in list(alphabet):
+            n = 0
+            cipher_letter = ''
+            for c_letter in self.possible_mappings:
+                if p_letter in self.possible_mappings[c_letter]:
+                    n += 1
+                    cipher_letter = c_letter
+            if n == 1:
+                self.add_certain_mapping(cipher_letter, p_letter)
+
+    def print_analysis(self):
+        print("Ciphertext:")
+        print(self.ctext)
+        print("\nHere is the analysis...\n")
+
+        print("Letter frequency:")
+        for x in self.letter_frequency:
+            print(x[0] + ": " + str(x[1]))
+        print("Double letter count:")
+        for x in self.double_letter_count:
+            print(x[0] + ": " + str(x[1]))
+        print("Bigram count:")
+        for x in self.bigram_frequency:
+            print(x[0] + ": " + str(x[1]))
+        print("Trigram count:")
+        for x in self.trigram_frequency:
+            print(x[0] + ": " + str(x[1]))
 
 
+"""
 def get_single_letter_frequency_match(opt_lst, ctext, sfic):
     english_frequency = {'e': 12.02, 't': 9.1, 'a': 8.12, 'o': 7.68, 'i': 7.31, 'n': 6.95, 's': 6.28, 'r': 6.02,
                          'h': 5.92, 'd': 4.32, 'l': 3.98, 'u': 2.88, 'c': 2.71,
@@ -142,37 +174,18 @@ def get_single_letter_frequency_match(opt_lst, ctext, sfic):
         opt_lst = replace_letter(opt_lst, ctext, sfic[n][0], char)
         n+= 1
     return opt_lst
+"""
 
 
 def decrypt(ctext, key=None):
-    # opt_lst uses '_' as a placeholder.  Any '_' in input will stay '_' as final output.
-    opt_lst = list("_" * len(ctext))
-    opt_lst = update_opt_non_alpha(opt_lst, ctext)
-    print(opt_lst)
-
-    sfic = calc_inp_letter_frequency(ctext)
-    print("Input letter frequency:")
-    for x in sfic:
-        print(x[0] + ": " + str(x[1]))
-
-    double_let_dict = calc_inp_double_letters(ctext)
-    print("Input double letter frequency:")
-    for x in double_let_dict:
-        print(x[0] + ": " + str(x[1]))
-
     # print("".join(get_single_letter_frequency_match(opt_lst, ctext, sfic)))
-
-    bigram_count = calc_bigram_freq(ctext)
-    print("Bigram frequency:")
-    for x in bigram_count:
-        print(x[0] + ": " + str(x[1]))
-
-    trigram_count = calc_trigram_freq(ctext)
-    print("Trigram frequency:")
-    for x in trigram_count:
-        print(x[0] + ": " + str(x[1]))
+    print("Analyzing ciphertext...")
+    ctext_obj = CipherText(ctext)
+    print("Done.")
+    ctext_obj.print_analysis()
 
 
+    """
     # via: http://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html
     # based on sample of 40,000
     # assume error of += 0.01%
@@ -228,7 +241,7 @@ def decrypt(ctext, key=None):
     opt_str = ''.join(opt_lst)
     print(opt_str)
     pass
-
+    """
 
 decrypt(hw2_ciphertext)
 
