@@ -1,25 +1,18 @@
-
-import base64
+from base64 import b64decode, b64encode
 import binascii
 
 
 def decrypt(ciphertext, b=None):
-    if ciphertext.startswith("b'") and ciphertext.endswith("'"):
-        ciphertext = ciphertext[2:-1]  # fixes formatting
-    try:
-        plaintext = str(base64.b64decode(ciphertext))
-        if plaintext.startswith("b'") and plaintext.endswith("'"):
-            plaintext = plaintext[2:-1]  # fixes formatting
-            yield plaintext
-    except binascii.Error:
-        pass
-
+	if ciphertext.startswith("b'") and ciphertext.endswith("'"):
+		ciphertext = ciphertext[2:-1]  # fixes formatting
+	try:
+		yield b64decode(ciphertext).decode()
+	except binascii.Error:
+		pass
 
 def encrypt(plaintext, key=None):
-    try:
-        b = bytes(plaintext, 'utf-8')
-        ciphertext = base64.b64encode(b)
-    except binascii.Error:
-        print("ERROR in base64 encryption function")
-        exit()
-    return ciphertext
+	try:
+		return b64encode(plaintext.encode()).decode()
+	except binascii.Error:
+		print("ERROR in base64 encryption function")
+		exit()
