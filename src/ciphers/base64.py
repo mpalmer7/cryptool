@@ -3,6 +3,8 @@ import binascii
 
 
 def decrypt(ciphertext, b=None):
+	'''Takes in base64 encoded data, either with b'xxxxx' or just xxxxx, and returns the decoded string.'''
+	
 	if ciphertext.startswith("b'") and ciphertext.endswith("'"):
 		ciphertext = ciphertext[2:-1]  # fixes formatting
 	try:
@@ -10,7 +12,10 @@ def decrypt(ciphertext, b=None):
 	except binascii.Error:
 		pass
 
+
 def encrypt(plaintext, key=None):
+	'''Takes in data, casts it as byte, and returns the base64 encoded string.''' 
+
 	try:
 		return b64encode(plaintext.encode()).decode()
 	except binascii.Error:
