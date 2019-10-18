@@ -6,7 +6,7 @@ def decrypt(ciphertext, b=None):
 	'''Takes in base64 encoded data, either with b'xxxxx' or just xxxxx, and returns the decoded string.'''
 	
 	if ciphertext.startswith("b'") and ciphertext.endswith("'"):
-		ciphertext = ciphertext[2:-1]  # fixes formatting
+		ciphertext = ciphertext[2:-1]  # fixes formatting; data input is always of type(str)
 	try:
 		yield b64decode(ciphertext).decode()
 	except binascii.Error:
