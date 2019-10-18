@@ -10,6 +10,7 @@ url = "https://isc.sans.edu/tools/reversehash.html"
 # query = "fc5e038d38a57032085441e7fe7010b0" #helloworld
 # query = "25f9e794323b453885f5181f1b624d0b" #123456789
 
+
 def rainbow_table_lookup():
     pass
 
@@ -18,8 +19,12 @@ def decrypt(query, ci):
     yield None
 
 
-def encrypt(inp, key=None):
-    print("Hashing not implemented yet.")
+def encrypt(str_inp, key=None):
+    byte_inp = str_inp.encode()
+    return {"sha1": hash_sha1(byte_inp),
+            "sha256": hash_sha256(byte_inp),
+            "sha512": hash_sha512(byte_inp),
+            "md5": hash_md5(byte_inp)}
 
 
 def hash_sha1(inp_str):
