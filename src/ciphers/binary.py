@@ -22,9 +22,4 @@ def decrypt(ciphertext, key=None):
 
 
 def encrypt(plaintext, key=None):
-    print("Binary encryption currently broken")
-    return []
-    '''
-    ciphertext = ' '.join(format(ord(x), 'b') for x in plaintext)
-    return ciphertext
-    '''
+    return ' '.join(format(ord(x), 'b') for x in plaintext)
