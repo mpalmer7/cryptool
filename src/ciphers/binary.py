@@ -1,25 +1,50 @@
-
-# currently having some issues
-import binascii
-
-
-def string_decode(inp, length=8):  # binary to plaintext
-    input_l = [inp[i:i + length] for i in range(0, len(inp), length)]
-    return ''.join([chr(int(c, base=2)) for c in input_l])
+import re
 
 
 def decrypt(ciphertext, key=None):
-    length = len(ciphertext.split(" ")[0])
-    if length > 10:
-        length = 8
-    # change input to just "0" and "1" if applicable (e.g. there were spaces)
-    characters_append = [item for item in list(ciphertext) if item in ["0", "1"]]
-    ciphertext = ""
-    for char in characters_append:
-        ciphertext += char
-    # print("strdecode:" + string_decode(ciphertext, length))
-    yield string_decode(ciphertext, length)
+    # Break by delimiter(s) by stripping all non 0's or 1's
+    inp_lst = ['']
+    n = 0
+    for char in ciphertext:
+        if char == '1' or char == '0':
+            inp_lst[n] += char
+        else:
+            # inp_lst.append(char)
+            inp_lst.append('')
+            n += 1  # 2
+
+    opt_str = ''
+
+    # No delimiter
+    if len(inp_lst) == 1:
+        for n in range(4, 17):
+            for byte in re.findall('.{1,%s}' % n, inp_lst[0]):
+                if byte:
+                    opt_str += chr(int(byte, 2))
+            yield opt_str
+            opt_str = ''
+    # delimiter found
+    else:
+        for byte in inp_lst:
+            if byte:
+                opt_str += chr(int(byte, 2))
+        yield opt_str
 
 
 def encrypt(plaintext, key=None):
-    return ' '.join(format(ord(x), 'b') for x in plaintext)
+    opt_str = ''
+    for char in plaintext:
+        opt_str += str(int(bin(ord(char))[2:])) + " "
+    return opt_str
+
+
+def bin_fix(inp):
+    # Binary fix...
+    new = inp.replace("B", "0")
+    new = new.replace("A", "1")
+
+    new2 = inp.replace("A", "0")
+    new2 = new2.replace("B", "1")
+
+    print(new)
+    print(new2)
