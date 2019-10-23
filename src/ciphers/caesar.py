@@ -4,6 +4,7 @@ ualpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 def check_keys(phrase, key):
+    """Helper function for decrypt(); takes input string and rotates its characters around the alphabet."""
     decoded = ""
     for i in range(len(phrase)):
         if phrase[i] in lalpha:
@@ -16,6 +17,8 @@ def check_keys(phrase, key):
 
 
 def decrypt(inp, key=None):
+    """Takes a string input, decrypts with the caesar cipher, and returns a string output.
+    Will return all possible combinations if no key is given."""
     ctext = list(inp)
     if key is not None:
         yield check_keys(ctext, key)
@@ -26,6 +29,8 @@ def decrypt(inp, key=None):
 
 
 def encrypt(plaintext, key=None):
+    """Takes a string input, encrypts with the caesar cipher. If no key to rotate with is given,
+    will prompt user to input the key they want to use."""
     if key is None:
         key = int(input("Enter an integer to rotate by: "))
 
@@ -39,9 +44,10 @@ def encrypt(plaintext, key=None):
             encoded += plaintext[i]
     return encoded
 
-"""
-# run standalone
-def Caesar():
+
+def caesar():
+    """This cipher can be run standalone. Encryption/decryption with the caesar cipher."""
+
     pt = input("Enter a phrase: ")
     huh = input("Encrypt (E) or Decrypt (D)? ")
     if (huh.lower() == "e") or ("encrypt" in huh.lower()):
@@ -60,4 +66,3 @@ def Caesar():
         print("Input not reconized, exiting.")
         exit()
 # Ceasar()
-"""

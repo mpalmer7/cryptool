@@ -2,6 +2,7 @@ import re
 
 
 def decrypt(ciphertext, key=None):
+    """Converts a binary string to utf-8 decoded text. Can guess the delimiter, if used."""
     # Break by delimiter(s) by stripping all non 0's or 1's
     inp_lst = ['']
     n = 0
@@ -32,6 +33,7 @@ def decrypt(ciphertext, key=None):
 
 
 def encrypt(plaintext, key=None):
+    """utf-8 decode a string and convert it to binary, return the string of 1's and 0's delimited by a ' '"""
     opt_str = ''
     for char in plaintext:
         opt_str += str(int(bin(ord(char))[2:])) + " "

@@ -20,6 +20,8 @@ def decrypt(query, ci):
 
 
 def encrypt(str_inp, key=None):
+    """Hashes a string with sha1, sha256, sha512, md5. Returns a dictionary of the results."""
+
     byte_inp = str_inp.encode()
     return {"sha1": hash_sha1(byte_inp),
             "sha256": hash_sha256(byte_inp),
