@@ -1,6 +1,6 @@
-def decrypt(ciphertext, nopees=None):
-    yield ciphertext[::-1]
+def decrypt(inp_obj):
+    yield inp_obj.string[::-1]
 
 
-def encrypt(inp, key=None):
-    return inp[::-1]
+def encrypt(inp_obj):
+    return inp_obj.string[::-1]

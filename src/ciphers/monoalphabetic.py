@@ -1,7 +1,6 @@
 # WORK IN PROGRESS
 
 import operator
-import string, re
 
 '''
 Substitution cipher
@@ -177,13 +176,14 @@ def get_single_letter_frequency_match(opt_lst, ctext, sfic):
 """
 
 
-def decrypt(ctext, key=None):
+def decrypt(inp_obj):
     # print("".join(get_single_letter_frequency_match(opt_lst, ctext, sfic)))
     print("Analyzing ciphertext...")
-    ctext_obj = CipherText(ctext)
+    ctext_obj = CipherText(inp_obj.string)
     print("Done.")
     ctext_obj.print_analysis()
 
+    yield None
 
     """
     # via: http://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html
@@ -243,9 +243,7 @@ def decrypt(ctext, key=None):
     pass
     """
 
-decrypt(hw2_ciphertext)
 
-
-def encrypt(plaintext, key=None):
+def encrypt(inp_obj):
     print("Simple Substitution encryption not implemented yet.")
     return None

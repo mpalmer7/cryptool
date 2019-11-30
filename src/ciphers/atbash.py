@@ -25,11 +25,11 @@ def atb(inp_str):
         return opt
 
 
-def decrypt(ciphertext, nullthing=None):
+def decrypt(inp_obj):
     """Decrypts the atbash cipher, yields a string as the result."""
-    yield atb(ciphertext)
+    yield atb(inp_obj.string)
 
 
-def encrypt(inp, key=None):
+def encrypt(inp_obj):
     """Encrypts the atbash cipher, returns a string as the result."""
-    return atb(inp)
+    return atb(inp_obj.string)

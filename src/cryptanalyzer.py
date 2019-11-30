@@ -114,6 +114,10 @@ CIPHER_LIST = [BINARY_CIPHER, BASE64_CIPHER, MORSE_CIPHER, SINGLEBYTEXOR_CIPHER,
 
 
 def cryptanalysis(ciphertext):  # string
+    if isinstance(ciphertext, bytes):
+        return [["steg"], 1]
+
+
     inp_cipher = Cipher("input", ciphertext)
 
     # Reinforcement machine learning?

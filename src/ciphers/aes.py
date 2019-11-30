@@ -1,8 +1,8 @@
-import base64
-import hashlib
-from Crypto import Random
-from Crypto.Cipher import AES
+# ToDo cant find library. Tried crypto, pycryptodome, pycrypto
+# from Crypto import Random
+# from Crypto.Cipher import AES
 
+"""
 class AESCipher(object):
 
     def __init__(self, key): 
@@ -27,13 +27,19 @@ class AESCipher(object):
     @staticmethod
     def _unpad(s):
         return s[:-ord(s[len(s)-1:])]
+"""
+
+def decrypt(inp_obj):
+    print("AES decryption not implemented yet.")
+    yield None
+
+    # aes_obj = AESCipher(inp_obj.key)
+    # yield aes_obj.decrypt(inp_obj.bytes)
 
 
-def decrypt(enc, key):
-    aes_obj = AESCipher(key)
-    yield aes_obj.decrypt(enc)
+def encrypt(inp_obj):
+    print("AES encryption not implemented yet.")
+    yield None
 
-
-def encrypt(raw, key):
-    aes_obj = AESCipher(key)
-    return aes_obj.encrypt(raw)
+    # aes_obj = AESCipher(inp_obj.key)
+    # return aes_obj.encrypt(inp_obj.string)

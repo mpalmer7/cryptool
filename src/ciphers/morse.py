@@ -8,16 +8,16 @@ mdict = {'-': 'T', '-.--': 'Y', '.': 'E', '-.-': 'K', '..---': '2',
              '0', '.----': '1'}
 
 
-def decrypt(ciphertext, nope=None):
+def decrypt(inp_obj):
     plaintext = ''
-    for letter in ciphertext.split(' '):
+    for letter in inp_obj.string.split(' '):
         plaintext += str(mdict.get(letter))  # if letter not in mdict, adds "None"
     yield plaintext.replace("None", " ").lower()
 
 
-def encrypt(plaintext, key=None):
+def encrypt(inp_obj):
     ciphertext = ''
-    for letter in list(plaintext):
+    for letter in list(inp_obj.string):
         for m, t in mdict.items():
             if t == letter.upper():
                 ciphertext += m

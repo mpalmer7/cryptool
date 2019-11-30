@@ -1,12 +1,12 @@
 import re
 
 
-def decrypt(ciphertext, key=None):
+def decrypt(inp_obj):
     """Converts a binary string to utf-8 decoded text. Can guess the delimiter, if used."""
     # Break by delimiter(s) by stripping all non 0's or 1's
     inp_lst = ['']
     n = 0
-    for char in ciphertext:
+    for char in inp_obj.string:
         if char == '1' or char == '0':
             inp_lst[n] += char
         else:
@@ -32,10 +32,10 @@ def decrypt(ciphertext, key=None):
         yield opt_str
 
 
-def encrypt(plaintext, key=None):
+def encrypt(inp_obj):
     """utf-8 decode a string and convert it to binary, return the string of 1's and 0's delimited by a ' '"""
     opt_str = ''
-    for char in plaintext:
+    for char in inp_obj.string:
         opt_str += str(int(bin(ord(char))[2:])) + " "
     return opt_str
 

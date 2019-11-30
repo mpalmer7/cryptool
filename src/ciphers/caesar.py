@@ -16,25 +16,28 @@ def check_keys(phrase, key):
     return decoded
 
 
-def decrypt(inp, key=None):
+def decrypt(inp_obj):
     """Takes a string input, decrypts with the caesar cipher, and returns a string output.
     Will return all possible combinations if no key is given."""
-    ctext = list(inp)
-    if key is not None:
-        yield check_keys(ctext, key)
+    ctext = list(inp_obj.string)
+    if inp_obj.key is not None:
+        yield check_keys(ctext, inp_obj.key)
     else:  # Key not given, try all keys
         for key in range(0, 26):
             yield check_keys(ctext, key)
             key += 1
 
 
-def encrypt(plaintext, key=None):
+def encrypt(inp_obj):
     """Takes a string input, encrypts with the caesar cipher. If no key to rotate with is given,
     will prompt user to input the key they want to use."""
-    if key is None:
+    if inp_obj.key is None:
         key = int(input("Enter an integer to rotate by: "))
+    else:
+        key = inp_obj.key
 
     encoded = ""
+    plaintext = inp_obj.string
     for i in range(len(plaintext)):
         if plaintext[i] in lalpha:
             encoded += lalpha[(lalpha.index(plaintext[i]) + int(key)) % 26]  # .index finds first occurrence of item
@@ -43,26 +46,3 @@ def encrypt(plaintext, key=None):
         else:
             encoded += plaintext[i]
     return encoded
-
-
-def caesar():
-    """This cipher can be run standalone. Encryption/decryption with the caesar cipher."""
-
-    pt = input("Enter a phrase: ")
-    huh = input("Encrypt (E) or Decrypt (D)? ")
-    if (huh.lower() == "e") or ("encrypt" in huh.lower()):
-        print("Encrypted Phrase: %s" % encrypt(pt))
-    elif (huh.lower() == "d") or ("decrypt" in huh.lower()):
-        key = input("Enter the decryption key (leave blank otherwise): ")
-        if key != '':
-            try:
-                print("Decrypted Phrase: %s" % decrypt(pt, int(key)))
-            except ValueError:
-                print("Key not reconized... showing all options.")
-                print("Decrypted Phrase: %s" % decrypt(pt))
-        else:
-            print("Decrypted Phrase: %s" % decrypt(pt))
-    else:
-        print("Input not reconized, exiting.")
-        exit()
-# Ceasar()

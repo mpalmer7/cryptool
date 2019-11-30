@@ -2,9 +2,9 @@
 import binascii
 
 
-def decrypt(ctext, temp=None):
+def decrypt(inp_obj):
     try:
-        encoded = binascii.unhexlify(ctext)
+        encoded = binascii.unhexlify(inp_obj.string)
     except binascii.Error:
         # print("ERROR in base64: Incorrect formatting of input.")
         return []
@@ -16,6 +16,6 @@ def decrypt(ctext, temp=None):
             yield decoded
 
 
-def encrypt(inp, key=None):
+def encrypt(inp_obj):
     print("single byte XOR encryption not implemented yet.")
     exit()

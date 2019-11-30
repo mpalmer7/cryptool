@@ -1,5 +1,3 @@
-import requests
-import json
 import hashlib
 
 url = "https://isc.sans.edu/tools/reversehash.html"
@@ -15,14 +13,14 @@ def rainbow_table_lookup():
     pass
 
 
-def decrypt(query, ci):
+def decrypt(inp_obj):
     yield None
 
 
-def encrypt(str_inp, key=None):
+def encrypt(inp_obj):
     """Hashes a string with sha1, sha256, sha512, md5. Returns a dictionary of the results."""
 
-    byte_inp = str_inp.encode()
+    byte_inp = inp_obj.bytes
     return {"sha1": hash_sha1(byte_inp),
             "sha256": hash_sha256(byte_inp),
             "sha512": hash_sha512(byte_inp),
