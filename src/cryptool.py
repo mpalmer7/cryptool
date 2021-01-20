@@ -14,6 +14,8 @@ import cryptanalyzer
 columns, lines = shutil.get_terminal_size((80, 20))
 COLBAR = "#" * columns
 
+CIP_ARGS_BLACKLIST = ["input", "string", "file", "encrypt", "decrypt", "key", "cipherincipher"]
+
 # Command Line Arguments
 parser = argparse.ArgumentParser()
 # Positional argument: 'input'
@@ -67,7 +69,7 @@ class CipherText:
 
 # run the decrypt function of a given cipher, this function by convention attempts to decrypt the cipher-text
 # this function by convention attempts to decrypt the cipher-text, and will yield any results
-def decrypt_ciphertext(inp_obj, cipher, key=None):
+def decrypt_ciphertext(inp_obj, cipher, key=None):  # ToDo key
     for unverified_decrypted_text in __import__('ciphers.' + cipher, fromlist=['*']).decrypt(inp_obj):
         if unverified_decrypted_text:
             yield unverified_decrypted_text
@@ -113,8 +115,7 @@ def encrypt_cipher(cipher, inp_obj):
     return __import__('ciphers.' + cipher, fromlist=['*']).encrypt(inp_obj)
 
 
-def main():
-    # 1. TAKE USER INPUT (FILE or STRING) -----------------------------------------------------------------------------#
+def parse_user_input():
     inp = None
     if args.string:
         inp = args.input
@@ -127,46 +128,50 @@ def main():
     else:
         InputError("please specify input type as string (-s) or file (-f)")
 
-    inp_obj = CipherText(inp, key=args.key)
+    return CipherText(inp, key=args.key)
 
-    # TODO issue here, what if put multiple flags for ciphers.  It would run them in order; just one...
+
+def main():
+    ciphers = [arg for arg in args.__dict__ if arg not in CIP_ARGS_BLACKLIST and args.__dict__[arg]]
+
+    # 1. TAKE USER INPUT (FILE or STRING) -----------------------------------------------------------------------------#
+    inp_obj = parse_user_input()
+
     # 2. DECRYPT FILE; IF SPECIFIED -----------------------------------------------------------------------------------#
     if args.decrypt:
-        # a. If cipher is specified:
-        for arg in args.__dict__:  # ToDo change to parent/child argparse to not need to do this
-            if arg not in ["input", "string", "file", "encrypt", "decrypt", "key", "cipherincipher"]:
-                if args.__dict__[arg]:
-                    print("Decrypted %s as:" % inp_obj.bytes)
-                    for plaintext in decrypt_ciphertext(inp_obj, arg):  # arg is cipher name
-                        print("\t" + plaintext)
-                    exit()
-
-        # b. Otherwise, have to guess what cipher it is:
-        json_opt = {}
-
-        lang_obj = LanguageVerifier.Language("english")  # ToDo hardcoded for english
-        decrypted_cipher = guess_cipher(inp_obj, lang_obj)
-        if decrypted_cipher:
-            json_opt[inp_obj.bytes] = decrypted_cipher
+        # a. Cipher is specified:
+        if ciphers:
+            for cipher in ciphers:
+                print(f"Decrypting with {cipher}:")
+                for unverified_decrypted_text in decrypt_ciphertext(inp_obj, cipher, args.key):
+                    print(f"\t{unverified_decrypted_text}")
+                print("")
+        # b. Otherwise, have to guess the cipher:
         else:
-            print(COLBAR, end='')
-            print("Failed to decrypt: %s" % inp_obj.bytes)  # ToDo add press any key for acknowledgement
-            json_opt[inp_obj.bytes] = "FAILED TO DECRYPT"
-
-        print("\n\nFINAL JSON OPT:\n\n")
-        print(json_opt)
-        exit()
+            print("Attempting to guess the cipher...")
+            lang_obj = LanguageVerifier.Language("english")  # ToDo - hardcoded for english
+            plaintext = guess_cipher(inp_obj, lang_obj)
+            if plaintext:
+                print(f"Your ciphertext was decrypted as:\n\t{plaintext}")
+                return plaintext
+            else:
+                print(COLBAR, end='')
+                print("Failed to decrypt: %s" % inp_obj.bytes)  # ToDo add press any key for acknowledgement
+                return None
 
     # 3. ENCRYPT FILE; IF SPECIFIED -----------------------------------------------------------------------------------#
     elif args.encrypt:
-        for arg in args.__dict__:  # locate what user specified to encrypt with
-            if arg not in ["input", "string", "file", "encrypt", "decrypt", "key", "cipherincipher"]:
-                if args.__dict__[arg]:
-                    print("Here is your encrypted message: ")
-                    print(encrypt_cipher(arg, inp_obj))
-                    exit()
-        InputError("no cipher specified to encrypt with")
-    # 4. NOT SPECIFIED; QUIT ------------------------------------------------------------------------------------------#
+        if ciphers:
+            for cipher in ciphers:
+                ciphertext = encrypt_cipher(cipher, inp_obj)
+
+                print(f"Here is your message encrypted with {cipher}:")
+                print(f"\t{ciphertext}")
+                return ciphertext
+        else:
+            InputError("no cipher specified to encrypt with!")
+
+    # 4. EN/DECRYPT NOT SPECIFIED; QUIT -------------------------------------------------------------------------------#
     else:
         InputError("please specify to encrypt (-e) or decrypt (-d) input")
 
