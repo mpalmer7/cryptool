@@ -78,26 +78,29 @@ def verify_plaintext(potential_plaintext, language_obj):
     return verified_boo
 
 
-def get_user_feedback(ciphertext, cipher, plaintext):
+def get_user_feedback(cipher, plaintext):
     print("Did the %s decryption work? ('X' to not try again)" % cipher)
     print(plaintext)
-    while 1 == 1:  # ToDo ugly
-        temp = input("(Y/N/X): ")
-        if temp.lower() == "n":
-            return 0
-        elif temp.lower() == "y":
-            return 1
-        elif temp.lower() == "x":
-            return 2
+    temp = input("(Y/N/X): ")
+    if temp.lower() == "n":
+        return 0
+    elif temp.lower() == "y":
+        return 1
+    elif temp.lower() == "x":
+        return 2
+    else:
+        print("Response not understood...\n")
+        return get_user_feedback(cipher, plaintext)
 
 
 def guess_cipher(inp_obj, lang_obj):
     cracking_order = cryptanalyzer.cryptanalysis(inp_obj.string)[0]
     for cipher in cracking_order:
+        # print("checking: %s" % cipher)
         for unverified_decrypted_text in decrypt_ciphertext(inp_obj, cipher):
             if verify_plaintext(unverified_decrypted_text, lang_obj):
                 machine_verified_decrypted_text = unverified_decrypted_text
-                res = get_user_feedback(inp_obj.string, cipher, machine_verified_decrypted_text)
+                res = get_user_feedback(cipher, machine_verified_decrypted_text)
                 if res == 2:
                     return False
                 if res == 1:
