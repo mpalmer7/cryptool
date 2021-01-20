@@ -6,15 +6,16 @@ When adding a new cipher:
 4) update readme
 """
 import argparse
-import shutil  # used in print_plaintext
+# import shutil  # used in print_plaintext
 
-import LanguageVerifier
+from LanguageVerifier import Language
 import cryptanalyzer
 
-columns, lines = shutil.get_terminal_size((80, 20))
-COLBAR = "#" * columns
+# columns, lines = shutil.get_terminal_size((80, 20))
+# COLBAR = "#" * columns
 
 CIP_ARGS_BLACKLIST = ["input", "string", "file", "encrypt", "decrypt", "key", "cipherincipher"]
+ENGLISH = Language("english")  # TODO - language hardcoded to be English
 
 # Command Line Arguments
 parser = argparse.ArgumentParser()
@@ -23,10 +24,10 @@ parser.add_argument('input', help='input filepath or string', type=str)
 # Optional (but required) argument: specify input type
 parser.add_argument('-s', '--string', help='string input', action='store_true')
 parser.add_argument('-f', '--file', help='file input', action='store_true')
-# Optional (but required) argument: encrypt or decrypt the input?
+# Optional (but required) argument: encrypt or decrypt the input
 parser.add_argument('-e', '--encrypt', help='encrypt the input', action='store_true')
 parser.add_argument('-d', '--decrypt', help='decrypt the input', action='store_true')
-# Optional Flags: ciphers (if blank, tries all by default)
+# Optional Flags: ciphers (if none provided, tries all)
 parser.add_argument('-caesar', '--caesar', help='Caesar Cipher', action='store_true')
 parser.add_argument('-binary', '--binary', help='Binary-Plaintext Conversion', action='store_true')
 parser.add_argument('-b64', '--base64', help='Base64', action='store_true')
@@ -75,8 +76,8 @@ def decrypt_ciphertext(inp_obj, cipher, key=None):  # ToDo key
             yield unverified_decrypted_text
 
 
-def verify_plaintext(potential_plaintext, language_obj):
-    verified_boo = LanguageVerifier.verify_string(potential_plaintext, language_obj)
+def verify_plaintext(potential_plaintext):
+    verified_boo = ENGLISH.verify_string(potential_plaintext)
     return verified_boo
 
 
@@ -95,12 +96,13 @@ def get_user_feedback(cipher, plaintext):
         return get_user_feedback(cipher, plaintext)
 
 
-def guess_cipher(inp_obj, lang_obj):
+def guess_cipher(inp_obj):
     cracking_order = cryptanalyzer.cryptanalysis(inp_obj.string)[0]
     for cipher in cracking_order:
         # print("checking: %s" % cipher)
         for unverified_decrypted_text in decrypt_ciphertext(inp_obj, cipher):
-            if verify_plaintext(unverified_decrypted_text, lang_obj):
+            print("unverified: " + unverified_decrypted_text)
+            if verify_plaintext(unverified_decrypted_text):
                 machine_verified_decrypted_text = unverified_decrypted_text
                 res = get_user_feedback(cipher, machine_verified_decrypted_text)
                 if res == 2:
@@ -149,13 +151,11 @@ def main():
         # b. Otherwise, have to guess the cipher:
         else:
             print("Attempting to guess the cipher...")
-            lang_obj = LanguageVerifier.Language("english")  # ToDo - hardcoded for english
-            plaintext = guess_cipher(inp_obj, lang_obj)
+            plaintext = guess_cipher(inp_obj)
             if plaintext:
                 print(f"Your ciphertext was decrypted as:\n\t{plaintext}")
                 return plaintext
             else:
-                print(COLBAR, end='')
                 print("Failed to decrypt: %s" % inp_obj.bytes)  # ToDo add press any key for acknowledgement
                 return None
 
