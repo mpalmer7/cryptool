@@ -84,6 +84,7 @@ def verify_string(given_string, lang_obj, phrase_delimeter=' '):
     for word in lang_obj.lang3:
         if word in given_string.lower():
             words_matched += 1
+    #print(words_matched)
     # TODO arbitrary; if the amount of words found is greater than 1/20 of the total phrase => probably English
     if (words_matched - (len(given_string) / 20)) > 1:
         return True
