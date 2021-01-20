@@ -101,7 +101,7 @@ def guess_cipher(inp_obj):
     for cipher in cracking_order:
         # print("checking: %s" % cipher)
         for unverified_decrypted_text in decrypt_ciphertext(inp_obj, cipher):
-            print("unverified: " + unverified_decrypted_text)
+            # print("unverified: " + unverified_decrypted_text)
             if verify_plaintext(unverified_decrypted_text):
                 machine_verified_decrypted_text = unverified_decrypted_text
                 res = get_user_feedback(cipher, machine_verified_decrypted_text)

@@ -13,14 +13,15 @@ class Language:
 
     # ToDo - get a better dictionary or fix that every two character is legit
     # ToDo - allow the recursion to skip letters and check further
-    #           - i.e. If you hit a non-english word like "YMCA" it'll end the trail there...
+    #           - i.e. If you hit a non-english word like "YMCA" it'll end the branching there...
     # ToDo - allow a wordlist as an input; eg ctf{ or flag{ as valid words
     def verify_string(self, inp_s):
         # 1. REMOVE NON-ALPHABETICAL CHARACTERS -----------------------------------------------------------------------#
         s = re.sub(r'\W+', '', inp_s)  # todo how does this work in other character sets?
+        # print(s)
 
         # 2. CREATE ALL WORD POSSIBILITIES ----------------------------------------------------------------------------#
-        nested_branches = self._recursion(0, s)
+        nested_branches = self._recursively_find_words(0, s)
         branches = self._fix_branches(nested_branches)
         # print(branches)
 
@@ -32,17 +33,15 @@ class Language:
         avg_word_len = 5  # ToDo arbitrary
         expected_num_words = len(s) / avg_word_len
         words_found = len(plaintext.split(" ")) - 1  # counts spaces not words; which is + 1
-
-        print(f"Expected number of words: {expected_num_words}")
-        print(f"Words found: {words_found}")
+        # print(f"Expected number of words: {expected_num_words}")
+        # print(f"Words found: {words_found}")
 
         if words_found > expected_num_words:
-            # print("It is English!")
             return True
         else:
             return False
 
-    def _recursion(self, i, string):
+    def _recursively_find_words(self, i, string):
         branches = {}
         found_words = []
         for j in range(i + 1, len(string) + 1):  # checks from current index in string to end of string
@@ -55,9 +54,10 @@ class Language:
                 if self.lang.check(string[i:j]):
                     found_words.append(string[i:j])
         for word in found_words:
-            branches[word] = self._recursion(i + len(word), string)
+            branches[word] = self._recursively_find_words(i + len(word), string)
         return branches
 
+    # Converts nested dictionary to strings
     def _fix_branches(self, nested_branches, curstr=''):
         ls = []
         for word in nested_branches:
