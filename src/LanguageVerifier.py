@@ -5,8 +5,8 @@ import enchant
 class Language:
     def __init__(self, lang_name):
         self.name = lang_name
-        if lang_name == "english":
-            self.lang = enchant.Dict('en_US')
+        if lang_name == "en_US":
+            self.lang = enchant.Dict(lang_name)
         else:  # todo implement support for other languages
             print("Only english is implemented so far, sorry.  Using english.")
             self.lang = enchant.Dict('en_US')

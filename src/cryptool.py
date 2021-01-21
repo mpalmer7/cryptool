@@ -15,7 +15,7 @@ import cryptanalyzer
 # COLBAR = "#" * columns
 
 CIP_ARGS_BLACKLIST = ["input", "string", "file", "encrypt", "decrypt", "key", "cipherincipher"]
-ENGLISH = Language("english")  # TODO - language hardcoded to be English
+ENGLISH = Language("en_US")  # TODO - language hardcoded to be English
 
 # Command Line Arguments
 parser = argparse.ArgumentParser()
@@ -70,15 +70,10 @@ class CipherText:
 
 # run the decrypt function of a given cipher, this function by convention attempts to decrypt the cipher-text
 # this function by convention attempts to decrypt the cipher-text, and will yield any results
-def decrypt_ciphertext(inp_obj, cipher, key=None):  # ToDo key
+def decrypt_ciphertext(inp_obj, cipher):
     for unverified_decrypted_text in __import__('ciphers.' + cipher, fromlist=['*']).decrypt(inp_obj):
         if unverified_decrypted_text:
             yield unverified_decrypted_text
-
-
-def verify_plaintext(potential_plaintext):
-    verified_boo = ENGLISH.verify_string(potential_plaintext)
-    return verified_boo
 
 
 def get_user_feedback(cipher, plaintext):
@@ -102,7 +97,7 @@ def guess_cipher(inp_obj):
         # print("checking: %s" % cipher)
         for unverified_decrypted_text in decrypt_ciphertext(inp_obj, cipher):
             # print("unverified: " + unverified_decrypted_text)
-            if verify_plaintext(unverified_decrypted_text):
+            if ENGLISH.verify_string(unverified_decrypted_text):  # TODO - hardcoded english
                 machine_verified_decrypted_text = unverified_decrypted_text
                 res = get_user_feedback(cipher, machine_verified_decrypted_text)
                 if res == 2:
@@ -134,7 +129,7 @@ def parse_user_input():
 
 
 def main():
-    ciphers = [arg for arg in args.__dict__ if arg not in CIP_ARGS_BLACKLIST and args.__dict__[arg]]
+    requested_ciphers = [arg for arg in args.__dict__ if arg not in CIP_ARGS_BLACKLIST and args.__dict__[arg]]
 
     # 1. TAKE USER INPUT (FILE or STRING) -----------------------------------------------------------------------------#
     inp_obj = parse_user_input()
@@ -142,10 +137,10 @@ def main():
     # 2. DECRYPT FILE; IF SPECIFIED -----------------------------------------------------------------------------------#
     if args.decrypt:
         # a. Cipher is specified:
-        if ciphers:
-            for cipher in ciphers:
+        if requested_ciphers:
+            for cipher in requested_ciphers:
                 print(f"Decrypting with {cipher}:")
-                for unverified_decrypted_text in decrypt_ciphertext(inp_obj, cipher, args.key):
+                for unverified_decrypted_text in decrypt_ciphertext(inp_obj, cipher):
                     print(f"\t{unverified_decrypted_text}")
                 print("")
         # b. Otherwise, have to guess the cipher:
@@ -161,8 +156,8 @@ def main():
 
     # 3. ENCRYPT FILE; IF SPECIFIED -----------------------------------------------------------------------------------#
     elif args.encrypt:
-        if ciphers:
-            for cipher in ciphers:
+        if requested_ciphers:
+            for cipher in requested_ciphers:
                 ciphertext = encrypt_cipher(cipher, inp_obj)
 
                 print(f"Here is your message encrypted with {cipher}:")
