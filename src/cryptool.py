@@ -44,6 +44,8 @@ parser.add_argument('-steg', '--steg', help="Steganography", action='store_true'
 parser.add_argument('-key', '--key', help='specify a key', type=str)
 parser.add_argument('-cic', '--cipherincipher', help='check for encryption with multiple ciphers', action='store_true')
 
+# ToDo allow passing of multiple potential keys (maybe keyfile delimited by line)
+
 args = parser.parse_args()
 
 

@@ -1,11 +1,7 @@
-# need training data...
-# tensorflow (from google) library for machine learning
-# cykit learn
-
 L_ALPHA = "abcdefghijklmnopqrstuvwxyz"
 U_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 NUMERICALS = "1234567890"
-SYMBOLS = "!@#$%^&*()_+" + "`~{[}]_-+=|\\\"':;?/>.<,"
+SYMBOLS = "!@#$%^&*()_+`~{[}]_-+=|\\\"':;?/>.<,"
 SPACE = " "
 
 
@@ -46,7 +42,7 @@ def get_words(inp_cipher, delimeter=" "):  # ToDo add option to pass delimiter
 class Cipher:
     def __init__(self, type, param_1):
         if type == "base":
-            self.name = param_1["name"] # str, cipher name
+            self.name = param_1["name"]  # str, cipher name
 
             self.cod = param_1["cod"]  # dic, character occurrence percentage
             self.sod = param_1["sod"]  # dic, set occurrence percentage
@@ -116,7 +112,6 @@ CIPHER_LIST = [BINARY_CIPHER, BASE64_CIPHER, MORSE_CIPHER, SINGLEBYTEXOR_CIPHER,
 def cryptanalysis(ciphertext):  # string
     if isinstance(ciphertext, bytes):
         return [["steg"], 1]
-
 
     inp_cipher = Cipher("input", ciphertext)
 

@@ -1,5 +1,10 @@
+# need training data...
+# tensorflow (from google) library for machine learning
+# cykit learn
+
+
 import os
-try:
+try:  # TODO - replace with setuptools
     import tensorflow as tf
 except ModuleNotFoundError:
     print("Module requires Google TensorFlow, will attempt to install.")
